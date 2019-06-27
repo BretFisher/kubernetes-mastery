@@ -8,6 +8,7 @@
 .remark-slide-content {
   font-family: 'Droid Serif';
   font-size: 25px !important;
+  color: #383838;
 }
 
 .emoji {
@@ -19,6 +20,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: bold;
   font-size: 45px !important;
   margin-top: 0.5em;
+  color: black;
 }
 
 code {
