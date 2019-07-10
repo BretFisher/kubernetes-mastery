@@ -1,11 +1,19 @@
+
+@import url('https://fonts.googleapis.com/css?family=Quicksand:400,700|Viga&display=swap');
+
+
 .remark-slide-content:not(.pic) {
-    background-image: url(/k8smastery/background.png);
+    background-image: url(./k8smastery/background.png);
     background-repeat: no-repeat;
-    background-size: 100%;
+    background-size: cover;
+}
+
+.remark-slide-content:not(.pic).title {
+  background-image: url(./k8smastery/background_with_lights.png);
 }
 
 div.extra-details:not(.pic) {
-  background-image: url("images/extra-details.png"), url(/k8smastery/background.png);
+  background-image: url("images/extra-details.png"), url(./k8smastery/background.png);
   background-position: 0.5% 1%, 0% 0%;
   background-size: 4%, 100%;
 }
@@ -15,6 +23,33 @@ div.remark-slide-number {
   visibility: hidden;
 }
 
+div.title > p:first-child {
+  font-family: 'Viga', sans-serif;
+}
+
+.remark-slide-content {
+  background-color: transparent;
+}
+
+a {
+  color: #0954ab;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Viga', sans-serif;
+}
+
+li p {
+  line-height: 1.6em;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.remark-slide-content {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  font-size: 26px !important;
+}
 
 /* Logo top right */
 /* .remark-slide-content:not(.pic) { */
