@@ -18,6 +18,12 @@ div.extra-details:not(.pic) {
   background-size: 4%, 100%;
 }
 
+div.cleanup:not(.pic) {
+  background-image: url(./k8smastery/extra-details.png), url(./k8smastery/background.png);
+  background-position: 99% 1.5%, 0% 0%;
+  background-size: 4%, 100%;
+}
+
 /* hide slide counter for the course */
 div.remark-slide-number {
   visibility: hidden;
