@@ -13,8 +13,8 @@
 }
 
 div.extra-details:not(.pic) {
-  background-image: url("images/extra-details.png"), url(./k8smastery/background.png);
-  background-position: 0.5% 1%, 0% 0%;
+  background-image: url(./k8smastery/extra-details.png), url(./k8smastery/background.png);
+  background-position: 1.5% 1.5%, 0% 0%;
   background-size: 4%, 100%;
 }
 
@@ -31,18 +31,36 @@ div.title > p:first-child {
   background-color: transparent;
 }
 
+.remark-slide-content.pic {
+  background-color: white;
+}
+
+.exercise{
+  background-image: url(./k8smastery/exercise.png);
+  background-size: 1.9em;
+}
+
 a {
   color: #0954ab;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Viga', sans-serif;
+  margin-bottom: 0.5em;
+}
+
+ul {
+  margin: 0.6em 0;
 }
 
 li p {
   line-height: 1.6em;
   margin-top: 0;
   margin-bottom: 0;
+}
+
+pre {
+  margin: 0.6em 0;
 }
 
 .remark-slide-content {
