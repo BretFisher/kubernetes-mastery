@@ -19,9 +19,9 @@ div.extra-details:not(.pic) {
 }
 
 div.cleanup:not(.pic) {
-  background-image: url(./k8smastery/extra-details.png), url(./k8smastery/background.png);
+  background-image: url(./k8smastery/Foxy_cleanup_smaller.png), url(./k8smastery/background.png);
   background-position: 99% 1.5%, 0% 0%;
-  background-size: 4%, 100%;
+  background-size: 8%, 100%;
 }
 
 /* hide slide counter for the course */
