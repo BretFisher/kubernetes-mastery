@@ -15,6 +15,7 @@ exclude:
 chapters:
 - shared/title.md
 #- logistics.md
+- k8smastery/cleanup-template.md
 - k8s/intro.md
 - shared/about-slides.md
 - shared/toc.md
