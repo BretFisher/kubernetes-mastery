@@ -21,7 +21,7 @@ div.extra-details:not(.pic) {
 div.cleanup:not(.pic) {
   background-image: url(./k8smastery/Foxy_cleanup_smaller.png), url(./k8smastery/background.png);
   background-position: 99% 1.5%, 0% 0%;
-  background-size: 8%, 100%;
+  background-size: 12.5%, 100%;
 }
 
 /* hide slide counter for the course */
@@ -44,6 +44,10 @@ div.title > p:first-child {
 .exercise{
   background-image: url(./k8smastery/exercise.png);
   background-size: 1.9em;
+}
+
+code {
+  font-weight: 300;
 }
 
 a {
