@@ -1,5 +1,0 @@
-[build]
-  base = "k8s"
-  publish = "k8s"
-  command = ""
-

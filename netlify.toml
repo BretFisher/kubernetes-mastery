@@ -1,5 +1,5 @@
 [build]
-  base = "slides"
-  publish = "slides"
-  command = "./build.sh once"
+  base = "k8s"
+  publish = "k8s"
+  command = "echo 'done'"
 
