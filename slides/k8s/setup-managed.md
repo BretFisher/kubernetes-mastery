@@ -144,7 +144,7 @@ with a cloud provider
   az login
   ```
 
-- Select a [region](https://azure.microsoft.com/en-us/global-infrastructure/services/?products=kubernetes-service\&regions=all
+- Select a [region](https://azure.microsoft.com/en-us/global-infrastructure/services/?products=kubernetes-service&regions=all
 )
 
 - Create a "resource group":
@@ -168,7 +168,7 @@ with a cloud provider
   az aks get-credentials --resource-group my-aks-group --name my-aks-cluster
   ```
 
-- The cluster has a lot of goodies pre-installed
+- The cluster has useful components pre-installed, such as the metrics server
 
 ---
 
@@ -224,7 +224,7 @@ with a cloud provider
   kubectl config use-context do-xxx1-my-do-cluster
   ```
 
-- The cluster comes with some goodies (like Cilium) but no metrics server
+- The cluster comes with some components (like Cilium) but no metrics server
 
 ---
 
