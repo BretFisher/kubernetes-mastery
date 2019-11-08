@@ -10,6 +10,8 @@ gitrepo: github.com/jpetazzo/container.training
 
 slides: http://container.training/
 
+#slidenumberprefix: "#SomeHashTag &mdash; "
+
 exclude:
 - self-paced
 
@@ -22,6 +24,7 @@ chapters:
 - shared/about-slides.md
 - shared/toc.md
 - - shared/prereqs.md
+  #- shared/webssh.md
   - shared/connecting.md
   - k8s/versions-k8s.md
   - shared/sampleapp.md
