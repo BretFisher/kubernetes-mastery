@@ -10,19 +10,22 @@ gitrepo: github.com/BretFisher/kubernetes-mastery
 slides: https://github.com/bretfisher/kubernetes-mastery
 
 exclude:
-- in-person
+- not-mastery
+- self-paced
+# - in-person
 
 chapters:
 - shared/title.md
 #- logistics.md
-- k8smastery/cleanup-template.md
-- k8s/intro.md
-- shared/about-slides.md
-- shared/toc.md
+# - k8smastery/cleanup-template.md
+# - k8s/intro.md
+# - shared/about-slides.md
+# - shared/toc.md
 - 
-  - shared/prereqs.md
-  - shared/connecting.md
-  - k8s/versions-k8s.md
+  # - shared/prereqs.md
+  # - shared/webssh.md
+  # - shared/connecting.md
+  # - k8s/versions-k8s.md
   - shared/sampleapp.md
   #- shared/composescale.md
   #- shared/hastyconclusions.md
@@ -42,15 +45,17 @@ chapters:
   - k8s/buildshiprun-dockerhub.md
   - k8s/ourapponkube.md
 -
-  - k8s/kubectlproxy.md
-  - k8s/localkubeconfig.md
-  - k8s/accessinternal.md
+  - k8s/yamldeploy.md
   - k8s/setup-k8s.md
   - k8s/dashboard.md
   #- k8s/kubectlscale.md
   - k8s/scalingdockercoins.md
   - shared/hastyconclusions.md
   - k8s/daemonset.md
+  - k8s/dryrun.md
+  - k8s/kubectlproxy.md
+  - k8s/localkubeconfig.md
+  - k8s/accessinternal.md
 -
   - k8s/rollout.md
   - k8s/healthchecks.md

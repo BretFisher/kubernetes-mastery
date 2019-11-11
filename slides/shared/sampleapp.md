@@ -1,3 +1,5 @@
+class: not-mastery
+
 # Our sample application
 
 - We will clone the GitHub repository onto our `node1`
@@ -25,6 +27,8 @@ fi
 (You can also fork the repository on GitHub and clone your fork if you prefer that.)
 
 ---
+
+class: not-mastery
 
 ## Downloading and running the application
 
@@ -100,7 +104,7 @@ and displays aggregated logs.
 
 - These 5 services are visible in the application's Compose file,
   [docker-compose.yml](
-  https://@@GITREPO@@/blob/master/dockercoins/docker-compose.yml)
+  https://@@GITREPO@@/blob/mastery/dockercoins/docker-compose.yml)
 
 ---
 
@@ -165,7 +169,7 @@ https://@@GITREPO@@/blob/8279a3bce9398f7c1a53bdd95187c53eda4e6435/dockercoins/wo
 
 ---
 
-class: extra-details
+class: extra-details, not-mastery
 
 ## Links, naming, and service discovery
 
@@ -210,7 +214,7 @@ class: extra-details
 
 ---
 
-class: extra-details
+class: extra-details, not-mastery
 
 ## Compose file format version
 
