@@ -3,7 +3,7 @@
 
 
 .remark-slide-content:not(.pic) {
-    background-image: url(./k8smastery/background.png);
+    background-image: url(./k8smastery/background-light.png);
     background-repeat: no-repeat;
     background-size: cover;
 }
@@ -12,14 +12,14 @@
   background-image: url(./k8smastery/background_with_lights.png);
 }
 
-div.extra-details:not(.pic) {
-  background-image: url(./k8smastery/extra-details.png), url(./k8smastery/background.png);
-  background-position: 1.5% 1.5%, 0% 0%;
-  background-size: 4%, 100%;
-}
+/* div.extra-details:not(.pic) { */
+  /* background-image: url(./k8smastery/extra-details.png), url(./k8smastery/background.png); */
+  /* background-position: 1.5% 1.5%, 0% 0%; */
+  /* background-size: 4%, 100%; */
+/* } */
 
 div.cleanup:not(.pic) {
-  background-image: url(./k8smastery/Foxy_cleanup_smaller.png), url(./k8smastery/background.png);
+  background-image: url(./k8smastery/Foxy_cleanup_smaller.png), url(./k8smastery/background-light.png);
   background-position: 99% 1.5%, 0% 0%;
   background-size: 12.5%, 100%;
 }

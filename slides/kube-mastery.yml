@@ -30,7 +30,8 @@ chapters:
   #- shared/composescale.md
   #- shared/hastyconclusions.md
   - shared/composedown.md
-  - k8s/concepts-k8s.md
+  # - k8s/concepts-k8s.md
+  - k8smastery/concepts-k8s.md
   - k8s/kubectlget.md
 -
   - k8s/kubectlrun.md
