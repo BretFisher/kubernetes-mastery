@@ -204,12 +204,12 @@ No!
 - [containerd](https://github.com/containerd/containerd/blob/master/README.md): 
 maintained by Docker, IBM, and community
 
-- Used by Docker Engine, microK8s, k3s, GKE, and standalone. Has `ctr` CLI
+- Used by Docker Engine, microK8s, k3s, GKE, and standalone; has `ctr` CLI
 
 --
 
 - [CRI-O](https://github.com/cri-o/cri-o/blob/master/README.md): 
-maintained by Red Hat, SUSE, and community. Based on containerd
+maintained by Red Hat, SUSE, and community; based on containerd
 
 - Used by OpenShift and Kubic, version matched to Kubernetes
 
@@ -297,7 +297,7 @@ class: pic
 
 --
 
-- Pod is our smallest deployable unit. Kubernetes can't mange containers directly
+- Pod is our smallest deployable unit; Kubernetes can't mange containers directly
 
 --
 
@@ -318,7 +318,7 @@ class: pic
 
   - it's one of the best Kubernetes architecture diagrams available!
 
-- The second diagram is courtesy of Weave Works
+- The second diagram is courtesy of Weaveworks
 
   - a *pod* can have multiple containers working together
 

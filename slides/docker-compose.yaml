@@ -12,5 +12,5 @@ services:
     volumes:
     - ..:/repo
     working_dir: /repo/slides
-    command: ./build.sh forever
+    command: ./buildone.sh forever
 

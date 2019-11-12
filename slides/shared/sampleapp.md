@@ -116,7 +116,7 @@ and displays aggregated logs.
 
 - `worker` does this in an infinite loop
 
-- every second, `worker` updates `redis` to indicate how many loops were done
+- Every second, `worker` updates `redis` to indicate how many loops were done
 
 - `webui` queries `redis`, and computes and exposes "hashing speed" in our browser
 
@@ -246,7 +246,7 @@ class: extra-details, not-mastery
 
 ## Connecting to the web UI
 
-- "Logs are exciting and fun!" (No-one, ever)
+- "Logs are exciting and fun!" (No one, ever)
 
 - The `webui` container exposes a web dashboard; let's view it
 

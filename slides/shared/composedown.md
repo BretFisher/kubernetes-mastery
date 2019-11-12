@@ -1,3 +1,5 @@
+class: cleanup
+
 ## Clean up
 
 - Before moving on, let's remove those containers
