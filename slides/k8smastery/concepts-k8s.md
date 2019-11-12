@@ -2,11 +2,11 @@
 
 - Kubernetes is a container management system
 
-- It runs and manages containerized applications on a cluster
+- It runs and manages containerized applications on a cluster (one or more servers)
 
---
+- Often this is simply called "container orchestration"
 
-- What does that really mean?
+- Sometimes shortened to Kube or K8s ("Kay-eights" or "Kates")
 
 ---
 
@@ -48,7 +48,7 @@
 
 - Blue/green deployment, canary deployment
 
-- Long running services, but also batch (one-off) jobs
+- Long running services, but also batch (one-off) and CRON-like jobs
 
 - Overcommit our cluster and *evict* low-priority jobs
 

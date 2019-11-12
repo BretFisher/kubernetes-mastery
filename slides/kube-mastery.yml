@@ -1,13 +1,11 @@
 title: |
   Kubernetes Mastery
 
-chat: "[Slack](https://dockercommunity.slack.com/messages/C7GKACWDV)"
-#chat: "[Gitter](https://gitter.im/jpetazzo/workshop-yyyymmdd-city)"
-
+chat: "[Slack](https://chat.dockermastery.com/)"
 
 gitrepo: github.com/BretFisher/kubernetes-mastery
 
-slides: https://github.com/bretfisher/kubernetes-mastery
+slides: https://slides.kubernetesmastery.com
 
 exclude:
 - not-mastery
@@ -18,40 +16,44 @@ chapters:
 - shared/title.md
 #- logistics.md
 # - k8smastery/cleanup-template.md
-# - k8s/intro.md
 # - shared/about-slides.md
-# - shared/toc.md
+- shared/toc.md
+-
+  - k8smastery/intro.md
+  - k8smastery/prereqs.md
 - 
-  # - shared/prereqs.md
   # - shared/webssh.md
   # - shared/connecting.md
   # - k8s/versions-k8s.md
-  - shared/sampleapp.md
   #- shared/composescale.md
   #- shared/hastyconclusions.md
-  - shared/composedown.md
-  # - k8s/concepts-k8s.md
+  - k8smastery/orchestration.md
+  - k8smastery/setup-k8s.md
   - k8smastery/concepts-k8s.md
-  - k8s/kubectlget.md
 -
+  - k8smastery/course-setup.md
+  - k8s/kubectlget.md
   - k8s/kubectlrun.md
   - k8s/logs-cli.md
   - shared/declarative.md
   - k8s/declarative.md
   - k8s/deploymentslideshow.md
+-
   - k8s/kubenet.md
   - k8s/kubectlexpose.md
   - k8s/shippingimages.md
   - k8s/buildshiprun-selfhosted.md
   - k8s/buildshiprun-dockerhub.md
+  - shared/sampleapp.md
+  - shared/composedown.md
   - k8s/ourapponkube.md
 -
   - k8s/yamldeploy.md
-  - k8s/setup-k8s.md
   - k8s/dashboard.md
   #- k8s/kubectlscale.md
   - k8s/scalingdockercoins.md
   - shared/hastyconclusions.md
+-
   - k8s/daemonset.md
   - k8s/dryrun.md
   - k8s/kubectlproxy.md

@@ -13,5 +13,5 @@ class: title, in-person
 .footnote[
 **Course: https://www.kubernetesmastery.com**
 
-**Code: @@SLIDES@@**
+**Slides: @@SLIDES@@**
 ]

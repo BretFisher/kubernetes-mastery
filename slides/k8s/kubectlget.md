@@ -6,6 +6,8 @@
 
   (Everything you can do with `kubectl`, you can do directly with the API)
 
+--
+
 - On our machines, there is a `~/.kube/config` file with:
 
   - the Kubernetes API address
@@ -16,7 +18,11 @@
 
 - Or directly `--server`, `--user`, etc.
 
+--
+
 - `kubectl` can be pronounced "Cube C T L", "Cube cuttle", "Cube cuddle"...
+
+- I'll be using the official name "Cube Control" 😎
 
 ---
 
