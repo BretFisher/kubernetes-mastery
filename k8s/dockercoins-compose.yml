@@ -1,0 +1,20 @@
+version: "2"
+
+services:
+  rng:
+    image: dockercoins/rng:${TAG-latest}
+
+  hasher:
+    image: dockercoins/hasher:${TAG-latest}
+
+  webui:
+    image: dockercoins/webui:${TAG-latest}
+    ports:
+    - "8000:80"
+
+  redis:
+    image: redis
+
+  worker:
+    image: dockercoins/worker:${TAG-latest}
+
