@@ -115,10 +115,10 @@
 
 .exercise[
 
-- Look at the information available for `node1` with one of the following commands:
+- Look at the information available for *your node name* with one of the following:
   ```bash
-  kubectl describe node/node1
-  kubectl describe node node1
+  kubectl describe node/<node>
+  kubectl describe node <node>
   ```
 
 ]
@@ -281,7 +281,7 @@ The error that we see is expected: the Kubernetes API requires authentication.
 
 *In fact, I'm pretty sure it showed up earlier, when we did:*
 
-`kubectl describe node node1`
+`kubectl describe node <node-name>`
 
 ---
 
@@ -321,11 +321,9 @@ The error that we see is expected: the Kubernetes API requires authentication.
 
 - `kube-proxy` is the (per-node) component managing port mappings and such
 
-- `weave` is the (per-node) component managing the network overlay
+- `<net name>` is the (per-node) component managing the network overlay
 
 - the `READY` column indicates the number of containers in each pod
-
-  (1 for most pods, but `weave` has 2, for instance)
 
 ---
 
