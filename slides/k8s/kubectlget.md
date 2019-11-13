@@ -85,67 +85,6 @@
 
 ---
 
-class: extra-details
-
-## Exploring types and definitions
-
-- We can list all available resource types by running `kubectl api-resources`
-  <br/>
-  (In Kubernetes 1.10 and prior, this command used to be `kubectl get`)
-
-- We can view the definition for a resource type with:
-  ```bash
-  kubectl explain type
-  ```
-
-- We can view the definition of a field in a resource, for instance:
-  ```bash
-  kubectl explain node.spec
-  ```
-
-- Or get the full definition of all fields and sub-fields:
-  ```bash
-  kubectl explain node --recursive
-  ```
-
----
-
-class: extra-details
-
-## Introspection vs. documentation
-
-- We can access the same information by reading the [API documentation](https://kubernetes.io/docs/reference/#api-reference)
-
-- The API documentation is usually easier to read, but:
-
-  - it won't show custom types (like Custom Resource Definitions)
-
-  - we need to make sure that we look at the correct version
-
-- `kubectl api-resources` and `kubectl explain` perform *introspection*
-
-  (they communicate with the API server and obtain the exact type definitions)
-
----
-
-## Type names
-
-- The most common resource names have three forms:
-
-  - singular (e.g. `node`, `service`, `deployment`)
-
-  - plural (e.g. `nodes`, `services`, `deployments`)
-
-  - short (e.g. `no`, `svc`, `deploy`)
-
-- Some resources do not have a short name
-
-- `Endpoints` only have a plural form
-
-  (because even a single `Endpoints` resource is actually a list of endpoints)
-
----
-
 ## Viewing details
 
 - We can use `kubectl get -o yaml` to see all available details
@@ -185,6 +124,67 @@ class: extra-details
 ]
 
 (We should notice a bunch of control plane pods.)
+
+---
+
+class: extra-details
+
+## Exploring types and definitions
+
+- We can list all available resource types by running `kubectl api-resources`
+  <br/>
+  (In Kubernetes 1.10 and prior, this command used to be `kubectl get`)
+
+- We can view the definition for a resource type with:
+  ```bash
+  kubectl explain type
+  ```
+
+- We can view the definition of a field in a resource, for instance:
+  ```bash
+  kubectl explain node.spec
+  ```
+
+- Or get the list of all fields and sub-fields:
+  ```bash
+  kubectl explain node --recursive
+  ```
+
+---
+
+class: extra-details
+
+## Introspection vs. documentation
+
+- We can access the same information by reading the [API documentation](https://kubernetes.io/docs/reference/#api-reference)
+
+- The API documentation is usually easier to read, but:
+
+  - it won't show custom types (like Custom Resource Definitions)
+
+  - we need to make sure that we look at the correct version
+
+- `kubectl api-resources` and `kubectl explain` perform *introspection*
+
+  (they communicate with the API server and obtain the exact type definitions)
+
+---
+
+## Type names
+
+- The most common resource names have three forms:
+
+  - singular (e.g. `node`, `service`, `deployment`)
+
+  - plural (e.g. `nodes`, `services`, `deployments`)
+
+  - short (e.g. `no`, `svc`, `deploy`)
+
+- Some resources do not have a short name
+
+- `Endpoints` only have a plural form
+
+  (because even a single `Endpoints` resource is actually a list of endpoints)
 
 ---
 

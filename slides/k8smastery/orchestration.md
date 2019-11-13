@@ -85,19 +85,33 @@
 
 ## Kubernetes distributions
 
-- Kubernetes "vanilla upstream"
+- Kubernetes "vanilla upstream" (not a distribution)
 
-- RedHat OpenShift
+--
 
-- Docker Enterprise (runs both Swarm and/or Kubernetes)
+- Cloud-Managed distros: AKS, GKE, EKS, DOK...
 
-- Rancher
+--
 
-- Canonical Charmed Kubernetes
+- Self-Managed distros: RedHat OpenShift, Docker Enterprise, Rancher, Canonical Charmed, openSUSE Kubic...
 
-- openSUSE Kubic
+--
 
-- Rancher K3s (tiny version of Kubernetes with easier deployment)
+- Vanilla installers: kubeadm, kops, kubicorn...
+
+--
+
+- Local dev/test: Docker Desktop, minikube, microK8s
+
+--
+
+- CI testing: kind
+
+--
+
+- Special builds: Rancher k3s
+
+--
 
 - And [Many, many more...](https://kubernetes.io/partners/#conformance) (86 as of June 2019)
 

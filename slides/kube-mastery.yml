@@ -28,7 +28,7 @@ chapters:
   #- shared/composescale.md
   #- shared/hastyconclusions.md
   - k8smastery/orchestration.md
-  - k8smastery/setup-k8s.md
+  # - k8smastery/setup-k8s.md
   - k8smastery/concepts-k8s.md
 -
   - k8smastery/course-setup.md

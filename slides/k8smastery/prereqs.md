@@ -54,5 +54,3 @@ Misattributed to Benjamin Franklin
 
 ]
 
----
-
