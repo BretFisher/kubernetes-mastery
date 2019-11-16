@@ -4,7 +4,7 @@
 
 - All we can do is write a *spec* and push it to the API server
 
-  (by creating a resource like e.g. a Pod or a Deployment)
+  (for example, by creating a resource like a Pod or a Deployment)
 
 - The API server will validate that spec (and reject it if it's invalid)
 

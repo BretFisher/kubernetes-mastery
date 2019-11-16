@@ -36,7 +36,7 @@
 
 - IP addresses don't have to be "portable" from a node to another
 
-  (We can use e.g. a subnet per node and use a simple routed topology)
+  (For example, We can use a subnet per node and use a simple routed topology)
 
 - The specification is simple enough to allow many various implementations
 
@@ -48,7 +48,7 @@
 
   - if you want security, you need to add network policies
 
-  - the network implementation that you use needs to support them
+  - the network implementation you use needs to support them
 
 - There are literally dozens of implementations out there
 
@@ -65,7 +65,7 @@
 
 ## Kubernetes network model: in practice
 
-- The nodes that we are using have been set up to use [Weave](https://github.com/weaveworks/weave)
+- The nodes we are using have been set up to use [Weave](https://github.com/weaveworks/weave)
 
 - We don't endorse Weave in a particular way, it just Works For Us
 
@@ -100,7 +100,7 @@ class: extra-details
 
   - add a network interface into the pod's network namespace
 
-  - configure the interface as well as required routes etc.
+  - configure the interface as well as required routes, etc.
 
 ---
 
@@ -118,7 +118,7 @@ class: extra-details
 
   - provides internal communication and load balancing
 
-  - is generally implemented with kube-proxy (or e.g. kube-router)
+  - is generally implemented with kube-proxy (or maybe kube-router)
 
 - Network policies:
 
