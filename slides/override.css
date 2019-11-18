@@ -1,6 +1,7 @@
 
 @import url('https://fonts.googleapis.com/css?family=Quicksand:400,700|Viga&display=swap');
 
+.remark-slide-content { padding: .1em 1em 1em 1em; }
 
 .remark-slide-content:not(.pic) {
     background-image: url(./k8smastery/background-light.png);

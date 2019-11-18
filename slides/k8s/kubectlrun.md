@@ -80,7 +80,7 @@ Note: as of 1.10.1, resource types are displayed in more detail.
 
   - rarely used directly
 
-- A *replication controller* is the (deprecated) predecessor of a replica set
+- Note: A *replication controller* is the deprecated predecessor of a replica set
 
 ---
 

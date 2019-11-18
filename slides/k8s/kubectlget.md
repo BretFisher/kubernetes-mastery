@@ -188,7 +188,7 @@ class: extra-details
 
 ---
 
-## Services
+## More `get` commands: Services
 
 - A *service* is a stable endpoint to connect to "something"
 
@@ -210,6 +210,8 @@ There is already one service on our cluster: the Kubernetes API itself.
 
 ---
 
+class: not-mastery
+
 ## ClusterIP services
 
 - A `ClusterIP` service is internal, available from the cluster only
@@ -229,13 +231,11 @@ There is already one service on our cluster: the Kubernetes API itself.
 
 ]
 
---
-
 The error that we see is expected: the Kubernetes API requires authentication.
 
 ---
 
-## Listing running containers
+## More `get` commands: Listing running containers
 
 - Containers are manipulated through *pods*
 
@@ -321,9 +321,13 @@ The error that we see is expected: the Kubernetes API requires authentication.
 
 - `kube-proxy` is the (per-node) component managing port mappings and such
 
-- `<net name>` is the (per-node) component managing the network overlay
+- `<net name>` is the optional (per-node) component managing the network overlay
 
 - the `READY` column indicates the number of containers in each pod
+
+- Note: this only shows containers, you won't see host svcs (e.g. microk8s)
+
+- Also Note: you may see different namespaces depending on setup 
 
 ---
 
@@ -376,7 +380,7 @@ class: extra-details
 
 Nothing!
 
-`kube-public` is created by kubeadm & [used for security bootstrapping](https://kubernetes.io/blog/2017/01/stronger-foundation-for-creating-and-managing-kubernetes-clusters).
+`kube-public` is created by our installer & [used for security bootstrapping](https://kubernetes.io/blog/2017/01/stronger-foundation-for-creating-and-managing-kubernetes-clusters).
 
 ---
 
@@ -402,11 +406,11 @@ class: extra-details
 
 Note the `selfLink` URI: `/api/v1/namespaces/kube-public/configmaps/cluster-info`
 
-We can use that!
+We can use that (later in `kubectl context` lectures)!
 
 ---
 
-class: extra-details
+class: extra-details, not-mastery
 
 ## Accessing `cluster-info`
 
@@ -429,7 +433,7 @@ class: extra-details
 
 ---
 
-class: extra-details
+class: extra-details, not-mastery
 
 ## Retrieving `kubeconfig`
 

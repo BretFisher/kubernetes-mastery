@@ -84,9 +84,9 @@ Exactly what we need!
 
 .exercise[
 
-- View the logs for all the rng containers:
+- View the logs for all the pingpong containers:
   ```bash
-  stern rng
+  stern pingpong
   ```
 
 <!--
@@ -110,9 +110,9 @@ Exactly what we need!
 
 .exercise[
 
-- View what's up with the `weave` system containers:
+- View what's up with the `pingpong` system containers:
   ```bash
-  stern --tail 1 --timestamps --all-namespaces weave
+  stern --tail 1 --timestamps pingpong
   ```
 
 <!--
@@ -138,9 +138,9 @@ Exactly what we need!
 
 .exercise[
 
-- View the logs for all the things started with `kubectl create deployment`:
+- View the logs for all the things started with `kubectl run`:
   ```bash
-  stern -l app
+  stern -l run
   ```
 
 <!--

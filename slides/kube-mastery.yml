@@ -35,12 +35,11 @@ chapters:
   - k8s/kubectlget.md
   - k8s/kubectlrun.md
   - k8s/logs-cli.md
-  - shared/declarative.md
-  - k8s/declarative.md
-  - k8s/deploymentslideshow.md
+  - k8smastery/cleanup-pingpong-sleep.md
 -
-  - k8s/kubenet.md
+  - k8s/deploymentslideshow.md
   - k8s/kubectlexpose.md
+  - k8s/kubenet.md
   - k8s/shippingimages.md
   - k8s/buildshiprun-selfhosted.md
   - k8s/buildshiprun-dockerhub.md
@@ -64,6 +63,10 @@ chapters:
   - k8s/healthchecks.md
   - k8s/healthchecks-more.md
   - k8s/record.md
+-
+  - shared/declarative.md
+  - k8s/declarative.md
+  - k8smastery/cli-good-better-best.md
 -
   - k8s/namespaces.md
   - k8s/ingress.md
