@@ -18,17 +18,25 @@
 
 ---
 
-## For a consistent Kubernetes experience ...
+## `shpod`: For a consistent Kubernetes experience ...
 
 - If you are using your own Kubernetes cluster, you can use [shpod](https://github.com/jpetazzo/shpod)
 
 - `shpod` provides a shell running in a pod on your own cluster
 
-- It comes with many tools pre-installed (helm, stern...)
+- It comes with many tools pre-installed (helm, stern, curl, jq...)
 
 - These tools are used in many exercises in these slides
 
-- `shpod` also gives you completion and a fancy prompt
+- `shpod` also gives you shell completion and a fancy prompt
+
+- Create it with `kubectl apply -f https://bret.run/shpod.yml`
+
+- Attach to shell with `kubectl attach --namespace=shpod -ti shpod`
+
+- Remove with `kubectl delete -f https://bret.run/shpod.yml`
+
+
 
 ---
 

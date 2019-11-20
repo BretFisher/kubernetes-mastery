@@ -103,8 +103,8 @@ and displays aggregated logs.
   - `redis` = data store (holds a counter updated by `worker`)
 
 - These 5 services are visible in the application's Compose file,
-  [docker-compose.yml](
-  https://@@GITREPO@@/blob/mastery/dockercoins/docker-compose.yml)
+  [dockercoins-compose.yml](
+  https://github.com/BretFisher/kubernetes-mastery/blob/mastery/k8s/dockercoins-compose.yml)
 
 ---
 
@@ -189,6 +189,8 @@ class: extra-details, not-mastery
 
 ---
 
+class: not-mastery
+
 ## Show me the code!
 
 - You can check the GitHub repository with all the materials of this workshop:
@@ -232,6 +234,8 @@ class: extra-details, not-mastery
 
 ---
 
+class: not-mastery
+
 ## Our application at work
 
 - On the left-hand side, the "rainbow strip" shows the container names
@@ -243,6 +247,41 @@ class: extra-details, not-mastery
 - For `rng` and `hasher`, we see HTTP access logs
 
 ---
+
+## DockerCoins at work
+
+- `worker` will log HTTP requests to `rng` and `hasher`
+
+- `rng` and `hasher` will log incoming HTTP requests
+
+- `webui` will give us a graph on coins mined per second
+
+<img style="max-height:400px" src="k8smastery/dockercoins-webui.png">
+
+---
+
+## Check out the app in Docker Compose
+
+- Compose is (still) great for local development
+
+- You can test this app if you have Docker and Compose installed
+
+- If not, remember [play-with-docker.com](https://play-with-docker.com)
+
+.exercise[
+
+- Download the compose file somewhere and run it
+  ```bash
+  curl -o docker-compose.yml https://k8smastery.com/dockercoins-compose.yml
+  docker-compose up
+  ```
+
+]
+
+- View the `webui` on `localhost:8000` or click the `8080` link in PWD
+---
+
+class: not-mastery
 
 ## Connecting to the web UI
 

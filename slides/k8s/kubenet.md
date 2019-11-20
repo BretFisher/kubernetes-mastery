@@ -65,9 +65,7 @@
 
 ## Kubernetes network model: in practice
 
-- The nodes we are using have been set up to use [Weave](https://github.com/weaveworks/weave)
-
-- We don't endorse Weave in a particular way, it just Works For Us
+- The nodes we are using have been set up to use kubenet, Calico, or something else
 
 - Don't worry about the warning about `kube-proxy` performance
 

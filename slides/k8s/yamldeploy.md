@@ -70,24 +70,24 @@
 
 ---
 
-## Deploying dockercoins with YAML
+## Deploying DockerCoins with YAML
 
-- We provide a YAML manifest with all the resources for Dockercoins
+- We provide a YAML manifest with all the resources for DockerCoins
 
   (Deployments and Services)
 
-- We can use it if we need to deploy or redeploy Dockercoins
+- We can use it if we need to deploy or redeploy DockerCoins
 
 .exercise[
 
-- Deploy or redeploy Dockercoins:
+- Deploy or redeploy DockerCoins:
   ```bash
-  kubectl apply -f ~/container.training/k8s/dockercoins.yaml
+  kubectl apply -f https://k8smastery.com/dockercoins.yaml
   ```
 
 ]
 
-(If we deployed Dockercoins earlier, we will see warning messages,
+(If we deployed DockerCoins earlier, we will see warning messages,
 because the resources that we created lack the necessary annotation.
 We can safely ignore them.)
 

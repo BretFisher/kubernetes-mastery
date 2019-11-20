@@ -1,6 +1,6 @@
-# The Kubernetes dashboard
+# The Kubernetes Dashboard
 
-- Kubernetes resources can also be viewed with a web dashboard
+- Kubernetes resources can also be viewed with an official web UI
 
 - That dashboard is usually exposed over HTTPS
 
@@ -42,7 +42,7 @@
 
 - Create all the dashboard resources, with the following command:
   ```bash
-  kubectl apply -f ~/container.training/k8s/insecure-dashboard.yaml
+  kubectl apply -f https://k8smastery.com/insecure-dashboard.yaml
   ```
 
 ]
@@ -65,7 +65,7 @@ You'll want the `3xxxx` port.
 
 .exercise[
 
-- Connect to http://oneofournodes:3xxxx/
+- Connect to http://localhost:3xxxx/
 
 <!-- ```open http://node1:3xxxx/``` -->
 
@@ -81,7 +81,7 @@ The dashboard will then ask you which authentication you want to use.
 
   - token (associated with a role that has appropriate permissions)
 
-  - kubeconfig (e.g. using the `~/.kube/config` file from `node1`)
+  - kubeconfig (e.g. using the `~/.kube/config` file)
 
   - "skip" (use the dashboard "service account")
 
@@ -93,7 +93,7 @@ The dashboard will then ask you which authentication you want to use.
 
 ---
 
-## Running the Kubernetes dashboard securely
+## Running the Kubernetes Dashboard securely
 
 - The steps that we just showed you are *for educational purposes only!*
 
@@ -103,6 +103,11 @@ The dashboard will then ask you which authentication you want to use.
   <br/>
   check [this excellent post on Heptio's blog](https://blog.heptio.com/on-securing-the-kubernetes-dashboard-16b09b1b7aca)
 
+--
+
+- Minikube/microK8s can be enabled with easy commands
+
+  `minikube dashboard` and `microk8s.enable dashboard`
 ---
 
 ## Other dashboards
@@ -118,6 +123,14 @@ The dashboard will then ask you which authentication you want to use.
 - [Kube Ops View](https://github.com/hjacobs/kube-ops-view)
 
   - "provides a common operational picture for multiple Kubernetes clusters"
+
+--
+
+- Your Kubernetes distro comes with one!
+
+--
+
+- Cloud-provided control-planes often don't come with one
 
 ---
 

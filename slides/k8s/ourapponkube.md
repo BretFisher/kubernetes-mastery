@@ -1,4 +1,4 @@
-# Running our application on Kubernetes
+# Running DockerCoins on Kubernetes
 
 - We can now deploy our code (as well as a redis instance)
 
@@ -21,7 +21,7 @@
 
 ---
 
-class: extra-details
+class: extra-details, not-mastery
 
 ## Deploying other images
 

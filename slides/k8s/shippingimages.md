@@ -1,14 +1,12 @@
 # Shipping images with a registry
 
-- Initially, our app was running on a single node
-
-- We could *build* and *run* in the same place
-
-- Therefore, we did not need to *ship* anything
+- For development using Docker, it has *build*, *ship*, and *run* features
 
 - Now that we want to run on a cluster, things are different
 
-- The easiest way to ship container images is to use a registry
+- Kubernetes doesn't have a *build* feature built-in
+
+- The way to ship (pull) images to Kubernetes is to use a registry
 
 ---
 
@@ -29,24 +27,9 @@
   docker pull gcr.io/google-containers/alpine-with-bash:1.0
 
   docker build -t registry.mycompany.io:5000/myimage:awesome .
+
   docker push registry.mycompany.io:5000/myimage:awesome
   ```
-
----
-
-## Running DockerCoins on Kubernetes
-
-- Create one deployment for each component
-
-  (hasher, redis, rng, webui, worker)
-
-- Expose deployments that need to accept connections
-
-  (hasher, redis, rng, webui)
-
-- For redis, we can use the official redis image
-
-- For the 4 others, we need to build images and push them to some registry
 
 ---
 
@@ -74,18 +57,46 @@
 
 ## Which registry do we want to use?
 
-- There are SAAS products like Docker Hub, Quay ...
+- There are SAAS products like Docker Hub, Quay, GitLab ...
 
 - Each major cloud provider has an option as well
 
   (ACR on Azure, ECR on AWS, GCR on Google Cloud...)
 
+--
+
 - There are also commercial products to run our own registry
 
-  (Docker EE, Quay...)
+  (Docker Enterprise DTR, Quay, GitLab, JFrog Artifactory...)
+
+--
 
 - And open source options, too!
 
-- When picking a registry, pay attention to its build system
+  (Quay, Portus, OpenShift OCR, GitLab, Harbor, Kraken...)
 
-  (when it has one)
+  (I don't mention Docker Distribution here because it's too basic)
+
+--
+
+- When picking a registry, pay attention to:
+  - Its build system
+  - Multi-user auth and mgmt (RBAC)
+  - Storage features (replication, caching,  garbage collection)
+
+---
+
+## Running DockerCoins on Kubernetes
+
+- Create one deployment for each component
+
+  (hasher, redis, rng, webui, worker)
+
+- Expose deployments that need to accept connections
+
+  (hasher, redis, rng, webui)
+
+- For redis, we can use the official redis image
+
+- For the 4 others, we need to build images and push them to some registry
+

@@ -146,6 +146,12 @@ Under the hood: `kube-proxy` is using a userland proxy and a bunch of `iptables`
 
 .exercise[
 
+- Run shpod if not on Linux host so we can access internal ClusterIP
+  ```bash
+  kubectl apply -f https://bret.run/shpod.yml
+  kubectl attach --namespace=shpod -ti shpod
+  ```
+
 - Let's obtain the IP address that was allocated for our service, *programmatically:*
   ```bash
   IP=$(kubectl get svc httpenv -o go-template --template '{{ .spec.clusterIP }}')
@@ -166,10 +172,6 @@ Under the hood: `kube-proxy` is using a userland proxy and a bunch of `iptables`
   ```
 
 ]
-
---
-
-Try it a few times! Our requests are load balanced across multiple pods.
 
 ---
 
@@ -245,13 +247,10 @@ class: extra-details
   kubectl get endpoints
   ```
 
-- If we want to see the full list, we can use one of the following commands:
+- If we want to see the full list, we can use a different output:
   ```bash
-  kubectl describe endpoints httpenv
   kubectl get endpoints httpenv -o yaml
   ```
-
-- These commands will show us a list of IP addresses
 
 - These IP addresses should match the addresses of the corresponding pods:
   ```bash

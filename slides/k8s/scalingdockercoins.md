@@ -4,9 +4,13 @@
 
   (i.e. increase the number of loops per second shown on the web UI)
 
-- Let's look at the architecture again:
+- Let's look at the [architecture](images/dockercoins-diagram.svg) again:
 
   ![DockerCoins architecture](images/dockercoins-diagram.svg)
+
+--
+
+- We're at 4 hashes a second. Let's ramp this up!
 
 - The loop is done in the worker;
   perhaps we could try adding more workers?
@@ -39,6 +43,8 @@
 
 ]
 
+--
+
 After a few seconds, the graph in the web UI should show up.
 
 ---
@@ -55,6 +61,8 @@ After a few seconds, the graph in the web UI should show up.
   ```
 
 ]
+
+--
 
 The graph in the web UI should go up again.
 
@@ -97,7 +105,7 @@ class: extra-details
 
 ---
 
-class: extra-details
+class: extra-details, not-mastery
 
 ## Why instant speed is misleading
 
@@ -183,7 +191,14 @@ Now we can access the IP addresses of our services through `$HASHER` and `$RNG`.
 
 ## Checking `hasher` and `rng` response times
 
+
 .exercise[
+
+- Remember to use `shpod` on macOS and Windows:
+  ```bash
+  kubectl apply -f https://bret.run/shpod.yml
+  kubectl attach --namespace=shpod -ti shpod
+  ```
 
 - Check the response times for both services:
   ```bash
@@ -192,6 +207,8 @@ Now we can access the IP addresses of our services through `$HASHER` and `$RNG`.
   ```
 
 ]
+
+--
 
 - `hasher` is fine (it should take a few milliseconds to reply)
 

@@ -8,6 +8,16 @@
 
 Note: this is a fiction! We have enough entropy. But we need a pretext to scale out.
 
+.footnote[
 (In fact, the code of `rng` uses `/dev/urandom`, which never runs out of entropy...
 <br/>
 ...and is [just as good as `/dev/random`](http://www.slideshare.net/PacSecJP/filippo-plain-simple-reality-of-entropy).)
+]
+
+--
+
+- **Oops** we only have one node for learning. 🤔
+
+--
+
+- Let's pretend and I'll explain along the way

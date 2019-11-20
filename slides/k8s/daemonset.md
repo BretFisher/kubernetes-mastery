@@ -18,11 +18,17 @@
 
 - Nothing guarantees that the `rng` containers will be distributed evenly
 
+--
+
 - If we add nodes later, they will not automatically run a copy of `rng`
+
+--
 
 - If we remove (or reboot) a node, one `rng` container will restart elsewhere
 
   (and we will end up with two instances `rng` on the same node)
+
+--
 
 - By contrast, a daemon set will start one pod per node and keep it that way
 
@@ -36,7 +42,7 @@
 
   - `kube-proxy`
 
-  - `weave` (our overlay network)
+  - CNI network plugins
 
   - monitoring agents
 
@@ -253,13 +259,11 @@ daemonset.apps/rng  2        2        2      2           2          <none>      
 
 --
 
-The daemon set created one pod per node, except on the master node.
+The daemon set created one pod per node.
 
-The master node has [taints](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/) preventing pods from running there.
+In a multi-node setup, masters usually have [taints](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/) preventing pods from running there.
 
 (To schedule a pod on this node anyway, the pod will require appropriate [tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/).)
-
-.footnote[(Off by one? We don't run these pods on the node hosting the control plane.)]
 
 ---
 
