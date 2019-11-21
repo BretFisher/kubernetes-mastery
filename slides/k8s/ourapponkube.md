@@ -149,7 +149,7 @@ We should now see the `worker`, well, working happily.
 
 .exercise[
 
-- Open the web UI in your browser (http://node-ip-address:3xxxx/)
+- Open the web UI in your browser (http://localhost:3xxxx/)
 
 <!-- ```open http://node1:3xxxx/``` -->
 

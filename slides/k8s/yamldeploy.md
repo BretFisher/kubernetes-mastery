@@ -32,6 +32,53 @@
 
 ---
 
+## Basic parts of any Kubernetes resource in YAML
+
+- Can be in YAML or JSON, but YAML is 💯
+
+--
+
+- Each file contains one or more manifests
+
+--
+
+- Each manifest describes an API object (deployment, service, etc.)
+
+--
+
+- Each manifest needs four parts (root key:values in the file)
+
+
+```yaml
+apiVersion:  # find with "kubectl api-versions"
+kind:        # find with "kubectl api-resources"
+metadata:
+spec:        # find with "kubectl describe pod"
+```
+
+--
+
+- We'll learn later how to build YAML from scratch
+
+---
+
+## A simple Pod in YAML
+
+- This is a single manifest that creates one Pod
+
+```yaml
+apiVersion: v1   
+kind: Pod        
+metadata:
+  name: nginx
+spec:            
+  containers:
+  - name: nginx
+    image: nginx:1.17.3
+```
+
+---
+
 ## Creating multiple resources
 
 - The manifest can contain multiple resources separated by `---`
@@ -39,16 +86,57 @@
 ```yaml
  kind: ...
  apiVersion: ...
- metadata: ...
+ metadata:
    name: ...
- ...
+   ...
+ spec:
+   ...
  ---
  kind: ...
  apiVersion: ...
- metadata: ...
+ metadata:
    name: ...
- ...
+   ...
+ spec: 
+   ...
 ```
+
+---
+
+## Deployment and Service manifests in one YAML file
+
+.small[
+```yaml
+  apiVersion: v1
+  kind: Service
+  metadata:
+    name: mynginx
+  spec:
+    type: NodePort
+    ports:
+    - port: 80
+    selector:
+      app: mynginx
+  ---
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: mynginx
+  spec:
+    replicas: 3
+    selector:
+      matchLabels:
+        app: mynginx
+    template:
+      metadata:
+        labels:
+          app: mynginx
+      spec:
+        containers:
+        - name: nginx
+          image: nginx:1.17.3
+```
+]
 
 ---
 
@@ -87,7 +175,13 @@
 
 ]
 
-(If we deployed DockerCoins earlier, we will see warning messages,
-because the resources that we created lack the necessary annotation.
-We can safely ignore them.)
+--
+
+- Note the warnings if you already had the resources created
+
+- This is because we didn't use `apply` before
+
+- This is OK for us learning, so ignore the warnings
+
+- Generally in production you want to stick with one method or the other
 

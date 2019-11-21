@@ -39,6 +39,7 @@ chapters:
 -
   - k8s/deploymentslideshow.md
   - k8s/kubectlexpose.md
+  - k8smastery/cleanup-httpenv.md
   - k8s/kubenet.md
   # - k8s/buildshiprun-selfhosted.md
 -
@@ -48,14 +49,15 @@ chapters:
   - k8s/buildshiprun-dockerhub.md
   - k8s/ourapponkube.md
 -
-  - k8s/yamldeploy.md
-  - k8s/dashboard.md
   #- k8s/kubectlscale.md
   - k8s/scalingdockercoins.md
   - shared/hastyconclusions.md
+  - k8s/yamldeploy.md
+  - k8s/dashboard.md
 -
   - k8s/daemonset.md
-  - k8s/dryrun.md
+  - k8smastery/authoringyaml.md
+  - k8smastery/dryrun.md
   - k8s/kubectlproxy.md
   - k8s/localkubeconfig.md
   - k8s/accessinternal.md

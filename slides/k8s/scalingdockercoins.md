@@ -85,9 +85,9 @@ The graph in the web UI should go up again.
 
 --
 
-The graph will peak at 10 hashes/second.
+The graph will peak at 10-12 hashes/second.
 
-(We can add as many workers as we want: we will never go past 10 hashes/second.)
+(We can add as many workers as we want: we will never go past 10-12 hashes/second.)
 
 ---
 
@@ -131,7 +131,7 @@ class: extra-details, not-mastery
 
 ---
 
-## Why are we stuck at 10 hashes per second?
+## Why are we stuck at 10-12 hashes per second?
 
 - If this was high-quality, production code, we would have instrumentation
 
