@@ -54,14 +54,10 @@ chapters:
   - shared/hastyconclusions.md
   - k8s/yamldeploy.md
   - k8s/dashboard.md
--
   - k8s/daemonset.md
+-
   - k8smastery/authoringyaml.md
   - k8smastery/dryrun.md
-  - k8s/kubectlproxy.md
-  - k8s/localkubeconfig.md
-  - k8s/accessinternal.md
--
   - k8s/rollout.md
   - k8s/healthchecks.md
   - k8s/healthchecks-more.md
@@ -102,6 +98,11 @@ chapters:
   - k8s/staticpods.md
   - k8s/owners-and-dependents.md
   - k8s/gitworkflows.md
+# move admin topics here  
+-
+  - k8s/localkubeconfig.md
+  - k8s/kubectlproxy.md
+  - k8s/accessinternal.md
 -
   - k8s/whatsnext.md
   - k8s/links.md
