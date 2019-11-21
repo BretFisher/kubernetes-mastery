@@ -6,6 +6,7 @@
 
 - Including testing against the live cluster API!
 
+---
 
 ## Using `--dry-run` with `kubectl apply`
 
