@@ -55,6 +55,7 @@ chapters:
   - k8s/yamldeploy.md
   - k8s/dashboard.md
   - k8s/daemonset.md
+  - k8smastery/cleanup-dockercoins-daemonset.md
 -
   - k8smastery/authoringyaml.md
   - k8smastery/dryrun.md

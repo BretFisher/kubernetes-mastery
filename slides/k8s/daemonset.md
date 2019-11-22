@@ -341,7 +341,7 @@ But ... why do these pods (in particular, the *new* ones) have this `app=rng` la
 
 - Therefore, the pods created by the daemon set get the same labels
 
-.footnote[Note: when we use `kubectl run stuff`, the label is `run=stuff` instead.]
+- When we use `kubectl run stuff`, the label is `run=stuff` instead
 
 ---
 

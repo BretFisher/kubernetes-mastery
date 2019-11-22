@@ -1,5 +1,11 @@
 # Authoring YAML
 
+- To use Kubernetes is to "live in YAML"!
+
+- It's more important to learn the foundations then to memorize all YAML keys (hundreds+)
+
+--
+
 - There are various ways to *generate* YAML with Kubernetes, e.g.:
 
   - `kubectl run`
@@ -24,11 +30,116 @@
 
 - How do we write YAML from scratch?
 
+- And maybe, what is YAML?
+
+---
+
+## YAML Basics (just in case you need a refresher)
+
+- It's technically a superset of JSON, designed for humans
+
+- JSON was good for machines, but not for humans
+
+- Spaces set the structure. One space off and game over
+
+- Remember spaces not tabs, Ever!
+
+- Two spaces is standard, but four spaces works too
+
+- You don't have to learn all YAML features, but key concepts you need:
+  - Key/Value Pairs
+  - Array/Lists
+  - Dictionary/Maps
+
+- Good online tutorials exist [here](https://www.tutorialspoint.com/yaml/index.htm), 
+[here](https://developer.ibm.com/tutorials/yaml-basics-and-usage-in-kubernetes/), 
+[here](https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html), and
+[YouTube here](https://www.youtube.com/watch?v=cdLNKUoMc6c)
+
+---
+
+## Basic parts of any Kubernetes resource manifest
+
+- Can be in YAML or JSON, but YAML is 💯
+
+--
+
+- Each file contains one or more manifests
+
+--
+
+- Each manifest describes an API object (deployment, service, etc.)
+
+--
+
+- Each manifest needs four parts (root key:values in the file)
+
+
+```yaml
+apiVersion:
+kind:
+metadata:
+spec:
+```
+
+---
+
+## A simple Pod in YAML
+
+- This is a single manifest that creates one Pod
+
+```yaml
+apiVersion: v1   
+kind: Pod        
+metadata:
+  name: nginx
+spec:            
+  containers:
+  - name: nginx
+    image: nginx:1.17.3
+```
+---
+
+## Deployment and Service manifests in one YAML file
+
+.small[
+```yaml
+  apiVersion: v1
+  kind: Service
+  metadata:
+    name: mynginx
+  spec:
+    type: NodePort
+    ports:
+    - port: 80
+    selector:
+      app: mynginx
+  ---
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: mynginx
+  spec:
+    replicas: 3
+    selector:
+      matchLabels:
+        app: mynginx
+    template:
+      metadata:
+        labels:
+          app: mynginx
+      spec:
+        containers:
+        - name: nginx
+          image: nginx:1.17.3
+```
+]
+
 ---
 
 ## The limits of generated YAML
 
-- Many advanced (and even not-so-advanced) features require to write YAML:
+- Advanced (and even not-so-advanced) features require us to write YAML:
 
   - pods with multiple containers
 
@@ -40,7 +151,7 @@
 
 --
 
-- Many other resource types don't have their own commands!
+- Other resource types don't have their own commands!
 
   - DaemonSets
   
@@ -130,7 +241,7 @@
 
 ---
 
-## Writing YAML from scratch, AKA "YAML The Hard Way"
+## Writing YAML from scratch, "YAML The Hard Way"
 
 - Paying homage to Kelsey Hightower's "[Kubernetes The Hard Way](https://github.com/kelseyhightower/kubernetes-the-hard-way)"
 
@@ -229,3 +340,19 @@
   - check that it still works!
 
 - That YAML will be useful later when using e.g. Kustomize or Helm
+
+---
+
+## YAML linting and validation
+
+- Use generic linters to check proper YAML formatting
+  - [yamllint.com](http://www.yamllint.com)
+  - [codebeautify.org/yaml-validator](https://codebeautify.org/yaml-validator)
+
+- For humans without kubectl, use a web Kubernetes YAML validator: [kubeyaml.com](https://kubeyaml.com/)
+
+- In CI, you might use CLI tools 
+  - YAML linter: `pip install yamllint` [github.com/adrienverge/yamllint](https://github.com/adrienverge/yamllint)
+  - Kuberentes validator: `kubeval` [github.com/instrumenta/kubeval](https://github.com/instrumenta/kubeval)
+
+- We'll learn about Kubernetes cluster-specific validation with kubectl later

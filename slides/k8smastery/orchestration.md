@@ -26,7 +26,7 @@
 
 --
 
-- An the Container Orchestrator was born
+- And the Container Orchestrator was born
 
 ---
 
