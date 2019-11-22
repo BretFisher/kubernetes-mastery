@@ -16,17 +16,23 @@
 
 - With rolling updates, when a Deployment is updated, it happens progressively
 
-- The Deployment controls multiple Replica Sets
+- The Deployment controls multiple ReplicaSets
 
-- Each Replica Set is a group of identical Pods
+--
+
+- Each ReplicaSet is a group of identical Pods
 
   (with the same image, arguments, parameters ...)
 
-- During the rolling update, we have at least two Replica Sets:
+--
+
+- During the rolling update, we have at least two ReplicaSets:
 
   - the "new" set (corresponding to the "target" version)
 
   - at least one "old" set
+
+--
 
 - We can have multiple "old" sets
 
@@ -38,7 +44,11 @@
 
 - Two parameters determine the pace of the rollout: `maxUnavailable` and `maxSurge`
 
+--
+
 - They can be specified in absolute number of pods, or percentage of the `replicas` count
+
+--
 
 - At any given time ...
 
@@ -47,6 +57,8 @@
   - there will never be more than `replicas`+`maxSurge` pods in total
 
   - there will therefore be up to `maxUnavailable`+`maxSurge` pods being updated
+
+--
 
 - We have the possibility of rolling back to the previous version
   <br/>(if the update fails or is unsatisfactory in any way)

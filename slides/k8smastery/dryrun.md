@@ -33,10 +33,7 @@
   kubectl create deployment web --image=nginx -o yaml > web.yaml
   ```
 
-- Change the `kind` in the YAML to make it a `DaemonSet`:
-  ```bash
-  sed -i s/Deployment/DaemonSet/ web.yaml
-  ```
+- Change the `kind` in the YAML to make it a `DaemonSet`
 
 - Ask `kubectl` what would be applied:
   ```bash
@@ -94,9 +91,12 @@ Instead, it has the fields expected in a DaemonSet.
 
 .exercise[
 
-- Try `kubectl diff` on the YAML that we tweaked earlier:
+- Try `kubectl diff` on a simple Pod YAML:
   ```bash
-  kubectl diff -f web.yaml
+  curl -o https://k8smastery.com/just-a-pod.yaml
+  kubectl apply -f just-a-pod.yaml
+  # edit the image tag to :1.17
+  kubectl diff -f just-a-pod.yaml
   ```
 
 ]

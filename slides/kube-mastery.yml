@@ -59,6 +59,8 @@ chapters:
 -
   - k8smastery/authoringyaml.md
   - k8smastery/dryrun.md
+  - k8smastery/cleanup-hello.md
+  - k8smastery/dockercoins-apply.md
   - k8s/rollout.md
   - k8s/healthchecks.md
   - k8s/healthchecks-more.md
