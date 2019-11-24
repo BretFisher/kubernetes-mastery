@@ -74,13 +74,17 @@
 
 ---
 
+name: dockercoins
+
 ## Deploying DockerCoins with YAML
 
-- We provide a YAML manifest with all the resources for DockerCoins
+- Here's a YAML manifest with all the resources for DockerCoins
 
   (Deployments and Services)
 
 - We can use it if we need to deploy or redeploy DockerCoins
+
+- Yes YAML file commands can use URL's!
 
 .exercise[
 
@@ -91,7 +95,9 @@
 
 ]
 
---
+---
+
+## `Apply` errors for `create` or `run` resources
 
 - Note the warnings if you already had the resources created
 

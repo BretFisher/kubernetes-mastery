@@ -18,6 +18,8 @@
 
 ---
 
+name: shpod
+
 ## `shpod`: For a consistent Kubernetes experience ...
 
 - If you are using your own Kubernetes cluster, you can use [shpod](https://github.com/jpetazzo/shpod)

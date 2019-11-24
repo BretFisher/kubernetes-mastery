@@ -65,6 +65,8 @@
 
 ---
 
+class: not-mastery
+
 ## Running DockerCoins
 
 - We will run DockerCoins in a new, separate namespace
@@ -76,6 +78,8 @@
 - Then, we will deploy the application
 
 ---
+
+class: not-mastery
 
 ## Creating a new namespace
 
@@ -99,16 +103,17 @@
 
 ## Retrieving DockerCoins manifests
 
-- All the manifests that we need are on a convenient repository:
+- I've split up the previous `dockercoins.yaml` into one-resource-per-file
 
-  https://github.com/jpetazzo/kubercoins
+- This works with the `apply` command, and is easier for humans to manage
+
+- Clone them locally so we can add healthchecks and re-apply
 
 .exercise[
 
 - Clone that repository:
   ```bash
-  cd ~
-  git clone https://github.com/jpetazzo/kubercoins
+  git clone https://github.com/bretfisher/kubercoins
   ```
 
 - Change directory to the repository:
@@ -152,14 +157,18 @@ It will use the default success threshold (1 successful attempt = alive).
 
 - Let's add the liveness probe, then deploy DockerCoins
 
+- Remember if you don't have DockerCoins running, this will create
+
+- If you already have DockerCoins running, this will update `rng`
+
 .exercise[
 
-- Edit `rng-daemonset.yaml` and add the liveness probe
+- Edit `rng-deployment.yaml` and add the liveness probe
   ```bash
-  vim rng-daemonset.yaml
+  vim rng-deployment.yaml
   ```
 
-- Load the YAML for all the resources of DockerCoins:
+- Load the YAML for all the resources of DockerCoins
   ```bash
   kubectl apply -f .
   ```
@@ -202,8 +211,9 @@ It will use the default success threshold (1 successful attempt = alive).
   kubectl get events -w
   ```
 
-- In another window, monitor the response time of rng:
+- In another window, monitor the response time of rng in [`shpod`](#shpod):
   ```bash
+  kubectl attach --namespace=shpod -ti shpod
   httping `<ClusterIP>`
   ```
 
@@ -218,12 +228,13 @@ It will use the default success threshold (1 successful attempt = alive).
 
 ## Generating traffic
 
-- Let's use `ab` to send concurrent requests to rng
+- Let's use `ab` (Apache Bench) to send concurrent requests to rng
 
 .exercise[
 
-- In yet another window, generate traffic:
+- In yet another window, generate traffic using [`shpod`](#shpod):
   ```bash
+  kubectl attach --namespace=shpod -ti shpod
   ab -c 10 -n 1000 http://`<ClusterIP>`/1
   ```
 

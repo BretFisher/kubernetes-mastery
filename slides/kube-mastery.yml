@@ -64,49 +64,68 @@ chapters:
   - k8s/rollout.md
   - k8s/healthchecks.md
   - k8s/healthchecks-more.md
-  - k8s/record.md
 -
-  - shared/declarative.md
-  - k8s/declarative.md
-  - k8smastery/cli-good-better-best.md
+# I'M HERE==============================
+# ConfigMaps and Secrets
+  - k8s/configuration.md
 -
-  - k8s/namespaces.md
+# Ingress
   - k8s/ingress.md
+-
+# volumes and persistent data
+  - k8s/volumes.md
+  - k8s/statefulsets.md
+  - k8s/local-persistent-volumes.md
+  # - k8s/portworx.md # SKIP FOR NOW
+-
+# Managing YAML with Kustomize and Helm
   - k8s/kustomize.md
   - k8s/helm.md
   - k8s/create-chart.md
 -
-  - k8s/netpol.md
-  - k8s/authn-authz.md
--
-  - k8s/csr-api.md
-  - k8s/openid-connect.md
-  - k8s/podsecuritypolicy.md
--
-  - k8s/volumes.md
-  - k8s/build-with-docker.md
-  - k8s/build-with-kaniko.md
-  - k8s/configuration.md
--
-  - k8s/logs-centralized.md
-  - k8s/prometheus.md
--
-  - k8s/statefulsets.md
-  - k8s/local-persistent-volumes.md
-  - k8s/portworx.md
--
+# CRD's and Operators
   - k8s/extending-api.md
   - k8s/operators.md
   - k8s/operators-design.md
-  - k8s/staticpods.md
-  - k8s/owners-and-dependents.md
-  - k8s/gitworkflows.md
-# move admin topics here  
 -
+# centralized logging and monitoring
+  - k8s/logs-centralized.md
+  - k8s/prometheus.md
+# CONSIDER STOPPING HERE================
+-
+# Declarative Workflows and GitOps
+  - shared/declarative.md
+  - k8s/declarative.md
+  - k8smastery/cli-good-better-best.md
+  - k8s/record.md
+  - k8s/gitworkflows.md
+-
+# Building Images on K8s
+  - k8s/build-with-docker.md
+  - k8s/build-with-kaniko.md
+-
+# deployment tools
+  - k8s/staticpods.md
+
+# TODO:cloud distributions
+-
+# admin internals
+  - k8s/owners-and-dependents.md
+-
+# remote cluster access
+  - k8s/namespaces.md # namespaces and context
   - k8s/localkubeconfig.md
   - k8s/kubectlproxy.md
   - k8s/accessinternal.md
 -
+# security
+  - k8s/netpol.md
+  - k8s/authn-authz.md
+  - k8s/csr-api.md
+  - k8s/openid-connect.md
+  - k8s/podsecuritypolicy.md
+-
+# END
   - k8s/whatsnext.md
   - k8s/links.md
   - shared/thankyou.md

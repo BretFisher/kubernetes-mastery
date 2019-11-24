@@ -1,16 +1,30 @@
 # Healthchecks
 
-- Kubernetes provides two kinds of healthchecks: liveness and readiness
+- Healthchecks are key to providing built-in *lifecycle automation*
+
+--
 
 - Healthchecks are *probes* that apply to *containers* (not to pods)
 
-- Each container can have two (optional) probes:
+- Kubernetes will *take action* on containers that fail healthchecks
 
-  - liveness = is this container dead or alive?
+--
 
-  - readiness = is this container ready to serve traffic?
+- Each container can have three (optional) probes:
 
-- Different probes are available (HTTP, TCP, program execution)
+  - liveness = is this container dead or alive? (most important probe)
+
+  - readiness = is this container ready to serve traffic? (only needed if a service)
+  
+  - startup = is this container still starting up? (alpha in 1.16)
+
+--
+
+- Different probe *handlers* are available (HTTP, TCP, program execution)
+
+--
+
+- They don't replace a full monitoring solution
 
 - Let's see the difference and how to use them!
 
@@ -80,44 +94,6 @@
 
   - runtime is busy doing garbage collection or initial data load
 
-- For processes that take a long time to start
-
-  (more on that later)
-
----
-
-## Dependencies
-
-- If a web server depends on a database to function, and the database is down:
-
-  - the web server's liveness probe should succeed
-
-  - the web server's readiness probe should fail
-
-- Same thing for any hard dependency (without which the container can't work)
-
-.warning[**Do not** fail liveness probes for problems that are external to the container]
-
----
-
-## Timing and thresholds
-
-- Probes are executed at intervals of `periodSeconds` (default: 10)
-
-- The timeout for a probe is set with `timeoutSeconds` (default: 1)
-
-.warning[If a probe takes longer than that, it is considered as a FAIL]
-
-- A probe is considered successful after `successThreshold` successes (default: 1)
-
-- A probe is considered failing after `failureThreshold` failures (default: 3)
-
-- A probe can have an `initialDelaySeconds` parameter (default: 0)
-
-- Kubernetes will wait that amount of time before running the probe for the first time
-
-  (this is important to avoid killing services that take a long time to start)
-
 ---
 
 class: extra-details
@@ -144,7 +120,25 @@ class: extra-details
 
 ---
 
-## Different types of probes
+## Benefits of using probes
+
+- Rolling updates proceed when containers are *actually ready*
+
+  (as opposed to merely started)
+
+- Containers in a broken state get killed and restarted
+
+  (instead of serving errors or timeouts)
+
+- Unavailable backends get removed from load balancer rotation
+
+  (thus improving response times across the board)
+
+- If a probe is not defined, it's as if there was an "always successful" probe
+
+---
+
+## Different types of probe handlers
 
 - HTTP request
 
@@ -164,21 +158,23 @@ class: extra-details
 
 ---
 
-## Benefits of using probes
+## Timing and thresholds
 
-- Rolling updates proceed when containers are *actually ready*
+- Probes are executed at intervals of `periodSeconds` (default: 10)
 
-  (as opposed to merely started)
+- The timeout for a probe is set with `timeoutSeconds` (default: 1)
 
-- Containers in a broken state get killed and restarted
+.warning[If a probe takes longer than that, it is considered as a FAIL]
 
-  (instead of serving errors or timeouts)
+- A probe is considered successful after `successThreshold` successes (default: 1)
 
-- Unavailable backends get removed from load balancer rotation
+- A probe is considered failing after `failureThreshold` failures (default: 3)
 
-  (thus improving response times across the board)
+- A probe can have an `initialDelaySeconds` parameter (default: 0)
 
-- If a probe is not defined, it's as if there was an "always successful" probe
+- Kubernetes will wait that amount of time before running the probe for the first time
+
+  (this is important to avoid killing services that take a long time to start)
 
 ---
 
@@ -202,8 +198,9 @@ spec:
       initialDelaySeconds: 10
       periodSeconds: 1
 ```
-
+.small[
 If the backend serves an error, or takes longer than 1s, 3 times in a row, it gets killed.
+]
 
 ---
 
@@ -229,23 +226,33 @@ If the Redis process becomes unresponsive, it will be killed.
 
 ---
 
-## Questions to ask before adding healthchecks
+## Should probes check container Dependencies?
 
-- Do we want liveness, readiness, both?
+- A HTTP/TCP probe can't check an external dependency
 
-  (sometimes, we can use the same check, but with different failure thresholds)
+--
 
-- Do we have existing HTTP endpoints that we can use?
+- But a HTTP URL could kick off code to validate a remote dependency 
 
-- Do we need to add new endpoints, or perhaps use something else?
+--
 
-- Are our healthchecks likely to use resources and/or slow down the app?
+- If a web server depends on a database to function, and the database is down:
 
-- Do they depend on additional services?
+  - the web server's liveness probe should succeed
 
-  (this can be particularly tricky, see next slide)
+  - the web server's readiness probe should fail
+
+--
+
+- Same thing for any hard dependency (without which the container can't work)
+
+--
+
+.warning[**Do not** fail liveness probes for problems that are external to the container]
 
 ---
+
+class: not-mastery
 
 ## Healthchecks and dependencies
 
@@ -271,9 +278,13 @@ If the Redis process becomes unresponsive, it will be killed.
 
   (because workers aren't backends for a service)
 
+--
+
 - Liveness may help us restart a broken worker, but how can we check it?
 
 - Embedding an HTTP server is a (potentially expensive) option
+
+--
 
 - Using a "lease" file can be relatively easy:
 
@@ -282,3 +293,28 @@ If the Redis process becomes unresponsive, it will be killed.
   - check the timestamp of that file from an exec probe
 
 - Writing logs (and checking them from the probe) also works
+
+---
+
+## Questions to ask before adding healthchecks
+
+- Do we want liveness, readiness, both?
+
+  (sometimes, we can use the same check, but with different failure thresholds)
+
+--
+
+- Do we have existing HTTP endpoints that we can use?
+
+- Do we need to add new endpoints, or perhaps use something else?
+
+--
+
+- Are our healthchecks likely to use resources and/or slow down the app?
+
+--
+
+- Do they depend on additional services?
+
+  (this can be particularly tricky)
+

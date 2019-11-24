@@ -340,15 +340,15 @@ We might see something like 1, 4, 5.
 
 ## Explaining deployment revisions
 
-- These revisions correspond to our Replica Sets
+- These revisions correspond to our ReplicaSets
 
-- This information is stored in the Replica Set annotations
+- This information is stored in the ReplicaSet annotations
 
 .exercise[
 
 - Check the annotations for our replica sets:
   ```bash
-  kubectl describe replicasets -l app=worker | grep -A3
+  kubectl describe replicasets -l app=worker | grep -A3 Annotations
   ```
 
 ]
@@ -392,9 +392,9 @@ class: extra-details
 
 ## Changing rollout parameters
 
-- We want to:
+- What if we wanted to, all at once:
 
-  - revert to `v0.1`
+  - change image to `v0.1`
   - be conservative on availability (always have desired number of available workers)
   - go slow on rollout speed (update only one pod at a time) 
   - give some time to our workers to "warm up" before starting more
@@ -427,7 +427,6 @@ class: extra-details
 
 - But we could also use `kubectl patch` with the exact YAML shown before
 
-.exercise[
 
 .small[
 
@@ -452,4 +451,3 @@ class: extra-details
   ```
   ] 
 
-]
