@@ -63,9 +63,9 @@ chapters:
   - k8smastery/dockercoins-apply.md
   - k8s/rollout.md
   - k8s/healthchecks.md
+# I'M HERE==============================
   - k8s/healthchecks-more.md
 -
-# I'M HERE==============================
 # ConfigMaps and Secrets
   - k8s/configuration.md
 -
@@ -88,10 +88,10 @@ chapters:
   - k8s/operators.md
   - k8s/operators-design.md
 -
+# CONSIDER STOPPING HERE================
 # centralized logging and monitoring
   - k8s/logs-centralized.md
   - k8s/prometheus.md
-# CONSIDER STOPPING HERE================
 -
 # Declarative Workflows and GitOps
   - shared/declarative.md

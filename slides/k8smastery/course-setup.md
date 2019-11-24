@@ -22,9 +22,9 @@ name: shpod
 
 ## `shpod`: For a consistent Kubernetes experience ...
 
-- If you are using your own Kubernetes cluster, you can use [shpod](https://github.com/jpetazzo/shpod)
+- You can use [shpod](https://github.com/bretfisher/shpod) for examples
 
-- `shpod` provides a shell running in a pod on your own cluster
+- `shpod` provides a shell running in a pod on the cluster
 
 - It comes with many tools pre-installed (helm, stern, curl, jq...)
 
@@ -32,11 +32,11 @@ name: shpod
 
 - `shpod` also gives you shell completion and a fancy prompt
 
-- Create it with `kubectl apply -f https://bret.run/shpod.yml`
+- Create it with `kubectl apply -f https://k8smastery.com/shpod.yaml`
 
 - Attach to shell with `kubectl attach --namespace=shpod -ti shpod`
 
-- Remove with `kubectl delete -f https://bret.run/shpod.yml`
+- After finishing course `kubectl delete -f https://k8smastery.com/shpod.yaml`
 
 
 

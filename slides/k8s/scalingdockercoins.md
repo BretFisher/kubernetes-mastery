@@ -194,9 +194,8 @@ Now we can access the IP addresses of our services through `$HASHER` and `$RNG`.
 
 .exercise[
 
-- Remember to use `shpod` on macOS and Windows:
+- Remember to use [`shpod`](#shpod) on macOS and Windows:
   ```bash
-  kubectl apply -f https://bret.run/shpod.yml
   kubectl attach --namespace=shpod -ti shpod
   ```
 

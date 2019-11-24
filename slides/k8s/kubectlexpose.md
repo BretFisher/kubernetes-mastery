@@ -146,9 +146,8 @@ Under the hood: `kube-proxy` is using a userland proxy and a bunch of `iptables`
 
 .exercise[
 
-- Run shpod if not on Linux host so we can access internal ClusterIP
+- Run [`shpod`](#shpod) if not on Linux host so we can access internal ClusterIP
   ```bash
-  kubectl apply -f https://bret.run/shpod.yml
   kubectl attach --namespace=shpod -ti shpod
   ```
 

@@ -211,12 +211,6 @@ It will use the default success threshold (1 successful attempt = alive).
   kubectl get events -w
   ```
 
-- In another window, monitor the response time of rng in [`shpod`](#shpod):
-  ```bash
-  kubectl attach --namespace=shpod -ti shpod
-  httping `<ClusterIP>`
-  ```
-
 - In another window, monitor pods status:
   ```bash
   kubectl get pods -w
