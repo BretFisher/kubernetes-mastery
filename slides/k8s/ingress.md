@@ -29,6 +29,8 @@
   - they are not available in all environments
 
   - they often carry an additional cost (e.g. they provision an ELB)
+  
+  - They often work at OSI Layer 4 (IP+Port) and not Layer 7 (HTTP/S)
 
   - they require one extra step for DNS integration
     <br/>
@@ -43,8 +45,6 @@
 - There are many options available:
 
   Apache, HAProxy, Hipache, NGINX, Traefik, ...
-
-  (look at [jpetazzo/aiguillage](https://github.com/jpetazzo/aiguillage) for a minimal reverse proxy configuration using NGINX)
 
 - Most of these options require us to update/edit configuration files after each change
 

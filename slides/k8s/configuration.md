@@ -119,13 +119,13 @@
 
 ---
 
-## The downward API
+## The Downward API
 
 - In the previous example, environment variables have fixed values
 
-- We can also use a mechanism called the *downward API*
+- We can also use a mechanism called the *Downward API*
 
-- The downward API allows exposing pod or container information
+- The Downward API allows exposing pod or container information
 
   - either through special files (we won't show that for now)
 
@@ -202,11 +202,11 @@
 
 ---
 
-## More about the downward API
+## More about the Downward API
 
 - [This documentation page](https://kubernetes.io/docs/tasks/inject-data-application/environment-variable-expose-pod-information/) tells more about these environment variables
 
-- And [this one](https://kubernetes.io/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/) explains the other way to use the downward API
+- And [this one](https://kubernetes.io/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/) explains the other way to use the Downward API
 
   (through files that get created in the container filesystem)
 
@@ -234,13 +234,13 @@
 
 ---
 
-## Injecting configuration files
+## Injecting configuration files with ConfigMaps
 
 - Sometimes, there is no way around it: we need to inject a full config file
 
-- Kubernetes provides a mechanism for that purpose: `configmaps`
+- Kubernetes provides a mechanism for that purpose: `ConfigMaps`
 
-- A configmap is a Kubernetes resource that exists in a namespace
+- A ConfigMap is a Kubernetes resource that exists in a namespace
 
 - Conceptually, it's a key/value map
 
@@ -253,12 +253,12 @@
   - as holding individual configuration parameters
 
 *Note: to hold sensitive information, we can use "Secrets", which
-are another type of resource behaving very much like configmaps.
+are another type of resource behaving very much like ConfigMaps.
 We'll cover them just after!*
 
 ---
 
-## Configmaps storing entire files
+## ConfigMaps storing entire files
 
 - In this case, each key/value pair corresponds to a configuration file
 
@@ -271,18 +271,18 @@ We'll cover them just after!*
   (for complex apps with multiple configuration files)
 
 - Examples:
-  ```
-  # Create a configmap with a single key, "app.conf"
+  ```bash
+  # Create a ConfigMap with a single key, "app.conf"
   kubectl create configmap my-app-config --from-file=app.conf
-  # Create a configmap with a single key, "app.conf" but another file
+  # Create a ConfigMap with a single key, "app.conf" but another file
   kubectl create configmap my-app-config --from-file=app.conf=app-prod.conf
-  # Create a configmap with multiple keys (one per file in the config.d directory)
+  # Create a ConfigMap with multiple keys (one per file in the config.d directory)
   kubectl create configmap my-app-config --from-file=config.d/
   ```
 
 ---
 
-## Configmaps storing individual parameters
+## ConfigMaps storing individual parameters
 
 - In this case, each key/value pair corresponds to a parameter
 
@@ -291,38 +291,38 @@ We'll cover them just after!*
 - Value = value of the parameter
 
 - Examples:
-  ```
-  # Create a configmap with two keys
+  ```bash
+  # Create a ConfigMap with two keys
   kubectl create cm my-app-config \
       --from-literal=foreground=red \
       --from-literal=background=blue
   
-  # Create a configmap from a file containing key=val pairs
+  # Create a ConfigMap from a file containing key=val pairs
   kubectl create cm my-app-config \
       --from-env-file=app.conf
   ```
 
 ---
 
-## Exposing configmaps to containers
+## Exposing ConfigMaps to containers
 
-- Configmaps can be exposed as plain files in the filesystem of a container
+- ConfigMaps can be exposed as plain files in the filesystem of a container
 
   - this is achieved by declaring a volume and mounting it in the container
 
-  - this is particularly effective for configmaps containing whole files
+  - this is particularly effective for ConfigMaps containing whole files
 
-- Configmaps can be exposed as environment variables in the container
+- ConfigMaps can be exposed as environment variables in the container
 
-  - this is achieved with the downward API
+  - this is achieved with the Downward API
 
-  - this is particularly effective for configmaps containing individual parameters
+  - this is particularly effective for ConfigMaps containing individual parameters
 
 - Let's see how to do both!
 
 ---
 
-## Passing a configuration file with a configmap
+## Passing a configuration file with a ConfigMap
 
 - We will start a load balancer powered by HAProxy
 
@@ -330,27 +330,27 @@ We'll cover them just after!*
 
 - It expects to find its configuration in `/usr/local/etc/haproxy/haproxy.cfg`
 
-- We will provide a simple HAproxy configuration, `k8s/haproxy.cfg`
+- We will provide a simple HAProxy configuration
 
 - It listens on port 80, and load balances connections between IBM and Google
 
 ---
 
-## Creating the configmap
+## Creating the ConfigMap
 
 .exercise[
 
-- Go to the `k8s` directory in the repository:
+- Download our simple HAProxy config:
   ```bash
-  cd ~/container.training/k8s
+  curl -O https://k8smastery.com/haproxy.cfg
   ```
 
-- Create a configmap named `haproxy` and holding the configuration file:
+- Create a ConfigMap named `haproxy` and holding the configuration file:
   ```bash
   kubectl create configmap haproxy --from-file=haproxy.cfg
   ```
 
-- Check what our configmap looks like:
+- Check what our ConfigMap looks like:
   ```bash
   kubectl get configmap haproxy -o yaml
   ```
@@ -359,7 +359,7 @@ We'll cover them just after!*
 
 ---
 
-## Using the configmap
+## Using the ConfigMap
 
 We are going to use the following pod definition:
 
@@ -383,21 +383,20 @@ spec:
 
 ---
 
-## Using the configmap
+## Using the ConfigMap
 
-- The resource definition from the previous slide is in `k8s/haproxy.yaml`
+- Apply the resource definition from the previous slide
 
 .exercise[
 
 - Create the HAProxy pod:
   ```bash
-  kubectl apply -f ~/container.training/k8s/haproxy.yaml
+  kubectl apply -f https://k8smastery.com/haproxy.yaml
   ```
 
-<!-- ```hide kubectl wait pod haproxy --for condition=ready``` -->
-
-- Check the IP address allocated to the pod:
+- Check the IP address allocated to the pod, inside [`shpod`](#shpod):
   ```bash
+  kubectl attach --namespace=shpod -ti shpod
   kubectl get pod haproxy -o wide
   IP=$(kubectl get pod haproxy -o json | jq -r .status.podIP)
   ```
@@ -431,7 +430,7 @@ We should see connections served by Google, and others served by IBM.
 
 ---
 
-## Exposing configmaps with the downward API
+## Exposing ConfigMaps with the Downward API
 
 - We are going to run a Docker registry on a custom port
 
@@ -439,22 +438,22 @@ We should see connections served by Google, and others served by IBM.
 
 - This can be changed by setting environment variable `REGISTRY_HTTP_ADDR`
 
-- We are going to store the port number in a configmap
+- We are going to store the port number in a ConfigMap
 
-- Then we will expose that configmap as a container environment variable
+- Then we will expose that ConfigMap as a container environment variable
 
 ---
 
-## Creating the configmap
+## Creating the ConfigMap
 
 .exercise[
 
-- Our configmap will have a single key, `http.addr`:
+- Our ConfigMap will have a single key, `http.addr`:
   ```bash
   kubectl create configmap registry --from-literal=http.addr=0.0.0.0:80
   ```
 
-- Check our configmap:
+- Check our ConfigMap:
   ```bash
   kubectl get configmap registry -o yaml
   ```
@@ -463,7 +462,7 @@ We should see connections served by Google, and others served by IBM.
 
 ---
 
-## Using the configmap
+## Using the ConfigMap
 
 We are going to use the following pod definition:
 
@@ -486,21 +485,20 @@ spec:
 
 ---
 
-## Using the configmap
+## Using the ConfigMap
 
-- The resource definition from the previous slide is in `k8s/registry.yaml`
+- The resource definition from the previous slide:
 
 .exercise[
 
 - Create the registry pod:
   ```bash
-  kubectl apply -f ~/container.training/k8s/registry.yaml
+  kubectl apply -f https://k8smastery.com/registry.yaml
   ```
-
-<!-- ```hide kubectl wait pod registry --for condition=ready``` -->
 
 - Check the IP address allocated to the pod:
   ```bash
+  kubectl attach --namespace=shpod -ti shpod
   kubectl get pod registry -o wide
   IP=$(kubectl get pod registry -o json | jq -r .status.podIP)
   ```
@@ -534,7 +532,7 @@ spec:
 
 ---
 
-## Differences between configmaps and secrets
+## Differences between ConfigMaps and Secrets
  
 - Secrets are base64-encoded when shown with `kubectl get secrets -o yaml`
 
@@ -544,6 +542,6 @@ spec:
 
 - [Secrets can be encrypted at rest](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/)
 
-- With RBAC, we can authorize a user to access configmaps, but not secrets
+- With RBAC, we can authorize a user to access ConfigMaps, but not Secrets
 
   (since they are two different kinds of resources)

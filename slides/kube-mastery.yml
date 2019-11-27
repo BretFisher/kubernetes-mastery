@@ -18,9 +18,10 @@ chapters:
 # - k8smastery/cleanup-template.md
 # - shared/about-slides.md
 - shared/toc.md
--
+- 
   - k8smastery/intro.md
   - k8smastery/prereqs.md
+  - k8smastery/quickwin.md
 - 
   # - shared/webssh.md
   # - shared/connecting.md
@@ -31,7 +32,15 @@ chapters:
   # - k8smastery/setup-k8s.md
   - k8smastery/concepts-k8s.md
 -
-  - k8smastery/course-setup.md
+# Local Install Options
+  - k8smastery/local-install-summary.md
+  - k8smastery/docker-desktop.md
+  - k8smastery/minikube.md
+  - k8smastery/microk8s.md
+  - k8smastery/pwk.md
+  - k8smastery/shpod.md
+-
+# First Kubectl
   - k8s/kubectlget.md
   - k8s/kubectlrun.md
   - k8s/logs-cli.md
@@ -63,12 +72,14 @@ chapters:
   - k8smastery/dockercoins-apply.md
   - k8s/rollout.md
   - k8s/healthchecks.md
-# I'M HERE==============================
   - k8s/healthchecks-more.md
+  - k8smastery/cleanup-dockercoins.md
 -
 # ConfigMaps and Secrets
   - k8s/configuration.md
+  - k8smastery/cleanup-haproxy-registry.md
 -
+# I'M HERE=====================================
 # Ingress
   - k8s/ingress.md
 -
@@ -78,6 +89,7 @@ chapters:
   - k8s/local-persistent-volumes.md
   # - k8s/portworx.md # SKIP FOR NOW
 -
+# STOP AND BUILD UDEMY, THEN MAKE MORE=========
 # Managing YAML with Kustomize and Helm
   - k8s/kustomize.md
   - k8s/helm.md
@@ -88,7 +100,6 @@ chapters:
   - k8s/operators.md
   - k8s/operators-design.md
 -
-# CONSIDER STOPPING HERE================
 # centralized logging and monitoring
   - k8s/logs-centralized.md
   - k8s/prometheus.md

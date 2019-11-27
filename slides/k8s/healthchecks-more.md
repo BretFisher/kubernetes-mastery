@@ -132,13 +132,13 @@ This is what our liveness probe should look like:
 ```yaml
 containers:
 - name: ...
-image: ...
-livenessProbe:
-  httpGet:
-    path: /
-    port: 80
-  initialDelaySeconds: 30
-  periodSeconds: 5
+  image: ...
+  livenessProbe:
+    httpGet:
+      path: /
+      port: 80
+    initialDelaySeconds: 30
+    periodSeconds: 5
 ```
 
 This will give 30 seconds to the service to start. (Way more than necessary!)
@@ -338,3 +338,38 @@ class: extra-details
   (and have gcr.io/pause take care of the reaping)
 
 - Discussion of this in [Video - 10 Ways to Shoot Yourself in the Foot with Kubernetes, #9 Will Surprise You](https://www.youtube.com/watch?v=QKI-JRs2RIE)
+
+---
+
+## Tini and redis ping in a liveness probe
+
+1. Add [tini](https://github.com/krallin/tini) to your own custom redis image
+
+2. Change the kubercoins YAML to use your own image
+
+3. Create a liveness probe in kubercoins YAML
+
+4. Use `exec` handeler and run `tini -s -- redis-cli ping`
+
+5. Example repo here: [github.com/BretFisher/redis-tini](https://github.com/BretFisher/redis-tini)
+
+.small[
+
+```yaml
+containers:
+- name: redis
+  image: custom-redis-image
+  livenessProbe:
+    exec:
+      command:
+      - /tini
+      - -s
+      - --
+      - redis-cli
+      - ping
+    initialDelaySeconds: 30
+    periodSeconds: 5
+```
+]
+
+
