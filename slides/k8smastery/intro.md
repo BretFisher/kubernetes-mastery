@@ -1,4 +1,4 @@
-## A brief introduction
+# A brief introduction
 
 - This was initially written by [Jérôme Petazzoni](https://twitter.com/jpetazzo) to support in-person,
   instructor-led workshops and tutorials

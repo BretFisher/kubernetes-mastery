@@ -1,6 +1,6 @@
 name: shpod
 
-## `shpod`: For a consistent Kubernetes experience ...
+# `shpod`: For a consistent Kubernetes experience ...
 
 - You can use [shpod](https://github.com/bretfisher/shpod) for examples
 

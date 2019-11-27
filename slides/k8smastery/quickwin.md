@@ -1,4 +1,4 @@
-## A quick example, the power of Kubernetes
+# A quick example, the power of Kubernetes
 
 - Let's do something easy and fun to start off
 

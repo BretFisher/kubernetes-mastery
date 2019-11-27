@@ -1,4 +1,4 @@
-## Docker Desktop (Windows 10/macOS)
+# Docker Desktop (Windows 10/macOS)
 
 - Docker Desktop (DD) is great for a local dev/test setup
 

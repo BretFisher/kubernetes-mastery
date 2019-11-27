@@ -1,3 +1,5 @@
+name: install
+
 # Getting a Kubernetes cluster for learning
 
 - Best: Get a environment locally
@@ -20,3 +22,7 @@
 
   - Low setup effort; but host is short-lived and has limited resources
   - Not all hands-on examples will work in the browser sandbox
+
+--
+
+- For all environments, we'll use `shpod` container for tools

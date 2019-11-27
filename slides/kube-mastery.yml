@@ -33,12 +33,12 @@ chapters:
   - k8smastery/concepts-k8s.md
 -
 # Local Install Options
-  - k8smastery/local-install-summary.md
-  - k8smastery/docker-desktop.md
-  - k8smastery/minikube.md
-  - k8smastery/microk8s.md
-  - k8smastery/pwk.md
-  - k8smastery/shpod.md
+  - k8smastery/install-summary.md
+  - k8smastery/install-docker-desktop.md
+  - k8smastery/install-minikube.md
+  - k8smastery/install-microk8s.md
+  - k8smastery/install-pwk.md
+  - k8smastery/install-shpod.md
 -
 # First Kubectl
   - k8s/kubectlget.md

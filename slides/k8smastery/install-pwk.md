@@ -1,4 +1,4 @@
-## Web-based options
+# Web-based options
 
 Last choice: Use a browser-based solution
 
@@ -18,5 +18,6 @@ Last choice: Use a browser-based solution
 
 - Use a prebuilt Kubernetes server at [Katacoda](https://www.katacoda.com/courses/kubernetes/playground)
 - Or setup a Kubernetes node at [play-with-k8s.com](https://labs.play-with-k8s.com/)
-
+- Maybe try the latest OpenShift at [learn.openshift.com](https://learn.openshift.com/playgrounds/)
+- See if instruqt works for [a Kubernetes playground](https://instruqt.com/public/tracks/play-with-kubernetes)
 ]
