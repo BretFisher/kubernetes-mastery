@@ -21,7 +21,7 @@ chapters:
 - 
   - k8smastery/intro.md
   - k8smastery/prereqs.md
-  - k8smastery/quickwin.md
+  # - k8smastery/quickwin.md
 - 
   # - shared/webssh.md
   # - shared/connecting.md

@@ -1,4 +1,4 @@
-# microk8s (Linux)
+# MicroK8s (Linux)
 
 - [Easy install](https://microk8s.io/) and management of local Kubernetes
 
