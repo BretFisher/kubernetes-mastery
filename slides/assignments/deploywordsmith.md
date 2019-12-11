@@ -70,6 +70,56 @@
 
 - Try to scale up the API backend and see what happens
 
-.footnote[Wondering what this app is all about? 
+.footnote[Wondering what this app is all about?
 <br/>
 It was a demo app showecased at DockerCon Europe 2017 in Copenhagen.]
+
+---
+
+class: answers
+
+## Answers
+
+First, we need to create deployments for all three components:
+```bash
+kubectl create deployment db --image=jpetazzo/wordsmith-db
+kubectl create deployment web --image=jpetazzo/wordsmith-web
+kubectl create deployment words --image=jpetazzo/wordsmith-words
+```
+
+Note: we need to use these exact names, because these names will be used for the *service* that we will create and their DNS entries as well. To put it differently: if our code connects to `words` then the service should be named `words` and the deployment should also be named `words` (unless we want to write our own service YAML manifest by hand; but we won't do that yet).
+
+---
+
+class: answers
+
+## Answers
+
+Then, we need to create the services for these deployments:
+```bash
+kubectl expose deployment db --port=5432
+kubectl expose deployment web --port=80 --type=NodePort
+kubectl expose deployment words --port=8080
+```
+
+Find out the node port allocated to `web`:
+```bash
+kubectl get service web
+```
+
+Open it in your browser.
+
+If you hit "reload", you should always see the same sentence, however.
+
+---
+
+class: answers
+
+## Answers
+
+Finally, scale up the API:
+```bash
+kubectl scale deployment words --replicas=9
+```
+
+If you hit "reload", you should now see different sentences each time.
