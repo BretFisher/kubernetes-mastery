@@ -81,7 +81,7 @@ chapters:
 -
 # I'M HERE=====================================
 # Ingress
-  - k8s/ingress.md
+  - k8smastery/ingress.md
 -
 # volumes and persistent data
   - k8s/volumes.md
@@ -89,7 +89,6 @@ chapters:
   - k8s/local-persistent-volumes.md
   # - k8s/portworx.md # SKIP FOR NOW
 -
-# STOP AND BUILD UDEMY, THEN MAKE MORE=========
 # Managing YAML with Kustomize and Helm
   - k8s/kustomize.md
   - k8s/helm.md
@@ -122,6 +121,7 @@ chapters:
 -
 # admin internals
   - k8s/owners-and-dependents.md
+  - k8smastery/taints.md # copied from ingress.md
 -
 # remote cluster access
   - k8s/namespaces.md # namespaces and context

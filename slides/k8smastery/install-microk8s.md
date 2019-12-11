@@ -25,3 +25,34 @@
   ```
 
 ]
+
+---
+
+## MicroK8s Additional Info
+
+- For later, add DNS to Kubernetes (installed by default in Docker Desktop and minikube)
+
+
+.exercise[
+
+- Install CoreDNS in Kubernetes
+  ``` bash
+  sudo microk8s.enable dns
+  ```
+]
+
+--
+
+- Also run a check for any config problems
+
+.exercise[
+
+- Test MicroK8s config for any potental problems
+  ``` bash
+  sudo microk8s.inspect
+  ```
+]
+
+- If you also have Docker installed, you can ignore warnings about iptables and registries
+
+- See [troubleshooting site](https://microk8s.io/docs/troubleshooting) if you have issues
