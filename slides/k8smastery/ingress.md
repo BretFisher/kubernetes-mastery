@@ -367,7 +367,8 @@ spec:
 
 ```
 
-(It is in `k8s/ingress.yaml`.)
+(In [1.14 ingress moved](https://github.com/kubernetes/ingress-gce/issues/770) 
+from the extensions API to networking)
 
 ---
 
@@ -375,9 +376,11 @@ spec:
 
 .exercise[
 
-- Edit the file `~/container.training/k8s/ingress.yaml`
+- Download our YAML `curl -O https://k8smastery.com/ingress.yaml`
 
-- Replace A.B.C.D with the IP address of `node1`
+- Edit the file `ingress.yaml`
+
+- Replace the A.B.C.D with your cluster IP (`127.0.0.1` for `localhost`)
 
 - Apply the file
 
@@ -393,7 +396,7 @@ spec:
 
 .exercise[
 
-- Edit the file `~/container.training/k8s/ingress.yaml`
+- Edit the file `ingress.yaml`
 
 - Replace `cheddar` with `stilton` (in `name`, `host`, `serviceName`)
 
@@ -402,6 +405,31 @@ spec:
 - Check that `stilton.A.B.C.D.nip.io` works correctly
 
 - Repeat for `wensleydale`
+
+]
+
+---
+
+## Adding features to a ingress resource
+
+- Reverse proxies have lots of features. Let's add one to a ingress resoure
+
+- Let's add a 301 redirect to a new ingress resource
+
+.exercise[
+
+- Edit the file `ingress.yaml`
+
+- Add an annotation to the metadata to pass along to the Ingress Controller
+
+```yaml
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: my-google
+  annotations:
+    nginx.ingress.kubernetes.io/permanent-redirect: https://www.google.com
+```
 
 ]
 
@@ -445,7 +473,7 @@ spec:
 
 ---
 
-## Ingress: the bad
+## Ingress: the bad (*cough* Annotations *cough*)
 
 - Aforementioned "special features" are not standardized yet
 
@@ -460,3 +488,19 @@ spec:
 - This should eventually stabilize
 
   (remember that ingresses are currently `apiVersion: networking.k8s.io/v1beta1`)
+
+- Annotations are not validated in CLI
+
+- Some proxies provide a CRD (Custom Resource Definition) option
+
+---
+
+## When not to use the Ingress Controller
+
+- Your deployment doesn't use alpha or beta features
+
+- You have external load balancers (like AWS ELBs) which route to NodePorts and handle TLS
+
+- You don't need externally available HTTP services on the default ports
+
+- Your proxy of choice uses a CRD rather then a Ingress Resource
