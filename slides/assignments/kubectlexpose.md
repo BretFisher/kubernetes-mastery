@@ -1,6 +1,6 @@
-# Assignment: first deployment
+# Assignment 2: first deployment
 
-1. Create a deployment with a container using image `tomcat`.
+1. Create a deployment called `littletomcat` with a container using image `tomcat`.
 
 2. Find the IP address of that Tomcat server.
 
@@ -51,13 +51,13 @@ The following things will happen:
 
 - the ping command that we left running will fail,
 
-- the replica set will notice that it doens't have the right cound of pods and create a replacement pod,
+- the replica set will notice that it doens't have the right count of pods and create a replacement pod,
 
 - that new pod will have a different IP address (so the `ping` command won't recover).
 
 ---
 
-## Assignment: first service
+## Assignment 2: first service
 
 1. How can we give our Tomcat server a stable address?
 
