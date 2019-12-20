@@ -80,47 +80,78 @@
 
 ---
 
-## Principle of operation
+## ingress vs. Ingress
 
-- Step 1: deploy an *ingress controller*
+- ingress definition: Going in, entering. The opposite of egress (leaving)
 
-  - ingress controller = load balancer + control loop
+- In networking terms, ingress refers to handling incoming connections
 
-  - the control loop watches over ingress resources, and configures the LB accordingly
+- Could imply incoming to firewall, network, or in this case, a server cluster
 
-- Step 2: set up DNS
+--
 
-  - associate DNS entries with the load balancer address
+- Ingress (capital I) in these slides means the Kubernetes Ingress feature
 
-- Step 3: create *ingress resources*
-
-  - the ingress controller picks up these resources and configures the LB
-
-- Step 4: profit!
+- Specific to HTTP/S
 
 ---
 
-## Ingress in action
+## Principle of operation
 
-- We will deploy the Traefik ingress controller
+- Step 1: deploy an *Ingress controller*
 
-  - this is an arbitrary choice, the 
+  - Ingress controller = load balancing proxy + control loop
+
+  - the control loop watches over Ingress resources, and configures the LB accordingly
+
+  - these might be two separate pods (NGINX sever + NGINX Ingress controller)
+
+  - or a single app that knows how to speak to Kubernetes API (Traefik)
+
+--
+
+- Step 2: set up DNS
+
+  - associate external DNS entries with the load balancer address
+
+--
+
+- Step 3: create *Ingress resources* for our Service resources
+
+  - these resources contain rules for handling HTTP/S connections
+
+  - the Ingress controller picks up these resources and configures the LB
+
+  - connections to the Ingress LB will be processed by the rules
+
+
+---
+
+## Ingress in action: NGINX
+
+- We will deploy the NGINX Ingress controller first
+
+  - this is a popular, yet arbitrary choice, the 
   [docs](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/)
   list over a dozen options
 
-  - maybe motivated by the fact that Traefik releases are named after cheeses
+--
 
 - For DNS, we will use [nip.io](http://nip.io/)
 
   - `*.127.0.0.1.nip.io` resolves to `127.0.0.1`
 
-- We will create ingress resources for various HTTP services
+  - we do this so we can use various FQDN's without editing our `hosts` file
+
+--
+
+- We will create Ingress resources for various HTTP-based Services
 
 ---
 
 ## Deploying pods listening on port 80
 
-- We want our ingress load balancer to be available on port 80
+- We want our Ingress load balancer to be available on port 80
 
 --
 
@@ -156,9 +187,15 @@
 
   (sometimes called sandbox or network sandbox)
 
+--
+
 - An IP address is assigned to the pod
 
+--
+
 - This IP address is routed/connected to the cluster network
+
+--
 
 - All containers of that pod are sharing that network namespace
 
@@ -170,11 +207,17 @@
 
 - No network namespace gets created
 
+--
+
 - The pod is using the network namespace of the host
 
 - It "sees" (and can use) the interfaces (and IP addresses) of the host (VM on macOS/Win)
 
+--
+
 - The pod can receive outside traffic directly, on any port
+
+--
 
 - Downside: with most network plugins, network policies won't work for that pod
 
@@ -182,19 +225,54 @@
 
   - filtering that pod = filtering traffic from the node
 
-- Docker Desktop: `hostNetwork` doesn't work, but we have LoadBalancer
+--
+
+- Docker Desktop:
+
+  - macOS/Windows `localhost` won't redirect to `hostNetwork`
+
+  - but Service `type: LoadBalancer` works!
 
 ---
 
-## Running Traefik
+## First steps with NGINX 
 
-- The [Traefik documentation](https://docs.traefik.io/v1.7/user-guide/kubernetes/#deploy-trfik-using-a-deployment-or-daemonset) tells us to pick between Deployment and Daemon Set
+- Remember the three parts of Ingress:
+
+  - Ingress controller pod to monitor the API for new resources
+
+  - Ingress load balancer pod(s) that receive the HTTP/S traffic
+
+  - Ingress Resources that tell the LB where to route traffic
+
+- First, lets apply YAML to create the controller and LB pods 
+
+---
+
+## Deploying the Ingress controller and NGINX proxy
+
+- We need the YAML template from the [kubernetes/ingress-nginx](https://kubernetes.github.io/ingress-nginx/deploy/) project
+
+- 
+
+
+---
+
+## Swapping NGINX for Traefik 1.x
+
+- Traefik is another Ingress controller option
+
+- Most importantly: Traefik releases are named after cheeses 🧀🎉
+
+- The [Traefik documentation](https://docs.traefik.io/v1.7/user-guide/kubernetes/#deploy-trfik-using-a-deployment-or-daemonset)
+  tells us to pick between Deployment and Daemon Set
 
 - We are going to use a Daemon Set so that each node can accept connections
 
 --
 
-- We will do two minor changes to the [YAML provided by Traefik](https://github.com/containous/traefik/blob/v1.7/examples/k8s/traefik-ds.yaml):
+- We will do two minor changes to the 
+  [YAML provided by Traefik](https://github.com/containous/traefik/blob/v1.7/examples/k8s/traefik-ds.yaml):
 
   1. enable `hostNetwork`
 
