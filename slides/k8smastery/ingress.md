@@ -44,7 +44,7 @@
 
 - There are many options available:
 
-  Apache, HAProxy, Envoy, NGINX, Traefik, ...
+  Apache, HAProxy, Envoy Proxy, Gloo, NGINX, Traefik,...
 
 - Most of these options require us to update/edit configuration files after each change
 
@@ -439,7 +439,7 @@ metadata:
 
 - You can have multiple ingress controllers active simultaneously
 
-  (e.g. Traefik and NGINX)
+  (e.g. Traefik, Gloo, and NGINX)
 
 - You can even have multiple instances of the same controller
 
@@ -498,6 +498,8 @@ metadata:
 ## When not to use the Ingress Controller
 
 - Your deployment doesn't use alpha or beta features
+
+- You need features beyond simple Ingress including; TCP support, advanced traffic management like routing/spliting, security like mTLS, egress, and integration to service mesh
 
 - You have external load balancers (like AWS ELBs) which route to NodePorts and handle TLS
 
