@@ -531,7 +531,7 @@ metadata:
 
 ---
 
-## Ingress: the good
+## Ingress Resource: the good
 
 - The traffic flows directly from the ingress load balancer to the backends
 
@@ -551,7 +551,7 @@ metadata:
 
 ---
 
-## Ingress: the bad (*cough* Annotations *cough*)
+## Ingress Resource: the bad (*cough* Annotations *cough*)
 
 - Aforementioned "special features" are not standardized yet
 
@@ -573,14 +573,30 @@ metadata:
 
 ---
 
-## When not to use the Ingress Controller
+## When not to use the Ingress Resource
 
 - Your deployment doesn't use alpha or beta features
 
-- You need features beyond simple Ingress including; TCP support, advanced traffic management like routing/spliting, security like mTLS, egress, and integration to service mesh
+- Your use case needs more than the simple host to port mapping of the Ingress Resource
+
+- You need advanced traffic management features including; TCP support, traffic routing/spliting, security like mTLS, egress, and integration to service mesh
 
 - You have external load balancers (like AWS ELBs) which route to NodePorts and handle TLS
 
 - You don't need externally available HTTP services on the default ports
 
 - Your proxy of choice uses a CRD rather then a Ingress Resource
+
+---
+
+## Gateways as Alternatives to Ingress Controller 
+
+- Often called by either Ingress Gateway or API Gateway fulfills ingress capability plus more:
+  - TCP Support + anything beyond HTTP/HTTPS
+  - Traffic splitting, rate limiting, circuit breaking, etc
+  - Complex traffic routing, request and reponse transformation
+
+- Options include Envoy Proxy based (Gloo, Ambassador) or Reverse Proxy / LB based (NGINX, Traefik, Kong)
+
+- API Gateway approach abstracts how you write the service inside the cluster to how how you want to expose access to that service for consumers outside that cluster (more decentralized/dev centric approach)
+
