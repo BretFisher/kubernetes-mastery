@@ -1,6 +1,10 @@
 # Exposing HTTP services with Ingress resources
 
-- *Services* give us a way to access a pod or a set of pods
+- *Ingress* has two meanings, let's clarify before we begin this section
+
+  - Ingress Resource as an official Kubernetes object that requires the use of an Ingress Controller to handle incoming traffic to the cluster
+  
+  - ingress as a general concept is a term used to describe incoming traffic to an environment that is used by other tools that work with Kubernetes but are not using the Kubernetes Ingress Resource
 
 - Services can be exposed to the outside world:
 
