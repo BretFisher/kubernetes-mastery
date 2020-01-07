@@ -127,7 +127,7 @@
 
 ---
 
-## Ingress in action: NGINX
+# Ingress in action: NGINX
 
 - We will deploy the NGINX Ingress controller first
 
@@ -258,7 +258,7 @@
 
 ---
 
-## Swapping NGINX for Traefik 1.x
+# Swapping NGINX for Traefik 1.x
 
 - Traefik is another Ingress controller option
 
@@ -528,6 +528,8 @@ metadata:
 - It's OK if multiple ingress controllers configure the same resource
 
   (it just means that the service will be accessible through multiple paths)
+
+- TCP/IP IP:PORT rules still apply: Only one can bind to 80 on host IP
 
 ---
 
