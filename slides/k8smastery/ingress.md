@@ -80,7 +80,13 @@
 
 ---
 
+## Ingress Diagram
+
+---
+
 ## ingress vs. Ingress
+
+**ingress**
 
 - ingress definition: Going in, entering. The opposite of egress (leaving)
 
@@ -90,7 +96,9 @@
 
 --
 
-- Ingress (capital I) in these slides means the Kubernetes Ingress feature
+**Ingress**
+
+- Ingress (capital I) in these slides means the Kubernetes Ingress resource
 
 - Specific to HTTP/S
 
@@ -104,7 +112,7 @@
 
   - the control loop watches over Ingress resources, and configures the LB accordingly
 
-  - these might be two separate pods (NGINX sever + NGINX Ingress controller)
+  - these might be two separate processes (NGINX sever + NGINX Ingress controller)
 
   - or a single app that knows how to speak to Kubernetes API (Traefik)
 
@@ -161,7 +169,9 @@
 
   ... but it requires support from the underlying infrastructure
 
-  For local machine distros, Docker Desktop supports it for `localhost`!
+  minikube and MicroK8s don't work with it
+
+  ... but Docker Desktop supports it for `localhost`!
 
 --
 
@@ -225,13 +235,35 @@
 
   - filtering that pod = filtering traffic from the node
 
---
+---
+
+## What *you* will use now
 
 - Docker Desktop:
 
-  - macOS/Windows `localhost` won't redirect to `hostNetwork`
+  - no built-in Ingress installer, we'll provide you YAML
 
-  - but Service `type: LoadBalancer` works!
+  - Ignores `hostNetwork`, but Service `type: LoadBalancer` works with `localhost`!
+
+--
+
+- minikube:
+
+  - has a built-in NGINX installer `minikube addons enable ingress`
+
+  - But, let's use YAML we provide for learning purposes
+
+  - `hostNetwork: true` enabled on pod works for minikube IP
+ 
+--
+
+- MicroK8s:
+
+  - has a built-in NGINX installer `microk8s.enable ingress`
+  
+  - let's use YAML we provide anyway for learning purposes
+  
+  - `hostNetwork: true` enabled on pod works for minikube IP
 
 ---
 
@@ -239,118 +271,41 @@
 
 - Remember the three parts of Ingress:
 
-  - Ingress controller pod to monitor the API for new resources
-
-  - Ingress load balancer pod(s) that receive the HTTP/S traffic
+  - Ingress controller pod(s) to monitor the API and run the LB/proxy
 
   - Ingress Resources that tell the LB where to route traffic
 
-- First, lets apply YAML to create the controller and LB pods 
+  - Services for your apps so the Ingress LB/proxy can route to your pods
+
+- First, lets apply YAML to create the Ingress controller
 
 ---
 
-## Deploying the Ingress controller and NGINX proxy
+## Deploying the NGINX Ingress controller
 
 - We need the YAML template from the [kubernetes/ingress-nginx](https://kubernetes.github.io/ingress-nginx/deploy/) project
 
+- This will be slightly different for different distros
+
 - 
 
-
 ---
 
-# Swapping NGINX for Traefik 1.x
+## Checking that NGINX runs correctly
 
-- Traefik is another Ingress controller option
-
-- Most importantly: Traefik releases are named after cheeses 🧀🎉
-
-- The [Traefik documentation](https://docs.traefik.io/v1.7/user-guide/kubernetes/#deploy-trfik-using-a-deployment-or-daemonset)
-  tells us to pick between Deployment and Daemon Set
-
-- We are going to use a Daemon Set so that each node can accept connections
-
---
-
-- We will do two minor changes to the 
-  [YAML provided by Traefik](https://github.com/containous/traefik/blob/v1.7/examples/k8s/traefik-ds.yaml):
-
-  1. enable `hostNetwork`
-
---
-
-  2. add a *toleration* so that Traefik also runs on your control plane nodes
-
-  - this isn't an issue on Docker Desktop/MicroK8s/minikube
-
----
-
-## Taints and tolerations, a preview
-
-- A *taint* is an attribute added to a node
-
-- It prevents pods from running on the node
-
---
-
-- ... Unless they have a matching *toleration*
-
---
-
-- When deploying with `kubeadm` and other production-quality distros:
-
-  - a taint is placed on nodes dedicated to the control plane
-
-  - the pods running the control plane have a matching toleration
-
---
-
-- Each deployment tool will be slightly different in infrastructure design
-
-- Docker Desktop, MicroK8s, and minikube don't add taints
-
---
-
-- We'll cover this more later
-
----
-
-## Running Traefik 1.x on our cluster
-
-- We provide a YAML file which is essentially the sum of:
-
-  - [Traefik's Daemon Set resources](https://github.com/containous/traefik/blob/v1.7/examples/k8s/traefik-ds.yaml) (patched with `hostNetwork` and tolerations)
-
-  - [Traefik's RBAC rules](https://github.com/containous/traefik/blob/v1.7/examples/k8s/traefik-rbac.yaml) allowing it to watch necessary API objects
-  
-  - If using 
+- If NGINX started correctly, we now have a web server listening on each node
 
 .exercise[
 
-- Apply the YAML:
-  ```bash
-  kubectl apply -f https://k8smastery.com/traefik.yaml
-  ```
+- Check that NGINX is serving 80/tcp
 
-]
-
----
-
-## Checking that Traefik runs correctly
-
-- If Traefik started correctly, we now have a web server listening on each node
-
-.exercise[
-
-- Check that Traefik is serving 80/tcp:
-  ```bash
-  curl localhost
-  ```
+- Direct your browser to your Kubernetes IP
 
 ]
 
 We should get a `404 page not found` error.
 
-This is normal: we haven't provided any ingress rule yet.
+This is normal: we haven't provided any Ingress rule yet.
 
 ---
 
@@ -360,27 +315,11 @@ This is normal: we haven't provided any ingress rule yet.
 
 - Check out `http://cheddar.A.B.C.D.nip.io`
 
-  (replacing A.B.C.D with the IP address of `node1`)
+  (replacing A.B.C.D with the IP address of your Kubernetes IP)
 
 - We should get the same `404 page not found` error
 
   (meaning that our DNS is "set up properly", so to speak!)
-
----
-
-## Traefik web UI
-
-- Traefik provides a web dashboard
-
-- With the current install method, it's listening on port 8080
-
-.exercise[
-
-- Go to `http://node1:8080` (replacing `node1` with its IP address)
-
-<!-- ```open http://node1:8080``` -->
-
-]
 
 ---
 
@@ -456,11 +395,11 @@ from the extensions API to networking)
 
 - Download our YAML `curl -O https://k8smastery.com/ingress.yaml`
 
-- Edit the file `ingress.yaml`
+- Edit the file `ingress.yaml` which has three Ingress resources
 
-- Replace the A.B.C.D with your cluster IP (`127.0.0.1` for `localhost`)
+- Replace the A.B.C.D with your Kubernetes IP (`127.0.0.1` for `localhost`)
 
-- Apply the file
+- Apply the file `kubectl apply -f ingress.yaml`
 
 - Open http://cheddar.A.B.C.D.nip.io
 
@@ -470,35 +409,31 @@ from the extensions API to networking)
 
 ---
 
-## Creating the other ingress resources
+## Bring up the other Ingress resources
 
 .exercise[
 
-- Edit the file `ingress.yaml`
+- Open http://stilton.A.B.C.D.nip.io
 
-- Replace `cheddar` with `stilton` (in `name`, `host`, `serviceName`)
-
-- Apply the file
-
-- Check that `stilton.A.B.C.D.nip.io` works correctly
-
-- Repeat for `wensleydale`
+- Open http://wensleydale.A.B.C.D.nip.io
 
 ]
 
+- Different cheeses should show up for each URL
+
 ---
 
-## Adding features to a ingress resource
+## Adding features to a Ingress resource
 
-- Reverse proxies have lots of features. Let's add one to a ingress resoure
+- Reverse proxies have lots of features. Let's add one to a Ingress resoure
 
-- Let's add a 301 redirect to a new ingress resource
+- Let's add a 301 redirect to a new Ingress resource
 
 .exercise[
 
-- Edit the file `ingress.yaml`
+- Edit a new file `redirect.yaml`
 
-- Add an annotation to the metadata to pass along to the Ingress Controller
+- Add an annotation to the metadata to pass along to the Ingress controller
 
 ```yaml
 apiVersion: networking.k8s.io/v1beta1
@@ -511,6 +446,154 @@ metadata:
 
 ]
 
+--
+
+- Notice we didn't add a backend or rule, this will be the default rule
+
+- Also notice it's NGINX specific :(
+
+---
+
+## Test our redirect
+
+- A default rule applies if no other Ingress resource rule matches
+
+- Let's apply the resource and test it in the browser
+
+.exercise[
+
+  ```bash
+  kubectl apply -f redirect.yaml
+  ```
+
+- Open http://whatever.A.B.C.D.nip.io or localhost or A.B.C.D
+
+]
+
+--
+
+- It should immediately redirect to google.com
+
+---
+
+# Swapping NGINX for Traefik 1.x
+
+- Traefik is another Ingress controller option
+
+- Most importantly: Traefik releases are named after cheeses 🧀🎉
+
+--
+
+- The [Traefik documentation](https://docs.traefik.io/v1.7/user-guide/kubernetes/#deploy-trfik-using-a-deployment-or-daemonset)
+  tells us to pick between Deployment and DaemonSet
+
+- We are going to use a DaemonSet so that each node can accept connections
+
+--
+
+- We provide a YAML file which is essentially the sum of:
+
+  - [Traefik's DaemonSet resources](https://github.com/containous/traefik/blob/v1.7/examples/k8s/traefik-ds.yaml) (patched with `hostNetwork` and tolerations)
+
+  - [Traefik's RBAC rules](https://github.com/containous/traefik/blob/v1.7/examples/k8s/traefik-rbac.yaml) allowing it to watch necessary API objects
+
+- We will make a minor change to the 
+  [YAML provided by Traefik](https://github.com/containous/traefik/blob/v1.7/examples/k8s/traefik-ds.yaml)
+  to enable `hostNetwork` for MicroK8s/minikube
+
+- For Docker Desktop we'll add a `type: LoadBalancer` to the Service
+
+---
+
+## Removing NGINX from our cluster
+
+- Before starting Traefik, let's remove the NGINX controller
+
+- This won't remove Services or Ingress resources
+
+- But it will make them unavailble from outside the cluster
+
+.exercise[
+
+- Delete our NGINX controler and related resources:
+  ```bash
+  # for Docker Desktop with LoadBalancer
+  kubectl delete -f https://k8smastery.com/ic-nginx-dd.yaml
+
+  # for minikube/MicroK8s with hostNetwork
+  kubectl delete -f https://k8smastery.com/ic-nginx-mk.yaml
+  ```
+
+]
+
+--
+
+- Wait 30 seconds for everything to cleanup
+
+---
+
+## Running Traefik 1.x on our cluster
+
+- Now let's deploy the Traefik 1.x controller
+
+.exercise[
+
+- Apply the YAML:
+  ```bash
+  # for Docker Desktop with LoadBalancer
+  kubectl apply -f https://k8smastery.com/ic-traefik-dd.yaml
+  
+  # for minikube/MicroK8s with hostNetwork
+  kubectl apply -f https://k8smastery.com/ic-traefik-mk.yaml
+  ```
+- Check the pod Status
+  ```bash
+  kubectl describe -n kube-system traefik-ingress-controller
+  ```
+]
+
+---
+
+## Checking that Traefik runs correctly
+
+- If Traefik started correctly, we can refresh a cheese and it still works
+
+.exercise[
+
+- Refresh http://cheddar.A.B.C.D.nip.io
+
+]
+
+---
+
+## Traefik web UI
+
+- Traefik provides a web dashboard
+
+- With the current install method, it's listening on port 8080
+
+.exercise[
+
+- Go to `http://<Kubernetes IP>:8080`
+
+<!-- ```open http://node1:8080``` -->
+
+]
+
+---
+
+## What about Traefik 2.x?
+
+- We've been using Traefik 1.x as the Ingress controller
+
+- Traefik released 2.0 in late 2019
+
+--
+
+- But it uses a custom CRD (Custom Resource Definition), not Ingress resources
+
+- We'll explore why in a bit
+
 ---
 
 ## Using multiple ingress controllers
@@ -519,21 +602,29 @@ metadata:
 
   (e.g. Traefik, Gloo, and NGINX)
 
+--
+
 - You can even have multiple instances of the same controller
 
   (e.g. one for internal, another for external traffic)
 
+--
+
 - The `kubernetes.io/ingress.class` annotation can be used to tell which one to use
+
+--
 
 - It's OK if multiple ingress controllers configure the same resource
 
   (it just means that the service will be accessible through multiple paths)
 
+--
+
 - TCP/IP IP:PORT rules still apply: Only one can bind to 80 on host IP
 
 ---
 
-## Ingress: the good
+## Ingress resources: the good
 
 - The traffic flows directly from the ingress load balancer to the backends
 
@@ -541,11 +632,15 @@ metadata:
 
   - in fact, we don't even need a `ClusterIP` (we can use a headless service)
 
+--
+
 - The load balancer can be outside of Kubernetes
 
   (as long as it has access to the cluster subnet)
 
 - This allows the use of external (hardware, physical machines...) load balancers
+
+--
 
 - Annotations can encode special features
 
@@ -553,11 +648,13 @@ metadata:
 
 ---
 
-## Ingress: the bad (*cough* Annotations *cough*)
+## Ingress resources: the bad (*cough* Annotations *cough*)
 
 - Aforementioned "special features" are not standardized yet
 
 - Some controllers will support them; some won't
+
+--
 
 - Even relatively common features (stripping a path prefix) can differ:
 
@@ -565,24 +662,63 @@ metadata:
 
   - [ingress.kubernetes.io/rewrite-target: /](https://github.com/kubernetes/contrib/tree/master/ingress/controllers/nginx/examples/rewrite)
 
+--
+
 - This should eventually stabilize
 
   (remember that ingresses are currently `apiVersion: networking.k8s.io/v1beta1`)
 
+--
+
 - Annotations are not validated in CLI
+
+--
 
 - Some proxies provide a CRD (Custom Resource Definition) option
 
 ---
 
-## When not to use the Ingress Controller
+## When not to use built-in Ingress resources
 
 - Your deployment doesn't use alpha or beta features
 
-- You need features beyond simple Ingress including; TCP support, advanced traffic management like routing/spliting, security like mTLS, egress, and integration to service mesh
+--
+
+- You need features beyond Ingress including; TCP support, traffic spliting, mTLS, egress, service mesh
+
+--
 
 - You have external load balancers (like AWS ELBs) which route to NodePorts and handle TLS
 
+--
+
 - You don't need externally available HTTP services on the default ports
 
+--
+
 - Your proxy of choice uses a CRD rather then a Ingress Resource
+
+---
+
+## Using CRD's as alternatives to Ingress resources
+
+- Due to the limits of the built-in Ingress, many projects are moving to CRD's
+
+--
+
+- Often called Ingress Gateway or API Gateway, they do ingress plus more:
+  - TCP Support (anything beyond HTTP/HTTPS)
+  - Traffic splitting, rate limiting, circuit breaking, etc
+  - Complex traffic routing, request and reponse transformation
+
+--
+
+- Options include:
+  - Envoy Proxy based (Gloo, Ambassador)
+  - Reverse Proxy / LB based (NGINX, Traefik, Kong)
+
+--
+
+- Eventually these more advanced features could be added to "Ingress 2.0"
+
+- We'll cover more after we learn about CRD's and Operators
