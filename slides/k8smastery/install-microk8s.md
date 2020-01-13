@@ -41,9 +41,13 @@
   ```
 ]
 
---
+- You can also install other plugins this way like `microk8s.enable dashboard` or `microk8s.enable ingress`
 
-- Also run a check for any config problems
+---
+
+## MicroK8s Troubleshooting
+
+- Run a check for any config problems
 
 .exercise[
 
