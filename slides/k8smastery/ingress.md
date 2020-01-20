@@ -267,7 +267,7 @@
 
 ---
 
-## First steps with NGINX 
+## First steps with NGINX
 
 - Remember the three parts of Ingress:
 
@@ -283,11 +283,47 @@
 
 ## Deploying the NGINX Ingress controller
 
-- We need the YAML template from the [kubernetes/ingress-nginx](https://kubernetes.github.io/ingress-nginx/deploy/) project
+- We need the YAML templates from the [kubernetes/ingress-nginx](https://kubernetes.github.io/ingress-nginx/deploy/) project
 
-- This will be slightly different for different distros
+The two main parts are:
 
-- 
+--
+  
+  - NGINX Deployment (or DaemonSet) and all its resources
+
+    - Namespace
+    - ConfigMaps (storing NGINX configs)
+    - ServiceAccount (authenticate to Kubernetes API)
+    - Role/ClusterRole/RoleBindings (authorization to API parts)
+    - LimitRange (limit cpu/memory of NGINX)
+
+--
+ 
+  - Service to expose NGINX on 80/443
+
+    - different for each Kubernetes distribution
+
+---
+
+## Running NGINX on our cluster
+
+- Now let's deploy the NGINX controller. Pick your distro:
+
+.exercise[
+
+- Apply the YAML
+  ```bash
+  # for Docker Desktop, create Service with LoadBalancer
+  kubectl apply -f https://k8smastery.com/ic-nginx-lb.yaml
+  
+  # for minikube/MicroK8s, create Service with hostNetwork
+  kubectl apply -f https://k8smastery.com/ic-nginx-hn.yaml
+  ```
+- Check the pod Status
+  ```bash
+  kubectl describe -n ingress-nginx deploy/nginx-ingress-controller
+  ```
+]
 
 ---
 
@@ -297,9 +333,7 @@
 
 .exercise[
 
-- Check that NGINX is serving 80/tcp
-
-- Direct your browser to your Kubernetes IP
+- Direct your browser to your Kubernetes IP on port 80
 
 ]
 
@@ -425,15 +459,28 @@ from the extensions API to networking)
 
 ## Adding features to a Ingress resource
 
-- Reverse proxies have lots of features. Let's add one to a Ingress resoure
+- Reverse proxies have lots of features
 
-- Let's add a 301 redirect to a new Ingress resource
+- Let's add a 301 redirect to a new Ingress resource using annotations
+
+- It will apply when any other path is used in URL that we didn't already add
 
 .exercise[
 
-- Edit a new file `redirect.yaml`
+- Create a redirect
 
-- Add an annotation to the metadata to pass along to the Ingress controller
+```bash
+kubectl apply -f https://k8smastery.com/redirect.yaml
+```
+
+- Open http://whatever.A.B.C.D.nip.io or localhost or A.B.C.D
+]
+
+- It should immediately redirect to google.com
+
+---
+
+## Annotations can get weird and complex
 
 ```yaml
 apiVersion: networking.k8s.io/v1beta1
@@ -442,37 +489,17 @@ metadata:
   name: my-google
   annotations:
     nginx.ingress.kubernetes.io/permanent-redirect: https://www.google.com
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        backend:
+          serviceName: doesntmatter
+          servicePort: 80
 ```
 
-]
-
---
-
-- Notice we didn't add a backend or rule, this will be the default rule
-
-- Also notice it's NGINX specific :(
-
----
-
-## Test our redirect
-
-- A default rule applies if no other Ingress resource rule matches
-
-- Let's apply the resource and test it in the browser
-
-.exercise[
-
-  ```bash
-  kubectl apply -f redirect.yaml
-  ```
-
-- Open http://whatever.A.B.C.D.nip.io or localhost or A.B.C.D
-
-]
-
---
-
-- It should immediately redirect to google.com
+- Ingress resource insists we have a rule and backend, even though it's not needed here
 
 ---
 
@@ -518,10 +545,10 @@ metadata:
 - Delete our NGINX controler and related resources:
   ```bash
   # for Docker Desktop with LoadBalancer
-  kubectl delete -f https://k8smastery.com/ic-nginx-dd.yaml
+  kubectl delete -f https://k8smastery.com/ic-nginx-lb.yaml
 
   # for minikube/MicroK8s with hostNetwork
-  kubectl delete -f https://k8smastery.com/ic-nginx-mk.yaml
+  kubectl delete -f https://k8smastery.com/ic-nginx-hn.yaml
   ```
 
 ]
@@ -541,14 +568,14 @@ metadata:
 - Apply the YAML:
   ```bash
   # for Docker Desktop with LoadBalancer
-  kubectl apply -f https://k8smastery.com/ic-traefik-dd.yaml
+  kubectl apply -f https://k8smastery.com/ic-traefik-lb.yaml
   
   # for minikube/MicroK8s with hostNetwork
-  kubectl apply -f https://k8smastery.com/ic-traefik-mk.yaml
+  kubectl apply -f https://k8smastery.com/ic-traefik-hn.yaml
   ```
 - Check the pod Status
   ```bash
-  kubectl describe -n kube-system traefik-ingress-controller
+  kubectl describe -n kube-system ds/traefik-ingress-controller
   ```
 ]
 
@@ -562,6 +589,19 @@ metadata:
 
 - Refresh http://cheddar.A.B.C.D.nip.io
 
+]
+
+--
+
+- Notice the redirect Ingress resource doesn't work (because it's NGINX specific)
+
+.exercise[
+
+- `curl localhost` from host
+
+- You should get back `404 page not found`
+
+Note if you try the browser, it may cache the redirect response and still redirect
 ]
 
 ---
