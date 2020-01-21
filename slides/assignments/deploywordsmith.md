@@ -1,4 +1,4 @@
-# Assignment: deploy wordsmith
+# Assignment 3: deploy wordsmith
 
 - Let's deploy another application called *wordsmith*
 

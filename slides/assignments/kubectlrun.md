@@ -1,26 +1,10 @@
-# Assignment: first steps
+# Assignment 1: first steps
 
 1. Cluster inventory
 
    1.1. How many nodes does your cluster have?
 
    1.2. What kernel version and what container engine is each node running?
-
-2. Control plane examination
-
-   2.1. List the pods in the `kube-system` namespace.
-
-   2.2. Explain the role of some of these pods.
-
-   2.3. If there are no pods in `kube-system`, why could that be?
-
-3. Running containers
-
-   3.1. Run a container using image `jpetazzo/clock`.
-
-   3.2. Run two more containers using that same image.
-
-   3.3. Show the last line of output of these three containers.
 
 ---
 
@@ -40,6 +24,18 @@ This will include kernel version and container engine.
 
 ---
 
+## Assignment 1: first steps
+
+2. Control plane examination
+
+   2.1. List the pods in the `kube-system` namespace.
+
+   2.2. Explain the role of some of these pods.
+
+   2.3. If there are no pods in `kube-system`, why could that be?
+
+---
+
 class: answers
 
 ## Answers
@@ -55,6 +51,18 @@ It's also common to see `kubedns-XXX` or `coredns-XXX`: these implement the DNS 
 2.3. On some clusters, the control plane is located *outside* the cluster itself.
 
 In that case, the control plane won't show up in `kube-system`.
+
+---
+
+## Assignment 1: first steps
+
+3. Running containers
+
+   3.1. Run a container using image `jpetazzo/clock`.
+
+   3.2. Run two more containers using that same image.
+
+   3.3. Show the last line of output of these three containers.
 
 ---
 
