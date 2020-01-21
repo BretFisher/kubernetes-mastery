@@ -285,11 +285,11 @@
 
 - We need the YAML templates from the [kubernetes/ingress-nginx](https://kubernetes.github.io/ingress-nginx/deploy/) project
 
-The two main parts are:
+The two main sections in the YAML are:
 
 --
   
-  - NGINX Deployment (or DaemonSet) and all its resources
+  - NGINX Deployment (or DaemonSet) and all its required resources
 
     - Namespace
     - ConfigMaps (storing NGINX configs)
@@ -503,7 +503,7 @@ spec:
 
 ---
 
-# Swapping NGINX for Traefik 1.x
+# Swapping NGINX for Traefik
 
 - Traefik is another Ingress controller option
 
@@ -511,7 +511,7 @@ spec:
 
 --
 
-- The [Traefik documentation](https://docs.traefik.io/v1.7/user-guide/kubernetes/#deploy-trfik-using-a-deployment-or-daemonset)
+- The [Traefik documentation](https://docs.traefik.io/v1.7/user-guide/kubernetes/#deploy-traefik-using-a-deployment-or-daemonset)
   tells us to pick between Deployment and DaemonSet
 
 - We are going to use a DaemonSet so that each node can accept connections
@@ -559,9 +559,9 @@ spec:
 
 ---
 
-## Running Traefik 1.x on our cluster
+## Running Traefik on our cluster
 
-- Now let's deploy the Traefik 1.x controller
+- Now let's deploy the Traefik Ingress controller
 
 .exercise[
 
@@ -622,15 +622,19 @@ Note if you try the browser, it may cache the redirect response and still redire
 
 ---
 
-## What about Traefik 2.x?
+## What about Traefik 2.x IngressRoute resources?
 
-- We've been using Traefik 1.x as the Ingress controller
+- We've been using Traefik 2.x as the Ingress controller
 
 - Traefik released 2.0 in late 2019
 
+- Their documentation talks about IngressRoute resource
+
 --
 
-- But it uses a custom CRD (Custom Resource Definition), not Ingress resources
+- But IngressRoute is not a built-in resource of Kubernetes
+
+- Traefik 2.x now supports a custom CRD (Custom Resource Definition)
 
 - We'll explore why in a bit
 
@@ -720,15 +724,14 @@ Note if you try the browser, it may cache the redirect response and still redire
 
 ## When not to use built-in Ingress resources
 
-- Your deployment doesn't use alpha or beta features
+- You need features beyond Ingress including: 
+
+  - TCP support, traffic spliting, mTLS, egress, service mesh
+  - response transformation, routing to 2+ services
 
 --
 
-- You need features beyond Ingress including; TCP support, traffic spliting, mTLS, egress, service mesh
-
---
-
-- You have external load balancers (like AWS ELBs) which route to NodePorts and handle TLS
+- You have external load balancers (like AWS ELBs) which route to NodePorts
 
 --
 
@@ -744,21 +747,23 @@ Note if you try the browser, it may cache the redirect response and still redire
 
 - Due to the limits of the built-in Ingress, many projects are moving to CRD's
 
+- For example, Traefik 2.x has a IngressRoute CRD option
+
 --
 
-- Often called Ingress Gateway or API Gateway, they do ingress plus more:
+- These CRD proxy options do ingress plus more (sometimes called API Gateways):
   - TCP Support (anything beyond HTTP/HTTPS)
   - Traffic splitting, rate limiting, circuit breaking, etc
   - Complex traffic routing, request and reponse transformation
 
 --
 
-- Options include:
-  - Envoy Proxy based (Gloo, Ambassador)
-  - Reverse Proxy / LB based (NGINX, Traefik, Kong)
+- Once we consider CRD's, many more proxy options are available:
+  - Envoy Proxy based (Gloo, Ambassador, Contour)
+  - Other Proxies (Tyk, Traefik, Kong, KrakenD)
 
 --
 
-- Eventually these more advanced features could be added to "Ingress 2.0"
+- Eventually some more advanced features could be added to "Ingress 2.0"
 
 - We'll cover more after we learn about CRD's and Operators

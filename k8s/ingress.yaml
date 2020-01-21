@@ -4,7 +4,7 @@ metadata:
   name: cheddar
 spec:
   rules:
-  - host: cheddar.127.0.0.1.nip.io
+  - host: cheddar.A.B.C.D.nip.io
     http:
       paths:
       - path: /
@@ -18,7 +18,7 @@ metadata:
   name: stilton
 spec:
   rules:
-  - host: stilton.127.0.0.1.nip.io
+  - host: stilton.A.B.C.D.nip.io
     http:
       paths:
       - path: /
@@ -32,7 +32,7 @@ metadata:
   name: wensleydale
 spec:
   rules:
-  - host: wensleydale.127.0.0.1.nip.io
+  - host: wensleydale.A.B.C.D.nip.io
     http:
       paths:
       - path: /
