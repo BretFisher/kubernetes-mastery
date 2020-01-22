@@ -1,0 +1,14 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: my-google
+  annotations:
+    nginx.ingress.kubernetes.io/permanent-redirect: https://www.google.com
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        backend:
+          serviceName: doesntmatter
+          servicePort: 80
