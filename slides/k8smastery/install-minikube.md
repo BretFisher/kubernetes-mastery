@@ -1,3 +1,5 @@
+name: minikube
+
 # minikube (Windows 10 Home)
 
 - A good local install option if you can't run Docker Desktop

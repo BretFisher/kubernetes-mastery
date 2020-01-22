@@ -1,3 +1,5 @@
+name: microk8s
+
 # MicroK8s (Linux)
 
 - [Easy install](https://microk8s.io/) and management of local Kubernetes
@@ -22,6 +24,7 @@
   sudo snap install microk8s --classic
   sudo usermod -a -G microk8s <username>
   echo "alias kubectl='microk8s.kubectl'" >> ~/.bashrc
+  # log out and back in if using a non-root user
   ```
 
 ]
@@ -30,10 +33,14 @@
 
 ## MicroK8s Additional Info
 
-- For later, add DNS to Kubernetes (installed by default in Docker Desktop and minikube)
-
+- We'll need these later (these are done for us in Docker Desktop and minikube):
 
 .exercise[
+
+- Create kubectl config file
+  ``` bash
+  microk8s.kubectl config view --raw > $HOME/.kube/config
+  ```
 
 - Install CoreDNS in Kubernetes
   ``` bash
