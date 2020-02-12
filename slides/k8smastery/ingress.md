@@ -263,7 +263,7 @@
   
   - let's use YAML we provide anyway for learning purposes
   
-  - `hostNetwork: true` enabled on pod works for minikube IP
+  - `hostNetwork: true` enabled on pod works for MicroK8s host IP
 
 ---
 
@@ -473,7 +473,7 @@ from the extensions API to networking)
 kubectl apply -f https://k8smastery.com/redirect.yaml
 ```
 
-- Open http://whatever.A.B.C.D.nip.io or localhost or A.B.C.D
+- Open http://< anything >.A.B.C.D.nip.io or localhost or A.B.C.D
 ]
 
 - It should immediately redirect to google.com
@@ -498,14 +498,57 @@ spec:
           serviceName: doesntmatter
           servicePort: 80
 ```
+--
 
 - Ingress resource insists we have a rule and backend, even though it's not needed here
+
+--
+
+- Notice annotation is NGINX specific
+
+---
+
+## View Ingress resources
+
+- Let's inspect some Ingress resources
+
+.exercise[
+
+- List all Ingress resources in the `default` namespace
+
+```bash
+kubectl get ingress
+```
+
+- Get the details on the `cheddar` Ingress resource
+
+
+```bash
+kubectl describe ingress cheddar
+```
+
+- Get the details on the `my-google` Ingress resource
+
+
+```bash
+kubectl describe ingress my-google
+```
+
+- Output `stilton` in YAML
+
+```bash
+kubectl get ingress/stilton -o yaml
+```
+
+]
 
 ---
 
 # Swapping NGINX for Traefik
 
-- Traefik is another Ingress controller option
+- Traefik is a proxy with built-in Kubernetes Ingress support
+
+- It has a web dashboard, built-in Let's Encrypt, full TCP support, and more
 
 - Most importantly: Traefik releases are named after cheeses 🧀🎉
 
@@ -538,11 +581,11 @@ spec:
 
 - This won't remove Services or Ingress resources
 
-- But it will make them unavailble from outside the cluster
+- But it will make them unavailable from outside the cluster
 
 .exercise[
 
-- Delete our NGINX controler and related resources:
+- Delete our NGINX controller and related resources:
   ```bash
   # for Docker Desktop with LoadBalancer
   kubectl delete -f https://k8smastery.com/ic-nginx-lb.yaml
@@ -556,6 +599,33 @@ spec:
 --
 
 - Wait 30 seconds for everything to cleanup
+
+- Then refresh your browser and notice it's down
+
+---
+
+## Removing redirect Ingress Resource
+
+- Notice the redirect Ingress resource doesn't work
+
+- This is because it's using a NGINX-specific annotation 😞
+
+.exercise[
+
+- `curl <Kubernetes IP>` from host
+
+- You should get back `404 page not found`
+
+
+- `kubectl delete -f https://k8smastery.com/redirect.yaml`
+
+]
+
+.footnote[
+
+Note if you try the browser, it may cache the redirect response and still redirect
+
+]
 
 ---
 
@@ -591,34 +661,40 @@ spec:
 
 ]
 
---
 
-- Notice the redirect Ingress resource doesn't work (because it's NGINX specific)
-
-.exercise[
-
-- `curl localhost` from host
-
-- You should get back `404 page not found`
-
-Note if you try the browser, it may cache the redirect response and still redirect
-]
 
 ---
 
 ## Traefik web UI
 
-- Traefik provides a web dashboard
+- Traefik provides a web dashboard on container port 8080
 
-- With the current install method, it's listening on port 8080
+- For those using the `LoadBalancer` method (Docker Desktop), it's enabled
 
 .exercise[
 
-- Go to `http://<Kubernetes IP>:8080`
-
-<!-- ```open http://node1:8080``` -->
+- If using Docker Desktop, go to `http://localhost:8080`
 
 ]
+
+--
+
+- For those using `hostNetwork`, this could be a problem
+
+- The container won't start if anything is listening on `< host IP >:8080`
+
+- On MicroK8s, Kubernetes API runs on 8080 😢
+
+--
+
+- For those using minikube, you can un-comment the YAML and re-apply
+
+--
+
+- You could also edit the resource(s) and manually add the details, e.g.
+
+  - `kubectl edit -n kube-system ds/traefik-ingress-controller`
+
 
 ---
 
@@ -726,7 +802,7 @@ Note if you try the browser, it may cache the redirect response and still redire
 
 - You need features beyond Ingress including: 
 
-  - TCP support, traffic spliting, mTLS, egress, service mesh
+  - TCP support, traffic splitting, mTLS, egress, service mesh
   - response transformation, routing to 2+ services
 
 --
@@ -749,12 +825,14 @@ Note if you try the browser, it may cache the redirect response and still redire
 
 - For example, Traefik 2.x has a IngressRoute CRD option
 
+- Ambassador, a controller for Envoy proxy, uses a Mapping CRD
+
 --
 
 - These CRD proxy options do ingress plus more (sometimes called API Gateways):
   - TCP Support (anything beyond HTTP/HTTPS)
   - Traffic splitting, rate limiting, circuit breaking, etc
-  - Complex traffic routing, request and reponse transformation
+  - Complex traffic routing, request and response transformation
 
 --
 
@@ -764,6 +842,6 @@ Note if you try the browser, it may cache the redirect response and still redire
 
 --
 
-- Eventually some more advanced features could be added to "Ingress 2.0"
+- Eventually, some more advanced features might be added to "Ingress Resource 2.0"
 
 - We'll cover more after we learn about CRD's and Operators

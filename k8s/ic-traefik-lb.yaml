@@ -44,9 +44,18 @@ spec:
             - NET_BIND_SERVICE
         args:
         - --providers.kubernetesingress=true
+        # you need to manually set this IP to the incoming public IP
+        # that your ingress resources would use. Note it only affects
+        # status and kubectl UI, and doesn't really do anything
+        # It could even be left out https://github.com/containous/traefik/issues/6303
+        - --providers.kubernetesingress.ingressendpoint.dns=localhost
+        ## the web UI on the host NIC port 8080 in **insecure** mode
         - --api.dashboard=true
         - --api.insecure=true
+        - --log=true
         - --log.level=INFO
+        - --accesslog=true
+
 ---
 kind: Service
 apiVersion: v1
