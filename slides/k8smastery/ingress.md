@@ -8,13 +8,15 @@
 
   - with type `LoadBalancer` (allocating an external load balancer)
 
+--
+
 - What about HTTP services?
 
   - how can we expose `webui`, `rng`, `hasher`?
 
   - the Kubernetes dashboard?
 
-  - a new version of `webui`?
+  - all on the same IP and port?
 
 ---
 
@@ -23,6 +25,8 @@
 - If we use `NodePort` services, clients have to specify port numbers
 
   (i.e. http://xxxxx:31234 instead of just http://xxxxx)
+
+--
 
 - `LoadBalancer` services are nice, but:
 
@@ -35,6 +39,8 @@
   - they require one extra step for DNS integration
     <br/>
     (waiting for the `LoadBalancer` to be provisioned; then adding it to DNS)
+
+--
 
 - We could build our own reverse proxy
 
@@ -50,37 +56,13 @@
 
 - Some of them can pick up virtual hosts and backends from a configuration store
 
-- Wouldn't it be nice if this configuration could be managed with the Kubernetes API?
-
 --
+
+- Wouldn't it be nice if this configuration could be managed with the Kubernetes API?
 
 - Enter.red[¹] *Ingress* resources!
 
 .footnote[.red[¹] Pun maybe intended.]
-
----
-
-## Ingress resources
-
-- Kubernetes API resource (`kubectl get ingress`/`ingresses`/`ing`)
-
-- Designed to expose HTTP services
-
-- Basic features:
-
-  - load balancing
-  - SSL termination
-  - name-based virtual hosting
-
-- Can also route to different services depending on:
-
-  - URI path (e.g. `/api`→`api-service`, `/static`→`assets-service`)
-  - Client headers, including cookies (for A/B testing, canary deployment...)
-  - and more!
-
----
-
-## Ingress Diagram
 
 ---
 
@@ -104,6 +86,30 @@
 
 ---
 
+## Ingress resources
+
+- Kubernetes API resource (`kubectl get ingress`/`ingresses`/`ing`)
+
+- Designed to expose HTTP services
+
+--
+
+- Basic features:
+
+  - load balancing
+  - SSL termination
+  - name-based virtual hosting
+
+--
+
+- Can also route to different services depending on:
+
+  - URI path (e.g. `/api`→`api-service`, `/static`→`assets-service`)
+  - Client headers, including cookies (for A/B testing, canary deployment...)
+  - and more!
+
+---
+
 ## Principle of operation
 
 - Step 1: deploy an *Ingress controller*
@@ -118,9 +124,9 @@
 
 --
 
-- Step 2: set up DNS
+- Step 2: set up DNS (usually)
 
-  - associate external DNS entries with the load balancer address
+  - associate external DNS entries with the load balancer or host address
 
 --
 
@@ -132,6 +138,9 @@
 
   - connections to the Ingress LB will be processed by the rules
 
+---
+
+## Ingress Diagram
 
 ---
 
@@ -363,13 +372,19 @@ This is normal: we haven't provided any Ingress rule yet.
 
   (there are [3 tags available](https://hub.docker.com/r/errm/cheese/tags/): wensleydale, cheddar, stilton)
 
+--
+
 - These images contain a simple static HTTP server sending a picture of cheese
+
+--
 
 - We will run 3 deployments (one for each cheese)
 
 - We will create 3 services (one for each deployment)
 
 - Then we will create 3 ingress rules (one for each service)
+
+--
 
 - We will route `<name-of-cheese>.A.B.C.D.nip.io` to the corresponding deployment
 
@@ -594,38 +609,12 @@ kubectl get ingress/stilton -o yaml
   kubectl delete -f https://k8smastery.com/ic-nginx-hn.yaml
   ```
 
+- Also remove the redirect Ingress resource. It only worked in NGINX
+  ```bash
+  kubectl delete -f https://k8smastery.com/redirect.yaml
+  ```
 ]
 
---
-
-- Wait 30 seconds for everything to cleanup
-
-- Then refresh your browser and notice it's down
-
----
-
-## Removing redirect Ingress Resource
-
-- Notice the redirect Ingress resource doesn't work
-
-- This is because it's using a NGINX-specific annotation 😞
-
-.exercise[
-
-- `curl <Kubernetes IP>` from host
-
-- You should get back `404 page not found`
-
-
-- `kubectl delete -f https://k8smastery.com/redirect.yaml`
-
-]
-
-.footnote[
-
-Note if you try the browser, it may cache the redirect response and still redirect
-
-]
 
 ---
 

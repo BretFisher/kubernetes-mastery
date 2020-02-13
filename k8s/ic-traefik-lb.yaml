@@ -48,7 +48,7 @@ spec:
         # that your ingress resources would use. Note it only affects
         # status and kubectl UI, and doesn't really do anything
         # It could even be left out https://github.com/containous/traefik/issues/6303
-        - --providers.kubernetesingress.ingressendpoint.dns=localhost
+        - --providers.kubernetesingress.ingressendpoint.hostname=localhost
         ## the web UI on the host NIC port 8080 in **insecure** mode
         - --api.dashboard=true
         - --api.insecure=true
