@@ -1,3 +1,5 @@
+name: ingress
+
 # Exposing HTTP services with Ingress resources
 
 - *Services* give us a way to access a pod or a set of pods
@@ -314,6 +316,8 @@ The two main sections in the YAML are:
 
 ---
 
+name: nginx-apply
+
 ## Running NGINX on our cluster
 
 - Now let's deploy the NGINX controller. Pick your distro:
@@ -389,6 +393,8 @@ This is normal: we haven't provided any Ingress rule yet.
 - We will route `<name-of-cheese>.A.B.C.D.nip.io` to the corresponding deployment
 
 ---
+
+name: cheese-create
 
 ## Running cheesy web servers
 
@@ -523,6 +529,8 @@ spec:
 
 ---
 
+name: view-ingress
+
 ## View Ingress resources
 
 - Let's inspect some Ingress resources
@@ -617,6 +625,8 @@ kubectl get ingress/stilton -o yaml
 
 
 ---
+
+name: traefik-apply
 
 ## Running Traefik on our cluster
 
