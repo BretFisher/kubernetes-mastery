@@ -11,7 +11,7 @@ class: title, in-person
 @@TITLE@@<br/></br>
 
 .footnote[
-**Course: https://www.kubernetesmastery.com**
+**Course: http://www.kubernetesmastery.com**
 
 **Slides: @@SLIDES@@**
 ]
