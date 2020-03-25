@@ -1,55 +1,131 @@
 # Exposing containers
 
-- `kubectl expose` creates a *service* for existing pods
+- We can connect to our pods using their IP address
 
-- A *service* is a stable address for a pod (or a bunch of pods)
+- Then we need to figure out a lot of things:
 
-- If we want to connect to our pod(s), we need to create a *service*
+  - how do we look up the IP address of the pod(s)?
 
-- Once a service is created, CoreDNS will allow us to resolve it by name
+  - how do we connect from outside the cluster?
 
-  (i.e. after creating service `hello`, the name `hello` will resolve to something)
+  - how do we load balance traffic?
 
-- There are different types of services, detailed on the following slides:
+  - what if a pod fails?
+
+- Kubernetes has a resource type named *Service*
+
+- Services address all these questions!
+
+---
+
+## Services in a nutshell
+
+- Services give us a *stable endpoint* to connect to a pod or a group of pods
+
+- An easy way to create a service is to use `kubectl expose`
+
+- If we have a deployment named `my-little-deploy`, we can run:
+
+  `kubectl expose deployment my-little-deploy --port=80`
+
+  ... and this will create a service with the same name (`my-little-deploy`)
+
+- Services are automatically added to an internal DNS zone
+
+  (in the example above, our code can now connect to http://my-little-deploy/)
+
+---
+
+## Advantages of services
+
+- We don't need to look up the IP address of the pod(s)
+
+  (we resolve the IP address of the service using DNS)
+
+- There are multiple service types; some of them allow external traffic
+
+  (e.g. `LoadBalancer` and `NodePort`)
+
+- Services provide load balancing
+
+  (for both internal and external traffic)
+
+- Service addresses are independent from pods' addresses
+
+  (when a pod fails, the service seamlessly sends traffic to its replacement)
+
+---
+
+## Many kinds and flavors of service
+
+- There are different types of services:
 
   `ClusterIP`, `NodePort`, `LoadBalancer`, `ExternalName`
 
----
+- There are also *headless services*
 
-## Basic service types
+- Services can also have optional *external IPs*
 
-- `ClusterIP` (default type)
+- There is also another resource type called *Ingress*
 
-  - a virtual IP address is allocated for the service (in an internal, private range)
-  - this IP address is reachable only from within the cluster (nodes and pods)
-  - our code can connect to the service using the original port number
+  (specifically for HTTP services)
 
-- `NodePort`
-
-  - a port is allocated for the service (by default, in the 30000-32768 range)
-  - that port is made available *on all our nodes* and anybody can connect to it
-  - our code must be changed to connect to that new port number
-
-These service types are always available.
-
-Under the hood: `kube-proxy` is using a userland proxy and a bunch of `iptables` rules.
+- Wow, that's a lot! Let's start with the basics ...
 
 ---
 
-## More service types
+## `ClusterIP`
 
-- `LoadBalancer`
+- It's the default service type
 
-  - an external load balancer is allocated for the service
-  - the load balancer is configured accordingly
-    <br/>(e.g.: a `NodePort` service is created, and the load balancer sends traffic to that port)
-  - available only when the underlying infrastructure provides some "load balancer as a service"
-    <br/>(e.g. AWS, Azure, GCE, OpenStack...)
+- A virtual IP address is allocated for the service
 
-- `ExternalName`
+  (in an internal, private range; e.g. 10.96.0.0/12)
 
-  - the DNS entry managed by CoreDNS will just be a `CNAME` to a provided record
-  - no port, no IP address, no nothing else is allocated
+- This IP address is reachable only from within the cluster (nodes and pods)
+
+- Our code can connect to the service using the original port number
+
+- Perfect for internal communication, within the cluster
+
+---
+
+## `LoadBalancer`
+
+- An external load balancer is allocated for the service
+
+  (typically a cloud load balancer, e.g. ELB on AWS, GLB on GCE ...)
+
+- This is available only when the underlying infrastructure provides some kind of
+  "load balancer as a service"
+
+- Each service of that type will typically cost a little bit of money
+
+  (e.g. a few cents per hour on AWS or GCE)
+
+- Ideally, traffic would flow directly from the load balancer to the pods
+
+- In practice, it will often flow through a `NodePort` first
+
+---
+
+## `NodePort`
+
+- A port number is allocated for the service
+
+  (by default, in the 30000-32767 range)
+
+- That port is made available *on all our nodes* and anybody can connect to it
+
+  (we can connect to any node on that port to reach the service)
+
+- Our code needs to be changed to connect to that new port number
+
+- Under the hood: `kube-proxy` sets up a bunch of `iptables` rules on our nodes
+
+- Sometimes, it's the only available option for external traffic
+
+  (e.g. most clusters deployed with kubeadm or on-premises)
 
 ---
 
@@ -86,7 +162,10 @@ Under the hood: `kube-proxy` is using a userland proxy and a bunch of `iptables`
   kubectl get pods -w
   ```
 
-<!-- ```keys ^C``` -->
+<!--
+```wait NAME```
+```tmux split-pane -h```
+-->
 
 - Create a deployment for this very lightweight HTTP server:
   ```bash
@@ -134,9 +213,7 @@ Under the hood: `kube-proxy` is using a userland proxy and a bunch of `iptables`
 
 - As a result: you *have to* indicate the port number for your service
     
-- Running services with arbitrary port (or port ranges) requires hacks
-
-  (e.g. host networking mode)
+  (with some exceptions, like `ExternalName` or headless services, covered later)
 
 ---
 
@@ -158,6 +235,8 @@ Under the hood: `kube-proxy` is using a userland proxy and a bunch of `iptables`
 
 <!--
 ```hide kubectl wait deploy httpenv --for condition=available```
+```key ^D```
+```key ^C```
 -->
 
 - Send a few requests:
@@ -176,7 +255,48 @@ Under the hood: `kube-proxy` is using a userland proxy and a bunch of `iptables`
 
 class: extra-details
 
-## If we don't need a load balancer
+## `ExternalName`
+
+- Services of type `ExternalName` are quite different
+
+- No load balancer (internal or external) is created
+
+- Only a DNS entry gets added to the DNS managed by Kubernetes
+
+- That DNS entry will just be a `CNAME` to a provided record
+
+Example:
+```bash
+kubectl create service externalname k8s --external-name kubernetes.io
+```
+*Creates a CNAME `k8s` pointing to `kubernetes.io`*
+
+---
+
+class: extra-details
+
+## External IPs
+
+- We can add an External IP to a service, e.g.:
+  ```bash
+  kubectl expose deploy my-little-deploy --port=80 --external-ip=1.2.3.4
+  ```
+
+- `1.2.3.4` should be the address of one of our nodes
+
+  (it could also be a virtual address, service address, or VIP, shared by multiple nodes)
+
+- Connections to `1.2.3.4:80` will be sent to our service
+
+- External IPs will also show up on services of type `LoadBalancer`
+
+  (they will be added automatically by the process provisioning the load balancer)
+
+---
+
+class: extra-details
+
+## Headless services
 
 - Sometimes, we want to access our scaled services directly:
 
@@ -196,7 +316,7 @@ class: extra-details
 
 class: extra-details
 
-## Headless services
+## Creating a headless services
 
 - A headless service is obtained by setting the `clusterIP` field to `None`
 
@@ -277,18 +397,42 @@ error: the server doesn't have a resource type "endpoint"
 
 ---
 
-## Exposing services to the outside world
+class: extra-details
 
-- The default type (ClusterIP) only works for internal traffic
+## The DNS zone
 
-- If we want to accept external traffic, we can use one of these:
+- In the `kube-system` namespace, there should be a service named `kube-dns`
 
-  - NodePort (expose a service on a TCP port between 30000-32768)
+- This is the internal DNS server that can resolve service names
 
-  - LoadBalancer (provision a cloud load balancer for our service)
+- The default domain name for the service we created is `default.svc.cluster.local`
 
-  - ExternalIP (use one node's external IP address)
+.exercise[
 
-  - Ingress (a special mechanism for HTTP services)
+- Get the IP address of the internal DNS server:
+  ```bash
+  IP=$(kubectl -n kube-system get svc kube-dns -o jsonpath={.spec.clusterIP})
+  ```
 
-*We'll see NodePorts and Ingresses more in detail later.*
+- Resolve the cluster IP for the `httpenv` service:
+  ```bash
+  host httpenv.default.svc.cluster.local $IP
+  ```
+
+]
+
+---
+
+class: extra-details
+
+## `Ingress`
+
+- Ingresses are another type (kind) of resource
+
+- They are specifically for HTTP services
+
+  (not TCP or UDP)
+
+- They can also handle TLS certificates, URL rewriting ...
+
+- They require an *Ingress Controller* to function

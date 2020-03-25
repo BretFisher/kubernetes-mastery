@@ -58,7 +58,7 @@
 
 <!-- ##VERSION## -->
 
-- Unfortunately, as of Kubernetes 1.15, the CLI cannot create daemon sets
+- Unfortunately, as of Kubernetes 1.17, the CLI cannot create daemon sets
 
 --
 
@@ -116,19 +116,21 @@
 ```bash vim rng.yml```
 ```wait kind: Deployment```
 ```keys /Deployment```
-```keys ^J```
+```key ^J```
 ```keys cwDaemonSet```
-```keys ^[``` ]
+```key ^[``` ]
 ```keys :wq```
-```keys ^J```
+```key ^J```
 -->
 
 - Save, quit
 
 - Try to create our new resource:
-  ```
+  ```bash
   kubectl apply -f rng.yml
   ```
+
+<!-- ```wait error:``` -->
 
 ]
 
@@ -429,7 +431,7 @@ class: extra-details
 
 - We need to change the selector of the `rng` service!
 
-- Let's add another label to that selector (e.g. `enabled=yes`) 
+- Let's add another label to that selector (e.g. `active=yes`) 
 
 ---
 
@@ -447,11 +449,11 @@ class: extra-details
 
 ## The plan
 
-1. Add the label `enabled=yes` to all our `rng` pods
+1. Add the label `active=yes` to all our `rng` pods
 
-2. Update the selector for the `rng` service to also include `enabled=yes`
+2. Update the selector for the `rng` service to also include `active=yes`
 
-3. Toggle traffic to a pod by manually adding/removing the `enabled` label
+3. Toggle traffic to a pod by manually adding/removing the `active` label
 
 4. Profit!
 
@@ -466,7 +468,7 @@ be any interruption.*
 
 ## Adding labels to pods
 
-- We want to add the label `enabled=yes` to all pods that have `app=rng`
+- We want to add the label `active=yes` to all pods that have `app=rng`
 
 - We could edit each pod one by one with `kubectl edit` ...
 
@@ -476,9 +478,9 @@ be any interruption.*
 
 .exercise[
 
-- Add `enabled=yes` to all pods that have `app=rng`:
+- Add `active=yes` to all pods that have `app=rng`:
   ```bash
-  kubectl label pods -l app=rng enabled=yes
+  kubectl label pods -l app=rng active=yes
   ```
 
 ]
@@ -497,7 +499,7 @@ be any interruption.*
 
 .exercise[
 
-- Update the service to add `enabled: yes` to its selector:
+- Update the service to add `active: yes` to its selector:
   ```bash
   kubectl edit service rng
   ```
@@ -505,11 +507,11 @@ be any interruption.*
 <!--
 ```wait Please edit the object below```
 ```keys /app: rng```
-```keys ^J```
-```keys noenabled: yes```
-```keys ^[``` ]
+```key ^J```
+```keys noactive: yes```
+```key ^[``` ]
 ```keys :wq```
-```keys ^J```
+```key ^J```
 -->
 
 ]
@@ -532,7 +534,7 @@ be any interruption.*
 
 - If we want the string `"42"` or the string `"yes"`, we have to quote them
 
-- So we have to use `enabled: "yes"`
+- So we have to use `active: "yes"`
 
 .footnote[For a good laugh: if we had used "ja", "oui", "si" ... as the value, it would have worked!]
 
@@ -542,19 +544,18 @@ be any interruption.*
 
 .exercise[
 
-- Update the service to add `enabled: "yes"` to its selector:
-  ```bash
-  kubectl edit service rng
-  ```
+- Update the YAML manifest of the service
+
+- Add `active: "yes"` to its selector
 
 <!--
 ```wait Please edit the object below```
-```keys /app: rng```
-```keys ^J```
-```keys noenabled: "yes"```
-```keys ^[``` ]
+```keys /yes```
+```key ^J```
+```keys cw"yes"```
+```key ^[``` ]
 ```keys :wq```
-```keys ^J```
+```key ^J```
 -->
 
 ]
@@ -569,7 +570,7 @@ If we did everything correctly, the web UI shouldn't show any change.
 
 - We want to disable the pod that was created by the deployment
 
-- All we have to do, is remove the `enabled` label from that pod
+- All we have to do, is remove the `active` label from that pod
 
 - To identify that pod, we can use its name
 
@@ -593,15 +594,24 @@ If we did everything correctly, the web UI shouldn't show any change.
   ```bash
   POD=$(kubectl get pod -l app=rng,pod-template-hash -o name)
   kubectl logs --tail 1 --follow $POD
-
   ```
   (We should see a steady stream of HTTP logs)
 
+<!--
+```wait HTTP/1.1```
+```tmux split-pane -v```
+-->
+
 - In another window, remove the label from the pod:
   ```bash
-  kubectl label pod -l app=rng,pod-template-hash enabled-
+  kubectl label pod -l app=rng,pod-template-hash active-
   ```
   (The stream of HTTP logs should stop immediately)
+
+<!--
+```key ^D```
+```key ^C```
+-->
 
 ]
 
@@ -617,7 +627,7 @@ class: extra-details
 
 - If we scale up our cluster by adding new nodes, the daemon set will create more pods
 
-- These pods won't have the `enabled=yes` label
+- These pods won't have the `active=yes` label
 
 - If we want these pods to have that label, we need to edit the daemon set spec
 

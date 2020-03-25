@@ -90,8 +90,8 @@ Exactly what we need!
   ```
 
 <!--
-```wait HTTP/1.1```
-```keys ^C```
+```wait seq=```
+```key ^C```
 -->
 
 ]
@@ -117,7 +117,7 @@ Exactly what we need!
 
 <!--
 ```wait weave-npc```
-```keys ^C```
+```key ^C```
 -->
 
 ]
@@ -144,8 +144,8 @@ Exactly what we need!
   ```
 
 <!--
-```wait units of work```
-```keys ^C```
+```wait seq=```
+```key ^C```
 -->
 
 ]

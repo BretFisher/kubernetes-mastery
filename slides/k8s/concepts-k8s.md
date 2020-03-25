@@ -10,6 +10,29 @@
 
 ---
 
+## What can we do with Kubernetes?
+
+- Let's imagine that we have a 3-tier e-commerce app:
+
+  - web frontend
+
+  - API backend
+
+  - database (that we will keep out of Kubernetes for now)
+
+- We have built images for our frontend and backend components
+
+  (e.g. with Dockerfiles and `docker build`)
+
+- We are running them successfully with a local environment
+
+  (e.g. with Docker Compose)
+
+- Let's see how we would deploy our app on Kubernetes!
+
+---
+
+
 ## Basic things we can ask Kubernetes to do
 
 --
@@ -48,7 +71,7 @@
 
   (straightforward on CPU; more complex on other metrics)
 
-- Ressource management and scheduling
+- Resource management and scheduling
 
   (reserve CPU/RAM for containers; placement constraints)
 
@@ -194,6 +217,30 @@ class: extra-details
 - In that case, there is no "master node"
 
 *For this reason, it is more accurate to say "control plane" rather than "master."*
+
+---
+
+class: extra-details
+
+## How many nodes should a cluster have?
+
+- There is no particular constraint
+
+  (no need to have an odd number of nodes for quorum)
+
+- A cluster can have zero node
+
+  (but then it won't be able to start any pods)
+
+- For testing and development, having a single node is fine
+
+- For production, make sure that you have extra capacity
+
+  (so that your workload still fits if you lose a node or a group of nodes)
+
+- Kubernetes is tested with [up to 5000 nodes](https://kubernetes.io/docs/setup/best-practices/cluster-large/)
+
+  (however, running a cluster of that size requires a lot of tuning)
 
 ---
 

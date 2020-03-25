@@ -52,6 +52,7 @@ chapters:
   - containers/Exercise_Composefile.md
   - containers/Docker_Machine.md
 - - containers/Advanced_Dockerfiles.md
+  - containers/Init_Systems.md
   - containers/Application_Configuration.md
   - containers/Logging.md
   - containers/Resource_Limits.md
@@ -59,6 +60,7 @@ chapters:
   - containers/Copy_On_Write.md
   #- containers/Containers_From_Scratch.md
 - - containers/Container_Engines.md
+  - containers/Pods_Anatomy.md
   - containers/Ecosystem.md
   - containers/Orchestration_Overview.md
   - shared/thankyou.md

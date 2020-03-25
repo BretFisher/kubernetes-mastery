@@ -113,9 +113,12 @@ _cmd_disabledocker() {
     TAG=$1
     need_tag
 
-    pssh "sudo systemctl disable docker.service"
-    pssh "sudo systemctl disable docker.socket"
-    pssh "sudo systemctl stop docker"
+    pssh "
+    sudo systemctl disable docker.service
+    sudo systemctl disable docker.socket
+    sudo systemctl stop docker
+    sudo killall containerd
+    "
 }
 
 _cmd kubebins "Install Kubernetes and CNI binaries but don't start anything"
@@ -127,18 +130,15 @@ _cmd_kubebins() {
     set -e
     cd /usr/local/bin
     if ! [ -x etcd ]; then
-        curl -L https://github.com/etcd-io/etcd/releases/download/v3.3.15/etcd-v3.3.15-linux-amd64.tar.gz \
+        ##VERSION##
+        curl -L https://github.com/etcd-io/etcd/releases/download/v3.4.3/etcd-v3.4.3-linux-amd64.tar.gz \
         | sudo tar --strip-components=1 --wildcards -zx '*/etcd' '*/etcdctl'
     fi
     if ! [ -x hyperkube ]; then
-        curl -L https://dl.k8s.io/v1.16.2/kubernetes-server-linux-amd64.tar.gz \
-        | sudo tar --strip-components=3 -zx kubernetes/server/bin/hyperkube
-    fi
-    if ! [ -x kubelet ]; then
-        for BINARY in kubectl kube-apiserver kube-scheduler kube-controller-manager kubelet kube-proxy;
-        do
-            sudo ln -s hyperkube \$BINARY
-        done
+        ##VERSION##
+        curl -L https://dl.k8s.io/v1.17.2/kubernetes-server-linux-amd64.tar.gz \
+        | sudo tar --strip-components=3 -zx \
+          kubernetes/server/bin/kube{ctl,let,-proxy,-apiserver,-scheduler,-controller-manager}
     fi
     sudo mkdir -p /opt/cni/bin
     cd /opt/cni/bin
@@ -242,13 +242,14 @@ EOF"
     # Install helm
     pssh "
     if [ ! -x /usr/local/bin/helm ]; then
-        curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | sudo bash &&
+        curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get-helm-3 | sudo bash &&
         helm completion bash | sudo tee /etc/bash_completion.d/helm
     fi"
 
     # Install ship
     pssh "
     if [ ! -x /usr/local/bin/ship ]; then
+        ##VERSION##
         curl -L https://github.com/replicatedhq/ship/releases/download/v0.40.0/ship_0.40.0_linux_amd64.tar.gz |
              sudo tar -C /usr/local/bin -zx ship
     fi"
@@ -256,7 +257,7 @@ EOF"
     # Install the AWS IAM authenticator
     pssh "
     if [ ! -x /usr/local/bin/aws-iam-authenticator ]; then
-	##VERSION##
+	    ##VERSION##
         sudo curl -o /usr/local/bin/aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.12.7/2019-03-27/bin/linux/amd64/aws-iam-authenticator
 	sudo chmod +x /usr/local/bin/aws-iam-authenticator
     fi"
@@ -323,6 +324,15 @@ _cmd_listall() {
     done
 }
 
+_cmd maketag "Generate a quasi-unique tag for a group of instances"
+_cmd_maketag() {
+    if [ -z $USER ]; then
+        export USER=anonymous
+    fi
+    MS=$(($(date +%N)/1000000))
+    date +%Y-%m-%d-%H-%M-$MS-$USER
+}
+
 _cmd ping "Ping VMs in a given tag, to check that they have network access"
 _cmd_ping() {
     TAG=$1
@@ -356,10 +366,48 @@ EOF
     sudo systemctl start pinger"
 }
 
+_cmd tailhist "Install history viewer on port 1088"
+_cmd_tailhist () {
+    TAG=$1
+    need_tag
+
+    pssh "
+    wget https://github.com/joewalnes/websocketd/releases/download/v0.3.0/websocketd-0.3.0_amd64.deb
+    sudo dpkg -i websocketd-0.3.0_amd64.deb
+    sudo mkdir -p /tmp/tailhist
+    sudo tee /root/tailhist.service <<EOF
+[Unit]
+Description=tailhist
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+WorkingDirectory=/tmp/tailhist
+ExecStart=/usr/bin/websocketd --port=1088 --staticdir=. sh -c \"tail -n +1 -f /home/docker/.history || echo 'Could not read history file. Perhaps you need to \\\"chmod +r .history\\\"?'\"
+User=nobody
+Group=nogroup
+Restart=always
+EOF
+    sudo systemctl enable /root/tailhist.service
+    sudo systemctl start tailhist"
+    pssh -I sudo tee /tmp/tailhist/index.html <lib/tailhist.html
+}
+
 _cmd opensg "Open the default security group to ALL ingress traffic"
 _cmd_opensg() {
     need_infra $1
     infra_opensg
+}
+
+_cmd portworx "Prepare the nodes for Portworx deployment"
+_cmd_portworx() {
+    TAG=$1
+    need_tag
+
+    pssh "
+    sudo truncate --size 10G /portworx.blk &&
+    sudo losetup /dev/loop4 /portworx.blk"
 }
 
 _cmd disableaddrchecks "Disable source/destination IP address checks"
@@ -455,7 +503,7 @@ _cmd_start() {
     need_infra $INFRA
 
     if [ -z "$TAG" ]; then
-        TAG=$(make_tag)
+        TAG=$(_cmd_maketag)
     fi
     mkdir -p tags/$TAG
     ln -s ../../$INFRA tags/$TAG/infra.sh
@@ -517,20 +565,24 @@ _cmd_test() {
     test_tag
 }
 
+_cmd tmux "Log into the first node and start a tmux server"
+_cmd_tmux() {
+    TAG=$1
+    need_tag
+    IP=$(head -1 tags/$TAG/ips.txt)
+    info "Opening ssh+tmux with $IP"
+    rm -f /tmp/tmux-$UID/default
+    ssh -t -L /tmp/tmux-$UID/default:/tmp/tmux-1001/default docker@$IP tmux new-session -As 0
+}
+
 _cmd helmprom "Install Helm and Prometheus"
 _cmd_helmprom() {
     TAG=$1
     need_tag
     pssh "
     if i_am_first_node; then
-        kubectl -n kube-system get serviceaccount helm ||
-            kubectl -n kube-system create serviceaccount helm
-        sudo -u docker -H helm init --service-account helm
-        kubectl get clusterrolebinding helm-can-do-everything ||
-            kubectl create clusterrolebinding helm-can-do-everything \
-                --clusterrole=cluster-admin \
-                --serviceaccount=kube-system:helm
-        sudo -u docker -H helm upgrade --install prometheus stable/prometheus \
+        sudo -u docker -H helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+        sudo -u docker -H helm install prometheus stable/prometheus \
             --namespace kube-system \
             --set server.service.type=NodePort \
             --set server.service.nodePort=30090 \
@@ -716,11 +768,4 @@ sync_keys() {
     else
         info "Using existing key $AWS_KEY_NAME."
     fi
-}
-
-make_tag() {
-    if [ -z $USER ]; then
-        export USER=anonymous
-    fi
-    date +%Y-%m-%d-%H-%M-$USER
 }
