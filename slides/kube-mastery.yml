@@ -49,7 +49,7 @@ chapters:
 # Assignment 1
   - assignments/kubectlrun.md
 -
-  - k8s/kubectlexpose.md
+  - k8smastery/kubectlexpose.md
   - k8smastery/cleanup-httpenv.md
   - k8s/kubenet.md
   # - k8s/buildshiprun-selfhosted.md
@@ -85,30 +85,45 @@ chapters:
   - k8s/configuration.md
   - k8smastery/cleanup-haproxy-registry.md
 -
-# I'M HERE=====================================
 # Ingress
   - k8smastery/ingress.md
   - k8smastery/cleanup-ingress.md
 -
+# I'M HERE=====================================
 # volumes and persistent data
   - k8s/volumes.md
+  # k8s/exercise-configmap.md
   - k8s/statefulsets.md
   - k8s/local-persistent-volumes.md
   # - k8s/portworx.md # SKIP FOR NOW
 -
 # Managing YAML with Kustomize and Helm
   - k8s/kustomize.md
-  - k8s/helm.md
-  - k8s/create-chart.md
+  - k8s/helm-intro.md
+  - k8s/helm-chart-format.md
+  - k8s/helm-create-basic-chart.md
+  - k8s/helm-create-better-chart.md
+  - k8s/helm-secrets.md
+  #- k8s/exercise-helm.md
 -
 # CRD's and Operators
   - k8s/extending-api.md
+  # examples of CRD's like ingress.md traefik canary updates
   - k8s/operators.md
   - k8s/operators-design.md
+  - k8s/owners-and-dependents.md
 -
 # centralized logging and monitoring
   - k8s/logs-centralized.md
   - k8s/prometheus.md
+-
+# resources and metrics
+  - k8s/resource-limits.md
+  - k8s/metrics-server.md
+-
+# cluster sizing and scaling
+  - k8s/cluster-sizing.md
+  - k8s/horizontal-pod-autoscaler.md
 -
 # Declarative Workflows and GitOps
   - shared/declarative.md
@@ -122,6 +137,10 @@ chapters:
   - k8s/build-with-kaniko.md
 -
 # deployment tools
+  - k8s/dmuc.md
+  - k8s/multinode.md
+  #- k8s/cni.md MOVED to later on
+  - k8s/apilb.md
   - k8s/staticpods.md
 
 # TODO:cloud distributions
@@ -129,19 +148,27 @@ chapters:
 # admin internals
   - k8s/owners-and-dependents.md
   - k8smastery/taints.md # copied from ingress.md
+  - k8s/cluster-upgrade.md
+  - k8s/cluster-backup.md
+  - k8s/cloud-controller-manager.md
 -
 # remote cluster access
   - k8s/namespaces.md # namespaces and context
   - k8s/localkubeconfig.md
-  - k8s/kubectlproxy.md
   - k8s/accessinternal.md
+  - k8s/kubectlproxy.md
+-
+# networking and CNI
+  - k8s/cni.md
+  - k8s/interco.md
 -
 # security
   - k8s/netpol.md
   - k8s/authn-authz.md
+  - k8s/podsecuritypolicy.md
   - k8s/csr-api.md
   - k8s/openid-connect.md
-  - k8s/podsecuritypolicy.md
+  - k8s/control-plane-auth.md
 -
 # END
   - k8s/whatsnext.md
