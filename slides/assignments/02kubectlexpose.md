@@ -1,3 +1,5 @@
+name: assignment2
+
 # Assignment 2: first deployment
 
 1. Create a deployment called `littletomcat` with a container using image `tomcat`.

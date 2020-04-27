@@ -1,6 +1,10 @@
+name: assignment1
+
 # Assignment 1: first steps
 
-1. Cluster inventory
+Answer these questions with the proper command you'd use to get the answer:
+
+Cluster inventory
 
    1.1. How many nodes does your cluster have?
 
@@ -14,9 +18,9 @@ class: answers
 
 1.1. We can get a list of nodes with `kubectl get nodes`.
 
-If our cluster has many nodes and we want to count them accurately, we could use:
+BONUS: If our cluster has many nodes and we want to count them accurately, we could use:
 
-`kubectl get nodes -o name | wc -l`.
+`kubectl get nodes -o name | wc -l`. (the `wc` utility comes with macOS and Linux)
 
 1.2. `kubectl get nodes -o wide` will list extra information for each node.
 
@@ -26,7 +30,7 @@ This will include kernel version and container engine.
 
 ## Assignment 1: first steps
 
-2. Control plane examination
+Control plane examination
 
    2.1. List the pods in the `kube-system` namespace.
 
@@ -56,9 +60,9 @@ In that case, the control plane won't show up in `kube-system`.
 
 ## Assignment 1: first steps
 
-3. Running containers
+Running containers
 
-   3.1. Run a container using image `jpetazzo/clock`.
+   3.1. Run a container using image `bretfisher/clock`.
 
    3.2. Run two more containers using that same image.
 
@@ -70,7 +74,7 @@ class: answers
 
 ## Answers
 
-3.1. `kubectl run ticktock --image=jpetazzo/clock`
+3.1. `kubectl run ticktock --image=bretfisher/clock`
 
 This will create a *Deployment* called *ticktock*.
 

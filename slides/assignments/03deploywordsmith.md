@@ -1,3 +1,5 @@
+name: assignment3
+
 # Assignment 3: deploy wordsmith
 
 - Let's deploy another application called *wordsmith*

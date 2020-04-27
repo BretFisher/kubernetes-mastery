@@ -45,16 +45,16 @@ chapters:
   - k8s/kubectlrun.md
   - k8s/logs-cli.md
   - k8smastery/cleanup-pingpong-sleep.md
-  - k8s/deploymentslideshow.md
 # Assignment 1
-  - assignments/kubectlrun.md
+  - assignments/01kubectlrun.md
+  - k8s/deploymentslideshow.md
 -
   - k8smastery/kubectlexpose.md
   - k8smastery/cleanup-httpenv.md
   - k8s/kubenet.md
   # - k8s/buildshiprun-selfhosted.md
 # Assignment 2
-  - assignments/kubectlexpose.md
+  - assignments/02kubectlexpose.md
 -
   - shared/sampleapp.md
   - shared/composedown.md
@@ -62,7 +62,7 @@ chapters:
   - k8s/buildshiprun-dockerhub.md
   - k8s/ourapponkube.md
 # Assignment 3
-  - assignments/deploywordsmith.md
+  - assignments/03deploywordsmith.md
 -
   #- k8s/kubectlscale.md
   - k8s/scalingdockercoins.md
@@ -71,7 +71,8 @@ chapters:
   - k8s/dashboard.md
   - k8s/daemonset.md
   - k8smastery/cleanup-dockercoins-daemonset.md
-  - assignments/customlb.md
+# Assignment 4
+  - assignments/04customlb.md
 -
   - k8smastery/authoringyaml.md
   - k8smastery/dryrun.md
