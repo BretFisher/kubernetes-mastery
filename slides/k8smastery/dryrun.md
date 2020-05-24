@@ -93,7 +93,7 @@ Instead, it has the fields expected in a DaemonSet.
 
 - Try `kubectl diff` on a simple Pod YAML:
   ```bash
-  curl -o https://k8smastery.com/just-a-pod.yaml
+  curl -O https://k8smastery.com/just-a-pod.yaml
   kubectl apply -f just-a-pod.yaml
   # edit the image tag to :1.17
   kubectl diff -f just-a-pod.yaml
