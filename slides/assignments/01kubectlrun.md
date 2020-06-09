@@ -2,13 +2,15 @@ name: assignment1
 
 # Assignment 1: first steps
 
-Answer these questions with the proper command you'd use to get the answer:
+Answer these questions with the `kubectl` command you'd use to get the answer:
 
 Cluster inventory
 
    1.1. How many nodes does your cluster have?
 
    1.2. What kernel version and what container engine is each node running?
+
+(answers on next slide)
 
 ---
 
@@ -17,10 +19,6 @@ class: answers
 ## Answers
 
 1.1. We can get a list of nodes with `kubectl get nodes`.
-
-BONUS: If our cluster has many nodes and we want to count them accurately, we could use:
-
-`kubectl get nodes -o name | wc -l`. (the `wc` utility comes with macOS and Linux)
 
 1.2. `kubectl get nodes -o wide` will list extra information for each node.
 
@@ -32,11 +30,13 @@ This will include kernel version and container engine.
 
 Control plane examination
 
-   2.1. List the pods in the `kube-system` namespace.
+   2.1. List *only* the pods in the `kube-system` namespace.
 
    2.2. Explain the role of some of these pods.
 
-   2.3. If there are no pods in `kube-system`, why could that be?
+   2.3. If there are few or no pods in `kube-system`, why could that be?
+
+(answers on next slide)
 
 ---
 
@@ -44,7 +44,7 @@ class: answers
 
 ## Answers
 
-2.1. `kubectl get pods --namespace=kube-system` lists pods in the `kubesystem` namespace.
+2.1. `kubectl get pods --namespace=kube-system`
 
 2.2. This depends on how our cluster was set up.
 
@@ -54,7 +54,7 @@ It's also common to see `kubedns-XXX` or `coredns-XXX`: these implement the DNS 
 
 2.3. On some clusters, the control plane is located *outside* the cluster itself.
 
-In that case, the control plane won't show up in `kube-system`.
+In that case, the control plane won't show up in `kube-system`, but you can find on host with `ps aux | grep kube`.
 
 ---
 
@@ -62,11 +62,13 @@ In that case, the control plane won't show up in `kube-system`.
 
 Running containers
 
-   3.1. Run a container using image `bretfisher/clock`.
+   3.1. Create a deployment using `kubectl create` that runs the image `bretfisher/clock` and name it `ticktock`.
 
-   3.2. Run two more containers using that same image.
+   3.2. Start 2 more containers of that image in the `ticktock` deployment.
 
-   3.3. Show the last line of output of these three containers.
+   3.3. Use a selector to output only the last line of logs of each container.
+
+(answers on next slide)
 
 ---
 
@@ -74,9 +76,7 @@ class: answers
 
 ## Answers
 
-3.1. `kubectl run ticktock --image=bretfisher/clock`
-
-This will create a *Deployment* called *ticktock*.
+3.1. `kubectl create deployment ticktock --image=bretfisher/clock`
 
 By default, it will have one replica, translating to one container.
 
@@ -84,8 +84,10 @@ By default, it will have one replica, translating to one container.
 
 This will scale the deployment to three replicas (two more containers).
 
-3.3. `kubectl logs --selector=run=ticktock --tail=1`
+3.3. `kubectl logs --selector=app=ticktock --tail=1`
 
-All the resources created with `kubectl run xxx` will have the label `run=xxx`.
+All the resources created with `kubectl create deployment xxx` will have the label `app=xxx`.
+If you needed to use a pod selector, you can see them in the resource that created them.
+In this case that's the ReplicaSet, so `kubectl describe replicaset ticktock-xxxxx` would help.
 
-Therefore, we use the selector `run=ticktock` here to match all the pods belonging to this deployment.
+Therefore, we use the selector `app=ticktock` here to match all the pods belonging to this deployment.
