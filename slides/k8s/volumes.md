@@ -209,7 +209,7 @@ spec:
 
   - this repository is https://github.com/octocat/Spoon-Knife
 
-  - it's very popular (more than 100K stars!)
+  - it's very popular (more than 100K forks!)
 
 ---
 
