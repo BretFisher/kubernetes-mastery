@@ -1,9 +1,15 @@
 name: assignment4
 
-# Assignment: custom load balancing
+# Assignment 4: custom load balancing
 
 Our goal here will be to create a service that load balances
-connections to two different versions of an application.
+connections to two different deployments. You might use this as a 
+simplistic way to run two versions of your apps in parallel. 
+
+In the real world, you'll likely use a 3rd party load balancer to 
+provide advanced blue/green or canary-style deployments, but 
+this assignment will help test your understanding of how service 
+selectors are used to find pods to use as service endpoints.
 
 For simplicity, version 1 of our application will be using
 the NGINX image, and version 2 of our application will be using
@@ -11,15 +17,6 @@ the Apache image. They both listen on port 80 by default.
 
 When we connect to the service, we expect to see some requests
 being served by NGINX, and some requests being served by Apache.
-
-Bonus question: we would like the service to be named `janus`
-(from the ancient Roman god [Janus](https://en.wikipedia.org/wiki/Janus),
-who is often depicted as having two faces).
-
-If you think you know how to do all of that, feel free to go ahead!
-
-Otherwise, the next slide will give us hints, and the following slides
-will give us step by step instructions.
 
 ---
 
@@ -48,12 +45,8 @@ deployments, otherwise our deployments will step on each other's toes.
 
 --
 
-For the bonus question, we will need to change the name of the service.
-
---
-
-One way to do that is to dump the YAML of the service, edit it,
-and load it anew.
+We're not at the point of writing our own YAML from scratch, so you'll 
+need to use the `kubectl edit` command to modify existing resources.
 
 ---
 
@@ -90,20 +83,6 @@ and load it anew.
 3.3. Connect to the exposed service again.
 
 (It should now yield responses from both Apache and NGINX.)
-
----
-
-## Changing the name of the service
-
-4.1. Dump the YAML of the service.
-
-4.2. Edit the YAML to change the name of the service.
-
-4.3. Delete the old service.
-
-4.4. Load the new YAML.
-
-4.5. Check that we can connect to the new `janus` service.
 
 ---
 
