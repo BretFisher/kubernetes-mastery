@@ -6,11 +6,11 @@ name: assignment3
 
 - Wordsmith has 3 components:
 
-  - a web frontend
+  - a web frontend: `bretfisher/wordsmith-web`
 
-  - an API backend
+  - a API backend: `bretfisher/wordsmith-words`
 
-  - a database
+  - a postgres database: `bretfisher/wordsmith-db`
 
 - We have built images for these components, and pushed them on the Docker Hub
 
@@ -21,14 +21,6 @@ name: assignment3
 ---
 
 ## Wordsmith details
-
-- Here are the names of the images that we've prepared:
-
-  - `jpetazzo/wordsmith-web:latest` for the web frontend
-
-  - `jpetazzo/wordsmith-words:latest` for the API
-
-  - `jpetazzo/wordsmith-db:latest` for the database
 
 - Here are all the network flows in the app:
 
@@ -54,7 +46,7 @@ name: assignment3
 
   (You will probably see a different sentence, though.)
 
-- Yes, there is some repetition in that sentence; that's OK for now
+- If you 
 
 - If you see empty LEGO bricks, something's wrong ...
 
@@ -74,7 +66,7 @@ name: assignment3
 
 .footnote[Wondering what this app is all about?
 <br/>
-It was a demo app showecased at DockerCon Europe 2017 in Copenhagen.]
+It was a demo app showecased at DockerCon]
 
 ---
 
@@ -84,9 +76,9 @@ class: answers
 
 First, we need to create deployments for all three components:
 ```bash
-kubectl create deployment db --image=jpetazzo/wordsmith-db
-kubectl create deployment web --image=jpetazzo/wordsmith-web
-kubectl create deployment words --image=jpetazzo/wordsmith-words
+kubectl create deployment db --image=bretfisher/wordsmith-db
+kubectl create deployment web --image=bretfisher/wordsmith-web
+kubectl create deployment words --image=bretfisher/wordsmith-words
 ```
 
 Note: we need to use these exact names, because these names will be used for the *service* that we will create and their DNS entries as well. To put it differently: if our code connects to `words` then the service should be named `words` and the deployment should also be named `words` (unless we want to write our own service YAML manifest by hand; but we won't do that yet).
@@ -103,15 +95,16 @@ kubectl expose deployment db --port=5432
 kubectl expose deployment web --port=80 --type=NodePort
 kubectl expose deployment words --port=8080
 ```
-
-Find out the node port allocated to `web`:
+or
 ```bash
-kubectl get service web
+kubectl create service clusterip db --tcp=5432
+kubectl create service nodeport web --tcp=80
+kubectl create service clusterip words --tcp=8080
 ```
 
-Open it in your browser.
+Find out the node port allocated to `web`: `kubectl get service web`
 
-If you hit "reload", you should always see the same sentence, however.
+Open it in your browser. If you hit "reload", you always see the same sentence.
 
 ---
 
@@ -119,9 +112,9 @@ class: answers
 
 ## Answers
 
-Finally, scale up the API:
+Finally, scale up the API for more words on refresh:
 ```bash
-kubectl scale deployment words --replicas=9
+kubectl scale deployment words --replicas=5
 ```
 
 If you hit "reload", you should now see different sentences each time.
