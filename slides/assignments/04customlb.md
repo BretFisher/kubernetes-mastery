@@ -8,7 +8,7 @@ simplistic way to run two versions of your apps in parallel.
 
 In the real world, you'll likely use a 3rd party load balancer to 
 provide advanced blue/green or canary-style deployments, but 
-this assignment will help test your understanding of how service 
+this assignment will help further your understanding of how service 
 selectors are used to find pods to use as service endpoints.
 
 For simplicity, version 1 of our application will be using
@@ -62,13 +62,13 @@ need to use the `kubectl edit` command to modify existing resources.
 
 ## Setting up the service
 
-2.1. Pick a custom label/value to be used by the service.
+2.1. Use a custom label/value to be used by the service. How about `myapp: web`.
 
-2.2. Change the service definition to use that label/value.
+2.2. Change (edit) the service definition to use that label/value.
 
 2.3. Check that you *cannot* connect to the exposed service anymore.
 
-2.4. Change the deployment definition to add that label/value to the pods.
+2.4. Change (edit) the deployment definition to add that label/value to the pods.
 
 2.5. Check that you *can* connect to the exposed service again.
 
@@ -78,7 +78,7 @@ need to use the `kubectl edit` command to modify existing resources.
 
 3.1. Create a deployment running one pod using the official Apache image.
 
-3.2. Change the deployment definition to add the label/value picked previously.
+3.2. Change (edit) the deployment definition to add the label/value picked previously.
 
 3.3. Connect to the exposed service again.
 
@@ -92,7 +92,7 @@ class: answers
 
 1.1. `kubectl create deployment v1-nginx --image=nginx`
 
-1.2. `kubectl expose deployment v1-nginx --port=80`
+1.2. `kubectl expose deployment v1-nginx --port=80` or `kubectl create service v1-nginx --tcp=80`
 
 1.3.A If you are using `shpod`, or if you are running directly on the cluster:
 
@@ -118,13 +118,13 @@ class: answers
 
 ## Answers
 
-2.1. Our label/value will be `target=janus`.
+2.1. Our label should be added under `metadata: labels:` as `myapp: web`.
 
 2.2. Edit the YAML manifest of the service with `kubectl edit service v1-nginx`. Look for the `selector:` section, and change `app: v1-nginx` to `target: janus`. Make sure to change the `selector:` section, not the `labels:` section! After making the change, save and quit.
 
 2.3. The `curl` command (see previous slide) should now time out.
 
-2.4. Change the YAML manifest of the deployment with `kubectl edit deployment v1-nginx`. Look for the `labels:` section **within the `template:` section**, as we want to change the labels of the pods created by the deployment, not of the deployment itself. Make sure to change the `labels:` section, not the `matchLabels:` one. Add `target: janus` just below `app: v1-nginx`, with the same indentation level. After making the change, save and quit.
+2.4. Edit the YAML manifest of the deployment with `kubectl edit deployment v1-nginx`. Look for the `labels:` section **within the `template:` section**, as we want to change the labels of the pods created by the deployment, not of the deployment itself. Make sure to change the `labels:` section, not the `matchLabels:` one. Add `myapp: web` just below `app: v1-nginx`, with the same indentation level. After making the change, save and quit.
 
 2.5. The `curl` command should now work again. (It might need a minute, since changing the label will trigger a rolling update and create a new pod.)
 
@@ -136,41 +136,9 @@ class: answers
 
 3.1. `kubectl create deployment v2-apache --image=httpd`
 
-3.2. Same as previously: `kubectl edit deployment v2-apache`, then add the label `target: janus` below `app: v2-apache`. Again, make sure to change the labels in the pod template, not of the deployment itself.
+3.2. Same as previously: `kubectl edit deployment v2-apache`, then add the label `myapp: web` below `app: v2-apache`. Again, make sure to change the labels in the pod template, not of the deployment itself.
 
 3.3. The `curl` command show now yield responses from NGINX and Apache.
 
 (Note: you won't see a perfect round-robin, i.e. NGINX/Apache/NGINX/Apache etc., but on average, Apache and NGINX should serve approximately 50% of the requests each.)
 
----
-
-class: answers
-
-## Answers
-
-4.1. `kubectl get service v1-nginx -o yaml > janus.yaml`
-
-4.2. Edit `janus.yaml` and change `name: v1-nginx` into `name: janus`. 
-
-4.3. `kubectl delete service v1-nginx`
-
-4.4. `kubectl apply -f janus.yaml`
-
-4.5. Check the ClusterIP of the new service.
-<br/>If you were testing from a pod, you can just do `curl janus`.
-
----
-
-## Little details ...
-
-*Why do we need to dump the YAML and load it again?*
-<br/>
-*Why can't we change the name directly with `kubectl edit service`?*
-
-That's because Kubernetes cannot rename resources. So if it notices that the name was changed during a `kubectl edit` operation, it will bail out. That's why we need to dump the manifest and create a new resource instead.
-
-*Why do we need to delete the old service before creating the new one?*
-
-That's because we cannot have two services with the same ClusterIP. If we try to create another service with that YAML that we dumped, Kubernetes would reject it because it would have the same ClusterIP as the old one.
-
-Another option (if we want to keep both services) is to remove the `clusterIP` line from the YAML before loading it. Kubernetes will then automatically a (random) ClusterIP to the new service.
