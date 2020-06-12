@@ -118,15 +118,13 @@ class: answers
 
 ## Answers
 
-2.1. Our label should be added under `metadata: labels:` as `myapp: web`.
+2.1. Edit the YAML manifest of the service with `kubectl edit service v1-nginx`. Look for the `selector:` section, and change `app: v1-nginx` to `myapp: web`. Make sure to change the `selector:` section, not the `labels:` section! After making the change, save and quit.
 
-2.2. Edit the YAML manifest of the service with `kubectl edit service v1-nginx`. Look for the `selector:` section, and change `app: v1-nginx` to `target: janus`. Make sure to change the `selector:` section, not the `labels:` section! After making the change, save and quit.
+2.2. The `curl` command (see previous slide) should now time out.
 
-2.3. The `curl` command (see previous slide) should now time out.
+2.3. Edit the YAML manifest of the deployment with `kubectl edit deployment v1-nginx`. Look for the `labels:` section **within the `template:` section**, as we want to change the labels of the pods created by the deployment, not of the deployment itself. Make sure to change the `labels:` section, not the `matchLabels:` one. Add `myapp: web` just below `app: v1-nginx`, with the same indentation level. After making the change, save and quit. We need both labels here, unlike the service selector. The app label keeps the pod "linked" to the deployment/replicaset, and the new one will cause the service to match to this pod.
 
-2.4. Edit the YAML manifest of the deployment with `kubectl edit deployment v1-nginx`. Look for the `labels:` section **within the `template:` section**, as we want to change the labels of the pods created by the deployment, not of the deployment itself. Make sure to change the `labels:` section, not the `matchLabels:` one. Add `myapp: web` just below `app: v1-nginx`, with the same indentation level. After making the change, save and quit.
-
-2.5. The `curl` command should now work again. (It might need a minute, since changing the label will trigger a rolling update and create a new pod.)
+2.4. The `curl` command should now work again. (It might need a minute, since changing the label will trigger a rolling update and create a new pod.)
 
 ---
 
