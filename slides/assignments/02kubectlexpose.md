@@ -28,8 +28,13 @@ class: answers
    `kubectl get pods --selector=app=littletomcat -o wide`. You could also describe 
    the pod: `kubectl describe pod littletomcat-XXX-XXX`
 
-3. Start a shell *inside* the cluster: `curl https://shpod.sh | sh`
-   Then the IP address of the pod should ping correctly. You could also start a deployment
+3. Start a shell *inside* the cluster:
+One way to start a shell inside the cluster: `kubectl apply -f https://k8smastery.com/shpod.yaml`
+then `kubectl attach --namespace=shpod -ti shpod`
+
+- A easier way is to use a special domain we created  `curl https://shpod.sh | sh`
+
+- Then the IP address of the pod should ping correctly. You could also start a deployment
    or pod temporarily (like nginx), then exec in, install ping, and ping the IP.
 
 ---
@@ -60,7 +65,7 @@ or copy/paste the exact pod name and delete it.
 
   (An address that doesn't change when something bad happens to the container.)
 
-2. What commands would you run to connect to Tomcat with that address?
+2. What commands would you run to curl Tomcat with that DNS address?
 
    (Use the `shpod` environment if necessary.)
 
@@ -84,9 +89,12 @@ class: answers
    ```bash
    # Install curl
    apk add curl
-   # Make a request to the littletomcat service
-   curl http://littletomcat:8080
+   # Make a request to the littletomcat service (in a different namespace)
+   curl http://littletomcat.default:8080
    ```
+Note that shpod runs in the shpod namespace, so to find a DNS name of a different 
+namespace in the same cluster, you should use `<hostname>.<namespace>` syntax. 
+That was a little advanced, so A+ if you got it on the first try!
 
 3. Yes. If we delete the pod, another will be created to replace it. 
    The *ClusterIP* will still work.
