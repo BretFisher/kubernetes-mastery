@@ -2,17 +2,23 @@
 
 - Volumes are special directories that are mounted in containers
 
+--
+
 - Volumes can have many different purposes:
 
   - share files and directories between containers running on the same machine
 
+--
+
   - share files and directories between containers and their host
+
+--
 
   - centralize configuration information in Kubernetes and expose it to containers
 
-  - manage credentials and secrets and expose them securely to containers
+--
 
-  - store persistent data for stateful services
+  - manage credentials and secrets and expose them securely to containers
 
   - access storage systems (like Ceph, EBS, NFS, Portworx, and many others)
 
@@ -28,19 +34,27 @@ class: extra-details
   <br/>
   but it refers to Docker 1.7, which was released in 2015!)
 
+--
+
 - Docker volumes allow us to share data between containers running on the same host
+
+--
 
 - Kubernetes volumes allow us to share data between containers in the same pod
 
+--
+
 - Both Docker and Kubernetes volumes enable access to storage systems
 
-- Kubernetes volumes are also used to expose configuration and secrets
+--
+
+- Kubernetes volumes can also be used to expose configuration and secrets
+
+--
 
 - Docker has specific concepts for configuration and secrets
   <br/>
   (but under the hood, the technical implementation is similar)
-
-- If you're not familiar with Docker volumes, you can safely ignore this slide!
 
 ---
 
@@ -48,11 +62,15 @@ class: extra-details
 
 - Volumes and Persistent Volumes are related, but very different!
 
+--
+
 - *Volumes*:
 
   - appear in Pod specifications (we'll see that in a few slides)
 
   - do not exist as API resources (**cannot** do `kubectl get volumes`)
+
+--
 
 - *Persistent Volumes*:
 
@@ -60,9 +78,9 @@ class: extra-details
 
   - correspond to concrete volumes (e.g. on a SAN, EBS, etc.)
 
-  - cannot be associated with a Pod directly; but through a Persistent Volume Claim
-
-  - won't be discussed further in this section
+  - cannot be associated with a Pod directly
+  <br/>
+      (they need a Persistent Volume Claim)
 
 ---
 
@@ -70,15 +88,23 @@ class: extra-details
 
 - We will start with the simplest Pod manifest we can find
 
+--
+
 - We will add a volume to that Pod manifest
 
+--
+
 - We will mount that volume in a container in the Pod
+
+--
 
 - By default, this volume will be an `emptyDir`
 
   (an empty directory)
 
-- It will "shadow" the directory where it's mounted
+--
+
+- It will hide ("shadow") the image directory where it's mounted
 
 ---
 
@@ -107,7 +133,7 @@ It runs a single NGINX container.
 
 - Create the Pod:
   ```bash
-  kubectl create -f ~/container.training/k8s/nginx-1-without-volume.yaml
+  kubectl create -f https://k8smastery.com/nginx-1-without-volume.yaml
   ```
 
 <!-- ```bash kubectl wait pod/nginx-without-volume --for condition=ready ``` -->
@@ -174,7 +200,7 @@ spec:
 
 - Create the Pod:
   ```bash
-  kubectl create -f ~/container.training/k8s/nginx-2-with-volume.yaml
+  kubectl create -f https://k8smastery.com/nginx-2-with-volume.yaml
   ```
 
 <!-- ```bash kubectl wait pod/nginx-with-volume --for condition=ready ``` -->
@@ -288,7 +314,7 @@ spec:
 
 - Create the pod:
   ```bash
-  kubectl create -f ~/container.training/k8s/nginx-3-with-git.yaml
+  kubectl create -f https://k8smastery.com/nginx-3-with-git.yaml
   ```
 
 <!--
