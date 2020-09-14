@@ -294,6 +294,7 @@ class: not-mastery
 
 - Writing logs (and checking them from the probe) also works
 
+<<<<<<< HEAD
 ---
 
 ## Questions to ask before adding healthchecks
@@ -318,3 +319,9 @@ class: not-mastery
 
   (this can be particularly tricky)
 
+=======
+???
+
+:EN:- Using healthchecks to improve availability
+:FR:- Utiliser des *healthchecks* pour améliorer la disponibilité
+>>>>>>> upstream/master

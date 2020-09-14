@@ -149,11 +149,39 @@
 
 ---
 
+class: extra-details
+
+## Supporting other CPU architectures
+
+- The `jpetazzo/httpenv` image is currently only available for `x86_64`
+
+  (the "classic" Intel 64 bits architecture found on most PCs and Macs)
+
+- That image won't work on other architectures
+
+  (e.g. Raspberry Pi or other ARM-based machines)
+
+- Note that Docker supports [multi-arch](https://www.docker.com/blog/multi-arch-build-and-images-the-simple-way/) images
+
+  (so *technically* we could make it work across multiple architectures)
+
+- If you want to build `httpenv` for your own platform, here is the source:
+
+  https://github.com/jpetazzo/httpenv
+
+---
+
 ## Creating a deployment for our HTTP server
 
+<<<<<<< HEAD
 - We *could* do `kubectl run httpenv --image=bretfisher/httpenv` ...
 
 - But since `kubectl run` is changing, let's see how to use `kubectl create` instead
+=======
+- We will create a deployment with `kubectl create deployment`
+
+- Then we will scale it with `kubectl scale`
+>>>>>>> upstream/master
 
 .exercise[
 
@@ -436,3 +464,13 @@ class: extra-details
 - They can also handle TLS certificates, URL rewriting ...
 
 - They require an *Ingress Controller* to function
+
+???
+
+:EN:- Service discovery and load balancing
+:EN:- Accessing pods through services
+:EN:- Service types: ClusterIP, NodePort, LoadBalancer
+
+:FR:- Exposer un service
+:FR:- Différents types de services : ClusterIP, NodePort, LoadBalancer
+:FR:- Utiliser CoreDNS pour la *service discovery*

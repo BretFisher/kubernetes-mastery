@@ -430,7 +430,7 @@ spec:
   initContainers:
   - name: git
     image: alpine
-    command: [ "sh", "-c", "apk add --no-cache git && git clone https://github.com/octocat/Spoon-Knife /www" ]
+    command: [ "sh", "-c", "apk add git && git clone https://github.com/octocat/Spoon-Knife /www" ]
     volumeMounts:
     - name: www
       mountPath: /www/
@@ -443,9 +443,12 @@ spec:
 
 .exercise[
 
-- Repeat the same operation as earlier
+- Create the pod:
+  ```bash
+  kubectl create -f ~/container.training/k8s/nginx-4-with-init.yaml
+  ```
 
-  (try to send HTTP requests as soon as the pod comes up)
+- Try to send HTTP requests as soon as the pod comes up
 
 <!--
 ```key ^D```
@@ -493,3 +496,11 @@ spec:
 - A volume survives across container restarts
 
 - A volume is destroyed (or, for remote storage, detached) when the pod is destroyed
+
+???
+
+:EN:- Sharing data between containers with volumes
+:EN:- When and how to use Init Containers
+
+:FR:- Partager des données grâce aux volumes
+:FR:- Quand et comment utiliser un *Init Container*

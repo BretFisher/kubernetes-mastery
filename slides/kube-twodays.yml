@@ -15,11 +15,14 @@ slides: http://container.training/
 exclude:
 - self-paced
 
-chapters:
+content:
 - shared/title.md
 - logistics.md
 - k8s/intro.md
 - shared/about-slides.md
+- shared/chat-room-im.md
+#- shared/chat-room-zoom-meeting.md
+#- shared/chat-room-zoom-webinar.md
 - shared/toc.md
 -
   - shared/prereqs.md
@@ -33,7 +36,10 @@ chapters:
   - k8s/concepts-k8s.md
   - k8s/kubectlget.md
 -
-  - k8s/kubectlrun.md
+  - k8s/kubectl-run.md
+  - k8s/batch-jobs.md
+  - k8s/labels-annotations.md
+  - k8s/kubectl-logs.md
   - k8s/logs-cli.md
   - shared/declarative.md
   - k8s/declarative.md
@@ -47,7 +53,10 @@ chapters:
   #- k8s/exercise-wordsmith.md
 -
   - k8s/yamldeploy.md
-  #- k8s/setup-k8s.md
+  - k8s/setup-overview.md
+  - k8s/setup-devel.md
+  #- k8s/setup-managed.md
+  #- k8s/setup-selfhosted.md
   - k8s/dashboard.md
   #- k8s/kubectlscale.md
   - k8s/scalingdockercoins.md

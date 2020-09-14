@@ -100,3 +100,12 @@
 
 - For the 4 others, we need to build images and push them to some registry
 
+<<<<<<< HEAD
+=======
+It is possible to view the build logs by setting up an account on [ctr.run](https://ctr.run/).
+
+???
+
+:EN:- Shipping images to Kubernetes
+:FR:- Déployer des images sur notre cluster
+>>>>>>> upstream/master

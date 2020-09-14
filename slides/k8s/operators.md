@@ -93,11 +93,11 @@ Examples:
 
 - Representing and managing external resources
 
-  (Example: [AWS Service Operator](https://operatorhub.io/operator/alpha/aws-service-operator.v0.0.1))
+  (Example: [AWS S3 Operator](https://operatorhub.io/operator/awss3-operator-registry))
 
 - Managing complex cluster add-ons
 
-  (Example: [Istio operator](https://operatorhub.io/operator/beta/istio-operator.0.1.6))
+  (Example: [Istio operator](https://operatorhub.io/operator/istio))
 
 - Deploying and managing our applications' lifecycles
 
@@ -570,7 +570,7 @@ After the Kibana UI loads, we need to click around a bit
 
 ## Deploying our apps with operators
 
-- It is very simple to deploy with `kubectl run` / `kubectl expose`
+- It is very simple to deploy with `kubectl create deployment` / `kubectl expose`
 
 - We can unlock more features by writing YAML and using `kubectl apply`
 
@@ -615,3 +615,11 @@ After the Kibana UI loads, we need to click around a bit
 *Operators can be very powerful.
 <br/>
 But we need to know exactly the scenarios that they can handle.*
+
+???
+
+:EN:- Kubernetes operators
+:EN:- Deploying ElasticSearch with ECK
+
+:FR:- Les opérateurs
+:FR:- Déployer ElasticSearch avec ECK

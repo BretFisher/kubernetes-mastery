@@ -6,7 +6,7 @@
 
 - Our goal is to build a minimal cluster allowing us to:
 
-  - create a Deployment (with `kubectl run` or `kubectl create deployment`)
+  - create a Deployment (with `kubectl create deployment`)
   - expose it with a Service
   - connect to that service
 
@@ -823,3 +823,8 @@ class: extra-details
   (it could be as a bare process, or in a container/pod using the host network)
 
 - ... And it expects to be listening on port 6443 with TLS
+
+???
+
+:EN:- Building our own cluster from scratch
+:FR:- Construire son cluster à la main

@@ -34,11 +34,11 @@
 
 - Download the `kubectl` binary from one of these links:
 
-  [Linux](https://storage.googleapis.com/kubernetes-release/release/v1.15.3/bin/linux/amd64/kubectl)
+  [Linux](https://storage.googleapis.com/kubernetes-release/release/v1.18.8/bin/linux/amd64/kubectl)
   |
-  [macOS](https://storage.googleapis.com/kubernetes-release/release/v1.15.3/bin/darwin/amd64/kubectl)
+  [macOS](https://storage.googleapis.com/kubernetes-release/release/v1.18.8/bin/darwin/amd64/kubectl)
   |
-  [Windows](https://storage.googleapis.com/kubernetes-release/release/v1.15.3/bin/windows/amd64/kubectl.exe)
+  [Windows](https://storage.googleapis.com/kubernetes-release/release/v1.18.8/bin/windows/amd64/kubectl.exe)
 
 - On Linux and macOS, make the binary executable with `chmod +x kubectl`
 
@@ -193,3 +193,8 @@ class: extra-details
 ]
 
 We can now utilize the cluster exactly as if we're logged into a node, except that it's remote.
+
+???
+
+:EN:- Working with remote Kubernetes clusters
+:FR:- Travailler avec des *clusters* distants

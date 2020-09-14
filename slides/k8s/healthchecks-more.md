@@ -339,6 +339,7 @@ class: extra-details
 
 - Discussion of this in [Video - 10 Ways to Shoot Yourself in the Foot with Kubernetes, #9 Will Surprise You](https://www.youtube.com/watch?v=QKI-JRs2RIE)
 
+<<<<<<< HEAD
 ---
 
 ## Tini and redis ping in a liveness probe
@@ -373,3 +374,9 @@ containers:
 ]
 
 
+=======
+???
+
+:EN:- Adding healthchecks to an app
+:FR:- Ajouter des *healthchecks* à une application
+>>>>>>> upstream/master

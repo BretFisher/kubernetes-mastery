@@ -58,7 +58,7 @@
 
 <!-- ##VERSION## -->
 
-- Unfortunately, as of Kubernetes 1.17, the CLI cannot create daemon sets
+- Unfortunately, as of Kubernetes 1.19, the CLI cannot create daemon sets
 
 --
 
@@ -692,3 +692,8 @@ class: extra-details
     (by setting their label accordingly)
 
 - This gives us building blocks for canary and blue/green deployments
+
+???
+
+:EN:- Scaling with Daemon Sets
+:FR:- Utilisation de Daemon Sets

@@ -352,7 +352,7 @@ We demonstrated *update* and *watch* semantics.
 
 - That's where the actual logic of Kubernetes lives
 
-- When we create a Deployment (e.g. with `kubectl run web --image=nginx`),
+- When we create a Deployment (e.g. with `kubectl create deployment web --image=nginx`),
 
   - we create a Deployment object
 
@@ -381,3 +381,8 @@ We demonstrated *update* and *watch* semantics.
   - if the pod has special constraints that can't be met
 
   - if the scheduler is not running (!)
+
+???
+
+:EN:- Kubernetes architecture review
+:FR:- Passage en revue de l'architecture de Kubernetes

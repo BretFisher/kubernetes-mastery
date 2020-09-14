@@ -4,6 +4,10 @@ metadata:
   name: coffees.container.training
 spec:
   group: container.training
+  versions:
+  - name: v1alpha1
+    served: true
+    storage: true
   scope: Namespaced
   names:
     plural: coffees
@@ -11,25 +15,4 @@ spec:
     kind: Coffee
     shortNames:
     - cof
-  versions:
-  - name: v1alpha1
-    served: true
-    storage: true
-    schema:
-      openAPIV3Schema:
-        properties:
-          spec:
-            required:
-            - taste
-            properties:
-              taste:
-                description: Subjective taste of that kind of coffee bean
-                type: string
-    additionalPrinterColumns:
-    - jsonPath: .spec.taste
-      description: Subjective taste of that kind of coffee bean
-      name: Taste
-      type: string
-    - jsonPath: .metadata.creationTimestamp
-      name: Age
-      type: date
+

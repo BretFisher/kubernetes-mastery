@@ -16,11 +16,14 @@ slides: http://container.training/
 exclude:
 - self-paced
 
-chapters:
+content:
 - shared/title.md
 - logistics.md
 - k8s/intro.md
 - shared/about-slides.md
+- shared/chat-room-im.md
+#- shared/chat-room-zoom-meeting.md
+#- shared/chat-room-zoom-webinar.md
 - shared/toc.md
 # DAY 1
 - - k8s/prereqs-admin.md
@@ -31,6 +34,8 @@ chapters:
   - k8s/cni.md
   - k8s/interco.md
 - - k8s/apilb.md
+  - k8s/setup-overview.md
+  #- k8s/setup-devel.md
   - k8s/setup-managed.md
   - k8s/setup-selfhosted.md
   - k8s/cluster-upgrade.md

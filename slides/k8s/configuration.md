@@ -210,6 +210,8 @@
 
   (through files that get created in the container filesystem)
 
+- That second link also includes a list of all the fields that can be used with the downward API
+
 ---
 
 ## Environment variables, pros and cons
@@ -545,3 +547,36 @@ spec:
 - With RBAC, we can authorize a user to access ConfigMaps, but not Secrets
 
   (since they are two different kinds of resources)
+
+---
+
+class: extra-details
+
+## Immutable ConfigMaps and Secrets
+
+- Since Kubernetes 1.19, it is possible to mark a ConfigMap or Secret as *immutable*
+
+  ```bash
+  kubectl patch configmap xyz --patch='{"immutable": true}'
+  ```
+
+- This brings performance improvements when using lots of ConfigMaps and Secrets
+
+  (lots = tens of thousands)
+
+- Once a ConfigMap or Secret has been marked as immutable:
+
+  - its content cannot be changed anymore
+  - the `immutable` field can't be changed back either
+  - the only way to change it is to delete and re-create it
+  - Pods using it will have to be re-created as well
+
+???
+
+:EN:- Managing application configuration
+:EN:- Exposing configuration with the downward API
+:EN:- Exposing configuration with Config Maps and Secrets
+
+:FR:- Gérer la configuration des applications
+:FR:- Configuration au travers de la *downward API*
+:FR:- Configuration via les *Config Maps* et *Secrets*

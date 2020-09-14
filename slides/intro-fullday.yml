@@ -14,11 +14,14 @@ slides: http://container.training/
 exclude:
 - self-paced
 
-chapters:
+content:
 - shared/title.md
 - logistics.md
 - containers/intro.md
 - shared/about-slides.md
+- shared/chat-room-im.md
+#- shared/chat-room-zoom-meeting.md
+#- shared/chat-room-zoom-webinar.md
 - shared/toc.md
 -
   #- containers/Docker_Overview.md
@@ -41,8 +44,8 @@ chapters:
 -
   - containers/Container_Networking_Basics.md
   #- containers/Network_Drivers.md
-  #- containers/Container_Network_Model.md
   - containers/Local_Development_Workflow.md
+  - containers/Container_Network_Model.md
   - containers/Compose_For_Dev_Stacks.md
   - containers/Exercise_Composefile.md
 -
@@ -62,6 +65,5 @@ chapters:
   #- containers/Pods_Anatomy.md
   #- containers/Ecosystem.md
   #- containers/Orchestration_Overview.md
--
   - shared/thankyou.md
   - containers/links.md
