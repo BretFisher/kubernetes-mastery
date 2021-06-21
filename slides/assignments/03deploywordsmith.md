@@ -8,7 +8,7 @@ name: assignment3
 
   - a web frontend: `bretfisher/wordsmith-web`
 
-  - a API backend: `bretfisher/wordsmith-words`
+  - a API backend: `bretfisher/wordsmith-words` (NOTE: won't run on Raspberry Pi's arm/v7 yet [GH Issue](https://github.com/carlossg/docker-maven/issues/213))
 
   - a postgres database: `bretfisher/wordsmith-db`
 
@@ -45,8 +45,6 @@ name: assignment3
   ![Screen capture of the wordsmith app, with lego bricks showing the text "The nørdic whale smokes the nørdic whale"](images/wordsmith.png)
 
   (You will probably see a different sentence, though.)
-
-- If you 
 
 - If you see empty LEGO bricks, something's wrong ...
 
