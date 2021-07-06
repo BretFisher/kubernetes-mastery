@@ -270,7 +270,7 @@ name: ingress
 
 - MicroK8s:
 
-  - has a built-in NGINX installer `microk8s.enable ingress`
+  - has a built-in NGINX installer `microk8s enable ingress`
   
   - let's use YAML we provide anyway for learning purposes
   

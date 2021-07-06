@@ -107,7 +107,7 @@ The dashboard will then ask you which authentication you want to use.
 
 - Minikube/microK8s can be enabled with easy commands
 
-  `minikube dashboard` and `microk8s.enable dashboard`
+  `minikube dashboard` and `microk8s enable dashboard`
 ---
 
 ## Other dashboards

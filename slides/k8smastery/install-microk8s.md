@@ -7,13 +7,13 @@ name: microk8s
 --
 
 - Made by Canonical (Ubuntu). Installs using `snap`. Works nearly everywhere
-- Has lots of other features with its `microk8s.` CLI
+- Has lots of other features with its `microk8s` CLI
 
 --
 
 - But, requires you [install `snap`](https://snapcraft.io/docs/installing-snapd) if not on Ubuntu
 - Runs on containerd rather than Docker, no biggie
-- Needs alias setup for `microk8s.kubectl`
+- Needs alias setup for `microk8s kubectl`
 
 --
 
@@ -23,7 +23,7 @@ name: microk8s
   ``` bash
   sudo snap install microk8s --classic
   sudo usermod -a -G microk8s <username>
-  echo "alias kubectl='microk8s.kubectl'" >> ~/.bashrc
+  echo "alias kubectl='microk8s kubectl'" >> ~/.bashrc
   # log out and back in if using a non-root user
   ```
 
@@ -39,16 +39,16 @@ name: microk8s
 
 - Create kubectl config file
   ``` bash
-  microk8s.kubectl config view --raw > $HOME/.kube/config
+  microk8s kubectl config view --raw > $HOME/.kube/config
   ```
 
 - Install CoreDNS in Kubernetes
   ``` bash
-  sudo microk8s.enable dns
+  sudo microk8s enable dns
   ```
 ]
 
-- You can also install other plugins this way like `microk8s.enable dashboard` or `microk8s.enable ingress`
+- You can also install other plugins this way like `microk8s enable dashboard` or `microk8s enable ingress`
 
 ---
 
@@ -60,7 +60,7 @@ name: microk8s
 
 - Test MicroK8s config for any potental problems
   ``` bash
-  sudo microk8s.inspect
+  sudo microk8s inspect
   ```
 ]
 
