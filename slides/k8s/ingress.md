@@ -429,7 +429,7 @@ This is normal: we haven't provided any ingress rule yet.
 Here is a minimal host-based ingress resource:
 
 ```yaml
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: cheddar
@@ -439,9 +439,12 @@ spec:
     http:
       paths:
       - path: /
+        pathType: Prefix
         backend:
-          serviceName: cheddar
-          servicePort: 80
+          service:
+            name: cheddar
+            port:
+              number: 80
 
 ```
 
