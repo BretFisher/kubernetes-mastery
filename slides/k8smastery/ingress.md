@@ -334,7 +334,7 @@ name: nginx-apply
   ```
 - Check the pod Status
   ```bash
-  kubectl describe -n ingress-nginx deploy/nginx-ingress-controller
+  kubectl describe -n ingress-nginx deploy/ingress-nginx-controller
   ```
 ]
 
@@ -423,7 +423,7 @@ name: cheese-create
 Here is a minimal host-based ingress resource:
 
 ```yaml
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: cheddar
@@ -433,10 +433,12 @@ spec:
     http:
       paths:
       - path: /
+        pathType: Prefix
         backend:
-          serviceName: cheddar
-          servicePort: 80
-
+          service:
+            name: cheddar
+            port:
+              number: 80
 ```
 
 (In [1.14 ingress moved](https://github.com/kubernetes/ingress-gce/issues/770) 
@@ -504,7 +506,7 @@ kubectl apply -f https://k8smastery.com/redirect.yaml
 ## Annotations can get weird and complex
 
 ```yaml
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: my-google
@@ -515,9 +517,12 @@ spec:
   - http:
       paths:
       - path: /
+        pathType: Prefix
         backend:
-          serviceName: doesntmatter
-          servicePort: 80
+          service:
+            name: doesntmatter
+            port:
+              number: 80
 ```
 --
 
