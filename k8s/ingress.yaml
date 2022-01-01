@@ -3,6 +3,7 @@ kind: Ingress
 metadata:
   name: cheddar
 spec:
+  ingressClassName: nginx
   rules:
   - host: cheddar.A.B.C.D.nip.io
     http:
@@ -20,6 +21,7 @@ kind: Ingress
 metadata:
   name: stilton
 spec:
+  ingressClassName: nginx
   rules:
   - host: stilton.A.B.C.D.nip.io
     http:
@@ -37,6 +39,7 @@ kind: Ingress
 metadata:
   name: wensleydale
 spec:
+  ingressClassName: nginx
   rules:
   - host: wensleydale.A.B.C.D.nip.io
     http:
