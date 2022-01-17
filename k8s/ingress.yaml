@@ -3,52 +3,50 @@ kind: Ingress
 metadata:
   name: cheddar
 spec:
-  ingressClassName: nginx
   rules:
-  - host: cheddar.A.B.C.D.nip.io
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: cheddar
-            port:
-              number: 80
+    - host: cheddar.A.B.C.D.nip.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: cheddar
+                port:
+                  number: 80
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: stilton
 spec:
-  ingressClassName: nginx
   rules:
-  - host: stilton.A.B.C.D.nip.io
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: stilton
-            port:
-              number: 80
+    - host: stilton.A.B.C.D.nip.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: stilton
+                port:
+                  number: 80
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: wensleydale
 spec:
-  ingressClassName: nginx
   rules:
-  - host: wensleydale.A.B.C.D.nip.io
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: wensleydale
-            port:
-              number: 80
+    - host: wensleydale.A.B.C.D.nip.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: wensleydale
+                port:
+                  number: 80
 ---
+
