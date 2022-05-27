@@ -1,5 +1,7 @@
 # Kubernetes Mastery
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/6f45f2e5-2e96-4c38-a7a2-47b8021b37ab/deploy-status)](https://app.netlify.com/sites/compassionate-wiles-b11928/deploys)
+
 > A Kubernetes course on Udemy from @bretfisher and @jpetazzo!
 
 ## When Will It Be Released?
