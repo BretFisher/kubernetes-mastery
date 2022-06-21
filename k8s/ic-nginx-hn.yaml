@@ -310,6 +310,7 @@ spec:
             - --election-id=ingress-controller-leader
             - --controller-class=k8s.io/ingress-nginx
             - --configmap=$(POD_NAMESPACE)/ingress-nginx-controller
+            - --watch-ingress-without-class=true
           securityContext:
             capabilities:
               drop:
@@ -365,22 +366,12 @@ spec:
       serviceAccountName: ingress-nginx
       terminationGracePeriodSeconds: 300
 ---
-# Source: ingress-nginx/templates/controller-ingressclass.yaml
-# We don't support namespaced ingressClass yet
-# So a ClusterRole and a ClusterRoleBinding is required
+# more info https://github.com/kubernetes/ingress-nginx/blob/main/docs/index.md#i-have-only-one-ingress-controller-in-my-cluster-what-should-i-do
 apiVersion: networking.k8s.io/v1
 kind: IngressClass
 metadata:
   annotations:
     ingressclass.kubernetes.io/is-default-class: "true"
-  labels:
-    helm.sh/chart: ingress-nginx-4.0.10
-    app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/instance: ingress-nginx
-    app.kubernetes.io/version: 1.1.0
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: controller
-  name: nginx
-  namespace: ingress-nginx
+  name: cluster-wide-ingress
 spec:
   controller: k8s.io/ingress-nginx

@@ -16,7 +16,6 @@ spec:
   selector:
     matchLabels:
       k8s-app: traefik-ingress-lb
-      name: traefik-ingress-lb
   template:
     metadata:
       labels:
@@ -26,19 +25,19 @@ spec:
       tolerations:
       - effect: NoSchedule
         operator: Exists
+      hostNetwork: true
       serviceAccountName: traefik-ingress-controller
       terminationGracePeriodSeconds: 60
-      hostNetwork: true
       containers:
-      - image: traefik:2.5
+      - image: traefik:v2.7
         name: traefik-ingress-lb
         ports:
         - name: http
           containerPort: 80
           hostPort: 80
-        # - name: admin
-          # containerPort: 8080
-          # hostPort: 8080
+        - name: admin
+          containerPort: 8080
+          hostPort: 8080
         securityContext:
           capabilities:
             drop:
@@ -46,35 +45,21 @@ spec:
             add:
             - NET_BIND_SERVICE
         args:
-        - --providers.kubernetesingress=true
+        ## the web UI on the host NIC port 8080 in **insecure** mode
+        - --api.dashboard
+        - --accesslog
+        - --api
+        - --api.insecure
+        - --log.level=INFO
+        - --metrics.prometheus
+        - --providers.kubernetesingress
+        - --providers.kubernetesingress.ingressclass=cluster-wide-ingress
+        - --entrypoints.http.Address=:80
         # you need to manually set this IP to the incoming public IP
         # that your ingress resources would use. Note it only affects
         # status and kubectl UI, and doesn't really do anything
         # It could even be left out https://github.com/containous/traefik/issues/6303
-        - --providers.kubernetesingress.ingressendpoint.ip=127.0.0.1
-        ## uncomment these and the ports above and below to enable
-        ## the web UI on the host NIC port 8080 in **insecure** mode
-        # - --api.dashboard=true
-        # - --api.insecure=true
-        - --log=true
-        - --log.level=INFO
-        - --accesslog=true
----
-kind: Service
-apiVersion: v1
-metadata:
-  name: traefik-ingress-service
-  namespace: kube-system
-spec:
-  selector:
-    k8s-app: traefik-ingress-lb
-  ports:
-    - protocol: TCP
-      port: 80
-      name: web
-    # - protocol: TCP
-      # port: 8080
-      # name: admin
+        - --providers.kubernetesingress.ingressendpoint.hostname=localhost
 ---
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
@@ -93,8 +78,33 @@ rules:
       - watch
   - apiGroups:
       - extensions
+      - networking.k8s.io
     resources:
       - ingresses
+      - ingressclasses
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - extensions
+      - networking.k8s.io
+    resources:
+      - ingresses/status
+    verbs:
+      - update
+  - apiGroups:
+      - traefik.containo.us
+    resources:
+      - ingressroutes
+      - ingressroutetcps
+      - ingressrouteudps
+      - middlewares
+      - middlewaretcps
+      - tlsoptions
+      - tlsstores
+      - traefikservices
+      - serverstransports
     verbs:
       - get
       - list
@@ -112,3 +122,12 @@ subjects:
 - kind: ServiceAccount
   name: traefik-ingress-controller
   namespace: kube-system
+---
+kind: IngressClass
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: cluster-wide-ingress
+  annotations:
+    ingressclass.kubernetes.io/is-default-class: "true"
+spec:
+  controller: traefik.io/ingress-controller
