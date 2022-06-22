@@ -150,7 +150,7 @@ name: ingress
 
 - We will deploy the NGINX Ingress controller first
 
-  - this is a popular, yet arbitrary choice, the 
+  - this is a popular, yet arbitrary choice, the
   [docs](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/)
   list over a dozen options
 
@@ -186,7 +186,7 @@ name: ingress
 
 --
 
-- We could use pods specifying `hostPort: 80` 
+- We could use pods specifying `hostPort: 80`
 
   ... but with most CNI plugins, this [doesn't work or requires additional setup](https://github.com/kubernetes/kubernetes/issues/23920)
 
@@ -441,9 +441,6 @@ spec:
               number: 80
 ```
 
-(In [1.14 ingress moved](https://github.com/kubernetes/ingress-gce/issues/770) 
-from the extensions API to networking)
-
 ---
 
 ## Creating our first ingress resources
@@ -510,10 +507,10 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: my-google
-  annotations:
+  annotations: # Notice this annotation is NGINX specific
     nginx.ingress.kubernetes.io/permanent-redirect: https://www.google.com
 spec:
-  rules:
+  rules: # Ingress requires a rule and backend, even though it's not needed here
   - http:
       paths:
       - path: /
@@ -524,13 +521,6 @@ spec:
             port:
               number: 80
 ```
---
-
-- Ingress resource insists we have a rule and backend, even though it's not needed here
-
---
-
-- Notice annotation is NGINX specific
 
 ---
 
@@ -582,7 +572,7 @@ kubectl get ingress/stilton -o yaml
 
 --
 
-- The [Traefik documentation](https://docs.traefik.io/v1.7/user-guide/kubernetes/#deploy-traefik-using-a-deployment-or-daemonset)
+- The [Traefik documentation](https://doc.traefik.io/traefik/getting-started/install-traefik/)
   tells us to pick between Deployment and DaemonSet
 
 - We are going to use a DaemonSet so that each node can accept connections
@@ -591,13 +581,11 @@ kubectl get ingress/stilton -o yaml
 
 - We provide a YAML file which is essentially the sum of:
 
-  - [Traefik's DaemonSet resources](https://github.com/containous/traefik/blob/v1.7/examples/k8s/traefik-ds.yaml) (patched with `hostNetwork` and tolerations)
+  - [Traefik's DaemonSet resources](https://github.com/traefik/traefik-helm-chart/blob/master/traefik/templates/daemonset.yaml) (patched with `hostNetwork` and toleration's)
 
-  - [Traefik's RBAC rules](https://github.com/containous/traefik/blob/v1.7/examples/k8s/traefik-rbac.yaml) allowing it to watch necessary API objects
+  - [Traefik's RBAC rules](https://github.com/traefik/traefik-helm-chart/tree/master/traefik/templates/rbac) allowing it to watch necessary API objects
 
-- We will make a minor change to the 
-  [YAML provided by Traefik](https://github.com/containous/traefik/blob/v1.7/examples/k8s/traefik-ds.yaml)
-  to enable `hostNetwork` for MicroK8s/minikube
+- We will make a minor change to the YAML provided by Traefik to enable `hostNetwork` for MicroK8s/minikube
 
 - For Docker Desktop we'll add a `type: LoadBalancer` to the Service
 
@@ -734,7 +722,7 @@ name: traefik-apply
 
 --
 
-- The `kubernetes.io/ingress.class` annotation can be used to tell which one to use
+- Since K8s 1.18, `ingressClassName` can be used to tell which one to use
 
 --
 
@@ -782,15 +770,9 @@ name: traefik-apply
 
 - Even relatively common features (stripping a path prefix) can differ:
 
-  - [traefik.ingress.kubernetes.io/rule-type: PathPrefixStrip](https://docs.traefik.io/user-guide/kubernetes/#path-based-routing)
+  - [traefik.ingress.kubernetes.io/rule-type: PathPrefixStrip](https://doc.traefik.io/traefik/migration/v1-to-v2/#strip-and-rewrite-path-prefixes)
 
-  - [ingress.kubernetes.io/rewrite-target: /](https://github.com/kubernetes/contrib/tree/master/ingress/controllers/nginx/examples/rewrite)
-
---
-
-- This should eventually stabilize
-
-  (remember that ingresses are currently `apiVersion: networking.k8s.io/v1beta1`)
+  - [ingress.kubernetes.io/rewrite-target: /](https://github.com/kubernetes/ingress-nginx/blob/main/docs/examples/rewrite/README.md)
 
 --
 
@@ -804,7 +786,7 @@ name: traefik-apply
 
 ## When not to use built-in Ingress resources
 
-- You need features beyond Ingress including: 
+- You need features beyond Ingress including:
 
   - TCP support, traffic splitting, mTLS, egress, service mesh
   - response transformation, routing to 2+ services
