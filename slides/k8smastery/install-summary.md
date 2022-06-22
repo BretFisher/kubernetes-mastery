@@ -4,7 +4,7 @@ name: install
 
 - Best: Get a environment locally
 
-  - Docker Desktop (Win/macOS), minikube (Win Home), or microk8s (Linux)
+  - Docker Desktop (Win/macOS/Linux), Rancher Desktop (Win/macOS/Linux), or microk8s (Linux)
   - Small setup effort; free; flexible environments
   - Requires 2GB+ of memory
 

@@ -27,4 +27,3 @@ Let's cleanup before we start the next lecture!
   ```
 
 ]
-
