@@ -4,6 +4,7 @@ kind: ServiceAccount
 metadata:
   name: traefik-ingress-controller
   namespace: kube-system
+
 ---
 kind: DaemonSet
 apiVersion: apps/v1
@@ -28,7 +29,7 @@ spec:
       serviceAccountName: traefik-ingress-controller
       terminationGracePeriodSeconds: 60
       containers:
-      - image: traefik:2.7
+      - image: traefik:2.9
         name: traefik-ingress-lb
         ports:
         - name: http
@@ -50,13 +51,13 @@ spec:
         - --log.level=INFO
         - --metrics.prometheus
         - --providers.kubernetesingress
-        - --providers.kubernetesingress.ingressclass=cluster-wide-ingress
         - --entrypoints.http.Address=:80
         # you need to manually set this IP to the incoming public IP
         # that your ingress resources would use. Note it only affects
         # status and kubectl UI, and doesn't really do anything
         # It could even be left out https://github.com/containous/traefik/issues/6303
         - --providers.kubernetesingress.ingressendpoint.hostname=localhost
+
 ---
 kind: Service
 apiVersion: v1
@@ -74,6 +75,7 @@ spec:
     - protocol: TCP
       port: 8080
       name: admin
+
 ---
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
@@ -107,22 +109,7 @@ rules:
       - ingresses/status
     verbs:
       - update
-  - apiGroups:
-      - traefik.containo.us
-    resources:
-      - ingressroutes
-      - ingressroutetcps
-      - ingressrouteudps
-      - middlewares
-      - middlewaretcps
-      - tlsoptions
-      - tlsstores
-      - traefikservices
-      - serverstransports
-    verbs:
-      - get
-      - list
-      - watch
+
 ---
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
@@ -136,6 +123,7 @@ subjects:
 - kind: ServiceAccount
   name: traefik-ingress-controller
   namespace: kube-system
+
 ---
 kind: IngressClass
 apiVersion: networking.k8s.io/v1
