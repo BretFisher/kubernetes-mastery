@@ -32,8 +32,8 @@
 
 ## Stern
 
-[Stern](https://github.com/wercker/stern) is an open source project
-by [Wercker](http://www.wercker.com/).
+[Stern](https://github.com/stern/stern) is an open source project
+originally by [Wercker](http://www.wercker.com/).
 
 From the README:
 
@@ -45,7 +45,7 @@ Exactly what we need!
 
 ---
 
-## Installing Stern
+## Checking if Stern is installed
 
 - Run `stern` (without arguments) to check if it's installed:
 
@@ -57,18 +57,25 @@ Exactly what we need!
     stern pod-query [flags]
   ```
 
-- If it is not installed, the easiest method is to download a [binary release](https://github.com/wercker/stern/releases)
+- If it's missing, let's see how to install it
 
-- The following commands will install Stern on a Linux Intel 64 bit machine:
-  ```bash
-  sudo curl -L -o /usr/local/bin/stern \
-       https://github.com/wercker/stern/releases/download/1.11.0/stern_linux_amd64
-  sudo chmod +x /usr/local/bin/stern
-  ```
+---
 
-- On OS X, just `brew install stern`
+## Installing Stern
 
-<!-- ##VERSION## -->
+- Stern is written in Go
+
+- Go programs are usually very easy to install
+
+  (no dependencies, extra libraries to install, etc)
+
+- Binary releases are available [on GitHub][stern-releases]
+
+- Stern is also available through most package managers
+
+  (e.g. on macOS, we can `brew install stern` or `sudo port install stern`)
+
+[stern-releases]: https://github.com/stern/stern/releases
 
 ---
 
@@ -82,7 +89,7 @@ Exactly what we need!
 
 - These two ways can be combined if necessary
 
-.exercise[
+.lab[
 
 - View the logs for all the pingpong containers:
   ```bash
@@ -108,11 +115,11 @@ Exactly what we need!
 
 - The `--all-namespaces` flag is self-explanatory
 
-.exercise[
+.lab[
 
-- View what's up with the `pingpong` system containers:
+- View what's up with the `weave` system containers:
   ```bash
-  stern --tail 1 --timestamps pingpong
+  stern --tail 1 --timestamps --all-namespaces weave
   ```
 
 <!--
@@ -132,15 +139,15 @@ Exactly what we need!
 
 - Everything created with `kubectl run` has a label `run`
 
-- We can use that property to view the logs of all the pods created with `kubectl run`
+- Everything created with `kubectl create deployment` has a label `app`
 
-- Similarly, everything created with `kubectl create deployment` has a label `app`
+- We can use that property to view the logs of all the pods created with `kubectl create deployment`
 
-.exercise[
+.lab[
 
-- View the logs for all the things started with `kubectl run`:
+- View the logs for all the things started with `kubectl create deployment`:
   ```bash
-  stern -l run
+  stern -l app
   ```
 
 <!--
@@ -149,3 +156,8 @@ Exactly what we need!
 -->
 
 ]
+
+???
+
+:EN:- Viewing pod logs from the CLI
+:FR:- Consulter les logs des pods depuis la CLI
