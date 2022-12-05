@@ -374,9 +374,9 @@ This is normal: we haven't provided any ingress rule yet.
 
 ## Setting up host-based routing ingress rules
 
-- We are going to use `errm/cheese` images
+- We are going to use `bretfisher/cheese` images
 
-  (there are [3 tags available](https://hub.docker.com/r/errm/cheese/tags/): wensleydale, cheddar, stilton)
+  (there are [3 tags available](https://hub.docker.com/r/bretfisher/cheese/tags/): wensleydale, cheddar, stilton)
 
 - These images contain a simple static HTTP server sending a picture of cheese
 
@@ -396,9 +396,9 @@ This is normal: we haven't provided any ingress rule yet.
 
 - Run all three deployments:
   ```bash
-  kubectl create deployment cheddar --image=errm/cheese:cheddar
-  kubectl create deployment stilton --image=errm/cheese:stilton
-  kubectl create deployment wensleydale --image=errm/cheese:wensleydale
+  kubectl create deployment cheddar --image=bretfisher/cheese:cheddar
+  kubectl create deployment stilton --image=bretfisher/cheese:stilton
+  kubectl create deployment wensleydale --image=bretfisher/cheese:wensleydale
   ```
 
 - Create a service for each of them:
