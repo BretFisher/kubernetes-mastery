@@ -120,7 +120,7 @@ name: ingress
 
   - the control loop watches over Ingress resources, and configures the LB accordingly
 
-  - these might be two separate processes (NGINX sever + NGINX Ingress controller)
+  - these might be two separate processes (NGINX server + NGINX Ingress controller)
 
   - or a single app that knows how to speak to Kubernetes API (Traefik)
 
